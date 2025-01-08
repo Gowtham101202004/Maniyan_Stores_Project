@@ -1,0 +1,232 @@
+.Navbar{
+    width: 100%;
+    height: 70px;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    z-index: 1;
+}
+
+.Navbar h1{
+    margin: 8px -100px 0 -110px;
+    height: 55px;
+}
+
+.ms-logo{
+    height: 40px;
+    margin: 15px -110px 0 -80px;
+}
+
+.Nav-Links ul{
+    margin-left: -90px;
+    display: flex;
+    list-style-type: none;
+}
+
+.Nav-Links ul li{
+    margin: 10px 20px 0 0;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+/* underline effects start */
+
+.Navlink {
+    position: relative;
+    text-decoration: none;
+    list-style: none;
+    margin: 8px 6px;
+    color: #000000;
+    transition: transform 0.3s ease;
+    padding-bottom: 5px;
+    overflow: hidden;
+}
+
+.Navlink::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2.5px;
+    left: 0;
+    bottom: 0;
+    background-color: #000000;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-in-out;
+}
+
+.Navlink:hover::after, .Navlink.active::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.Navlink:hover {
+    color: rgb(255, 119, 0);
+}
+
+.Navlink.active {
+    color: rgb(255, 119, 0);
+}
+
+/* underline effects end */
+
+.Navbar .search_container input{
+    margin: 18px 0 0 -180px;
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 400px;
+    padding: 10px;
+}
+
+.search_icon{
+    margin-left: -30px;
+    cursor: pointer;
+}
+
+.Nav-log{
+    margin-right: -40px; 
+    display: flex;
+    align-items: center;
+}
+
+.cart-icon{
+    margin: 0 0 0 0;
+    font-size: 22px;
+    cursor: pointer;
+    transition: ease-in-out 0.1s;
+}
+
+.cart-icon:hover{
+    color: rgb(255, 119, 0);
+}
+
+.profile {
+    margin: 0 0 0 40px;
+    width: 50px;
+    height: 50px;
+    border: 2px solid black;
+    border-radius: 50%;
+    position: absolute;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+ /* Dropdown Profile Start */
+.dropdown-profile {
+    position: absolute;
+    top: 105%;
+    right: 0.5rem;
+    width: 190px;
+    min-height: 10px;
+    max-height: 250px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+}
+
+.dropdown-profile .username-container{
+    text-align: center;
+}
+
+.dropdown-profile h2 {
+    color: #000000;
+    font-size: 16px;
+    letter-spacing: 0;
+    padding-bottom: 8px;
+}
+
+.dropdown-profile ul {
+    list-style: none;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.dropdown-profile li {
+    margin-bottom: 20px;
+    align-items: center;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-profile li:hover {
+    color: rgb(255, 119, 0);
+    transform: scale(1.05);
+}
+
+.dropdown-profile hr {
+    margin: -10px 0 15px -3px;
+    border: none;
+    background-color: black; 
+    width: 195px;
+    height: 1.5px;
+}
+ /* Dropdown Profile End */
+.dd-icon{
+    font-size: 19px;
+    margin-left: -20px;
+    margin-right: 5px;
+}
+
+.dropdown-profile .signin-item{
+    margin: 0 0 0 30px;
+}
+
+.dropdown-profile .signin-item:hover{
+    color: rgb(0, 255, 0);
+}
+
+.dropdown-profile .signout-item:hover{
+    color: rgb(234, 16, 16);
+}
+
+/* Sidebar Menu - Mobile View */
+@media only screen and (max-width: 768px) {
+    body {
+      overflow-x: hidden;
+    }
+
+    .ms-logo{
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .Navbar{
+        height: 140px;
+    }
+
+    .Nav-log{
+        margin-right: -30px;
+        margin-top: -80px; 
+    }
+    
+    .cart-icon{
+        width: 20px;
+        height: 20px;
+        margin: 0 0 0 -100px;
+    }
+
+    .profile {
+        width: 45px;
+        height: 45px;
+        margin: 0 0 0 -70px;
+    }
+
+    .Navbar .search_container input{
+        width: 300px;
+        margin-top: 60px;
+        margin-left: -165px;
+    }
+
+    .Nav-Links ul{
+        position: absolute;
+        margin-top: 100px;
+        margin-left: -160px;
+    }
+
+    .dropdown-profile {
+        margin-top: -90px;
+    }
+  
+  }
+  

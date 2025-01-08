@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.ms-logo2 {
+  height: 40px;
+  margin: 0 100px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.ms-logo2:hover {
+  transform: scale(1.05);
+}
+.footer {
+  background-color: #111;
+  color: #fff;
+  padding: 40px 20px;
+  font-family: "Poppins", sans-serif;
+  position: relative; 
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 220px;
+  margin-top: -20px;
+  margin-bottom: 10px;
+}
+
+.footer-section p strong{
+  font-size: 15px;
+   line-height: 1.5;
+}
+
+.footer-logo {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  text-align: center; 
+}
+
+.footer-logo img {
+  width: 120px;
+  margin-bottom: 15px;
+}
+
+.footer-logo h2, .footer-logo p {
+  margin: 0;
+}
+
+.footer-logo p {
+  max-width: 400px;
+}
+
+.footer-section h2{
+  color: rgb(255, 119, 0);
+  margin-bottom: 15px;
+  font-size: 1.4em;
+}
+
+/* underline effects starts here */
+
+.footer-section h3 {
+  display: inline-block;
+  position: relative;
+  font-size: 1.4em;
+  font-weight: bold;
+  color: rgb(255, 119, 0);
+  margin-bottom: 15px;
+  cursor: pointer;
+  overflow: hidden; 
+}
+
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(255, 119, 0);
+  transform-origin: bottom right; 
+  transition: transform 0.25s ease-out;
+}
+
+.footer-section h3:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.footer-section h3:hover {
+  color: white;
+}
+
+/* underline effects ends here */
+
+.footer-section p, .footer-section ul, .footer-section li {
+  color: #ddd;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* text hover starts */
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  display: inline-block;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.footer-section ul li a:hover {
+  transform: scale(1.1) translateY(-5px); 
+  color: rgb(255, 119, 0);
+}
+
+/* text hover ends */
+
+.footer-section.quick-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.footer-section.quick-links ul {
+  text-align: center;
+  margin: 0;
+}
+
+.footer-bottom {
+  background-color: #222;
+  color: #ddd;
+  text-align: center;
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-bottom: -25px;
+  font-size: 14px;
+  border-top: 1px solid #333;
+}
+
+.about-maniyan-stores h2{
+  font-weight: 650;
+  letter-spacing: 1.5px;
+}
+
+.about-maniyan-stores p{
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+
+/* Responsive Styles */
+@media only screen and (max-width: 768px) {
+      html, body {
+        overflow-y: auto;
+      }
+
+      .ms-logo2 {
+        margin: 0 20%;
+      }
+
+      .footer-section {
+        margin-top: -25px;
+      }
+
+      .footer-bottom {
+        padding: 10px;
+      }
+
+      .footer-section.quick-links{
+        display: none;
+      }
+}

@@ -1,0 +1,40 @@
+//Websites
+svgrepo(for svg images)
+
+
+//frontend installation
+npm create vite@latest
+npm install
+npm install axios
+
+//backend installation
+npm install express mongoose cors dotenv nodemon
+
+"scripts": {
+    "start": "nodemon server.js",
+
+
+//MYSQL
+DDL - create, alter, drop, truncate
+DML - insert, delete, update
+DQL - select
+TCL - 
+DCL -
+
+
+useState is mainly used for tracking your input
+
+async is show something without refresing the page
+for example:
+    navigate to another page without refresing
+
+
+//responsive
+@media(max-width: 600px){
+
+}
+
+1.phone - 600px
+2.tablets - 768px
+3.laptops - 992px
+4.large screen  -  1800px

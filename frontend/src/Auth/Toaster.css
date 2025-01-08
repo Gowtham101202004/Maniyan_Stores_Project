@@ -1,0 +1,37 @@
+.toaster {
+  position: fixed;
+  margin-top: -165px;
+  margin-right: -250px;
+}
+
+.alert{
+  width: 30vw;
+  border-radius: 10px;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeout {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 768px) {
+  
+  .toaster {
+    position: fixed;
+    margin-top: -140px;
+    margin-right: -30px;
+  }
+
+  .alert{
+    width: 90vw;
+    border-radius: 10px;
+  }
+
+}

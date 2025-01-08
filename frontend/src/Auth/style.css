@@ -1,0 +1,318 @@
+body{
+  background-color: #f1f3f6;
+}
+
+.main-container {
+    display: flex;
+    height: 80vh;
+    width: 80vw;
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    margin-top: 60px;
+    margin-left: 140px;
+    border-radius: 65px 65px 65px 65px;
+    box-shadow: inset 0 -3em 7em rgb(0, 0, 0), 0.3em 0.3em 1em rgba(6, 6, 6, 2);
+}
+
+.container-left{
+    display: flex;
+    height: 100%;
+    width: 50%;
+    padding: 0px 50px;
+    background-color: white;
+    /* background: linear-gradient(to right bottom, #66fcff, #3a9294, #102929); */
+    justify-content: center;
+    border-radius: 65px 0px 0px 65px;
+}
+
+.container-left h1{
+    margin: 50px 0 0 0;
+    color: black;
+}
+
+.ms_title{
+    height: 70px;
+    margin: 50px;
+}
+
+.login-animation{
+  position: absolute;
+    width: 400px;
+    height: 400px;
+    margin: 120px 0 0 0;
+}
+
+.container-right{
+    display: flex;
+    height: 100%;
+    width: 50%;
+    padding: 0px 50px;
+    background-image: url("D:/Project_2/frontend/src/assets/Stripe.jpg");
+    /* background: rgb(13, 28, 122); */
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0px 65px 65px 0px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.box{
+    width: 70%;
+    border: 1px solid black;
+    background: rgba(255, 255, 255, 0.1); 
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    border-radius: 10px;
+    justify-content: center;
+    box-shadow: black 2px 10px 30px 2px;
+    backdrop-filter: blur(3px);
+}
+
+.g-login{
+    margin: 15px 0 0 105px; 
+    border-radius: 2px;
+    padding: 5px 10px;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+}
+
+.g-login:hover{
+  transform: scale(1.04);
+}
+
+.g-login:active{
+    transform: scale(0.9);
+}
+
+.g-login img{
+    width: 15px;
+    height: 15px;
+    margin: 0 6px -3px 0;
+}
+
+.login-button{
+  width: 250px;
+  margin: 100px 0 0 60px;
+  border: none;
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 7px 10px;
+  box-shadow: black 2px 3px 10px 2px;
+  transition: ease-in-out 0.3s;
+}
+
+.login-button:active{
+  transform: scale(0.9);
+}
+
+.box h1{
+    margin: 30px 0 -65px 130px;
+    color: white;
+}
+
+.box form .inputBox{
+    position: relative;
+    width: 250px;
+    margin-top: 80px;
+    margin-bottom: -70px;
+    margin-left: 60px;
+}
+
+.box form .inputBox input {
+    position: relative;
+    width: 100%;
+    padding: 20px 10px 10px;
+    background: transparent;
+    outline: none;
+    border: none;
+    box-shadow: none;
+    color: black;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+    transition: 0.5s;
+    z-index: 10;
+  }
+  
+.box form .inputBox input:-webkit-autofill,
+.box form .inputBox input:-webkit-autofill:hover,
+.box form .inputBox input:-webkit-autofill:focus,
+.box form .inputBox input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #000;
+  border: none;
+}
+
+  .box form .inputBox span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 20px 0px 10px;
+    pointer-events: none;
+    color: white;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+    transition: 0.5s;
+  }
+  
+  .box form .inputBox input:valid ~ span,
+  .box form .inputBox input:focus ~ span {
+    color: white;    
+    margin-top: 12px;
+    font-size: 0.80em;
+    transform: translateY(-34px);
+  }
+  
+  .box form .inputBox i {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1.5px;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: 0.5s;
+    pointer-events: none;
+  }
+  
+  .box form .inputBox input:valid ~ i,
+  .box form .inputBox input:focus ~ i {
+    height: 35px;
+  }
+
+.links a{
+  font-size: 12px;
+  margin: 75px 0 0 225px;
+  position: absolute;
+  color: white;
+  text-decoration: none;
+  transition: ease-in-out 0.2s;
+}
+
+.links a:hover{
+  color: blue;
+}
+
+/* divider */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 30px 0 0 0;
+  color: white; 
+}
+
+.divider::before{
+  content: "";
+  flex: 1;
+  border-bottom: 2px solid white; 
+  margin: 0 5px 0 20px;
+}
+.divider::after{
+  content: "";
+  flex: 1;
+  border-bottom: 2px solid white;
+  margin: 0 20px 0 5px;
+}
+
+.divider span {
+  font-size: 16px;
+  padding: 0 5px; 
+}
+
+.last{
+  font-size: 15px;
+  position: relative;
+  margin: 0 0 -15px 75px;
+}
+
+.last p{
+  text-decoration: none;
+}
+
+.last u{
+  color: blue;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media only screen and (max-width: 768px) {
+
+  html, body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0;
+  }
+
+  .main-container {
+    width: auto;
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    box-shadow: inset 0 -3em 7em rgb(0, 0, 0), 0.3em 0.3em 1em rgba(6, 6, 6, 2);
+  }
+
+  .container-left{
+    display: none;
+  }
+
+.container-right{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    padding: 0px 20px;
+    background-image: url("D:\Project_2\frontend\src\assets\Stripe.jpg");
+    background-size: cover;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 0 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .container-right h1{
+    margin-left: 100px;
+  }
+
+  .box{
+    width: auto;
+    margin: -15px 0 0 0;
+    max-width: 400px;
+    border: 1px solid black;
+    background: rgba(255, 255, 255, 0.1); 
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: black 2px 10px 30px 2px;
+    backdrop-filter: blur(3px);
+  }
+  
+  .box form .inputBox{
+    margin: 80px 25px -70px 25px;
+  }
+
+  .login-button{
+    margin: 100px 0 0 20px;
+  }
+
+  .links a{
+    margin: 75px 0 0 180px;
+  }
+
+  .last{
+    margin: -5px 0 -15px 38px;
+  }
+
+  .g-login{
+    margin: 10px 0 0 70px;
+  }
+
+}
