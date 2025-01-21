@@ -13,21 +13,21 @@ function Home() {
         <Slider/>
         <div className="features-section">
           <div className="feature">
-            <i className="fa fa-truck feature-icon">
+            <i className="feature-icon">
               <FontAwesomeIcon icon={faTruckFast} />
             </i>
             <h3>Fast Delivery</h3>
             <p>Get fresh groceries delivered to your home quickly and safely.</p>
           </div>
           <div className="feature">
-            <i className="fa fa-leaf feature-icon">
+            <i className="feature-icon">
               <FontAwesomeIcon icon={faLeaf} />
             </i>
             <h3>Fresh Produce</h3>
             <p>We offer only the freshest fruits, vegetables, and herbs.</p>
           </div>
           <div className="feature">
-            <i className="fa fa-credit-card feature-icon">
+            <i className="feature-icon">
               <FontAwesomeIcon icon={faCreditCard} />
             </i>
             <h3>Secure Payment</h3>

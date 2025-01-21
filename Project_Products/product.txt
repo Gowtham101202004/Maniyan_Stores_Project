@@ -1,0 +1,20 @@
+{
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/tea/9/c/l/50-honey-for-weight-loss-with-premium-tea-leaves-2-box-green-tea-original-imahyz74svyhndqk.jpeg?q=70",
+    "productCategory": "Food Products",
+    "productName": "Tea Bags",
+    "productTitle": "NutroVally Honey, Lemon Green Tea Bags Box",
+    "productUnit": "2 x 25 Bags",
+    "productPrice": 209,
+    "productStock": 200
+}
+
+{
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/nut-dry-fruit/b/w/c/500-100-natural-premium-mix-dry-fruits-healthy-nutmixed-1-mason-original-imahypybbjhjgnpz.jpeg?q=70",
+    "productCategory": "Food Products",
+    "productName": "Dry Fruits",
+    "productTitle": "Granic Farms 100% Natural Premium Mix Dry Fruits",
+    "productUnit": "500 g",
+    "productPrice": 228,
+    "productStock": 200
+}
+

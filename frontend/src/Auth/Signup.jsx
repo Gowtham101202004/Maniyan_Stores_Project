@@ -81,7 +81,7 @@ function Signin() {
           <Lottie animationData={Login_Animation} className="login-animation" />
         </div>
         <div className="container-right">
-          <div style={{ height: '440px' }} className="box">
+          <div style={{ height: '430px' }} className="box">
             <form onSubmit={validateData}>
               <h1>Sign up</h1>
               <div className="inputBox">

@@ -63,25 +63,30 @@
 
 .slider-container .list .item .buttons {
     display: grid;
-    grid-template-columns: repeat(2, 130px);
+    grid-template-columns: repeat(2, 125px);
     grid-template-rows: 40px;
     gap: 5px;
     margin-top: 20px;
 }
 
 .slider-container .list .item .buttons button {
-  padding: 16px 24px;
-  position: relative;
-  border-radius: 8px;
-  border: none;
-  box-shadow: 0 0 0 1px rgba(0,0,0,.01);
-  cursor: pointer;
-  transition: ease-in-out 0.3s;
+    padding: 16px 24px;
+    position: relative;
+    border-radius: 8px;
+    border: none;
+    background-color: white;
+    color: white;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+    background-image: linear-gradient(45deg, transparent 50%, black 50%);
+    background-size: 300% 200%;
+    background-position: bottom right;
 }
 
-/* .slider-container .list .item .buttons button:hover{
-    transform: scale(1.05);
-} */
+.slider-container .list .item .buttons button:hover {
+    color: black;
+    background-position: top left;
+}
 
 .slider-container .list .item .buttons button::after {
     position: absolute;
@@ -141,4 +146,18 @@
         padding-right: 0;
         font-size: 12px;
     }
+
+    .slider-container .list .item .buttons {
+        grid-template-columns: repeat(2, 80px);
+        grid-template-rows: 30px;
+    }
+    
+    .slider-container .list .item .buttons button {
+        padding: 10px;
+        font-size: 10px;
+    }
+    
+    .slider-container .list .item .buttons button::after {
+        top: 10px;
+      }
 }

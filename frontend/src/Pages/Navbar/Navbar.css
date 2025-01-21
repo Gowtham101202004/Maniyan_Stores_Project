@@ -73,15 +73,25 @@
 
 .Navbar .search_container input{
     margin: 18px 0 0 -180px;
-    border-radius: 10px;
-    border: 1px solid black;
     width: 400px;
     padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    outline: none; 
+}
+
+.Navbar .search_container input:focus{
+    border-color: rgb(255, 119, 0);
 }
 
 .search_icon{
     margin-left: -30px;
     cursor: pointer;
+    transition: ease-in-out 0.2s;
+}
+
+.search_icon:hover{
+    color: rgb(255, 119, 0);
 }
 
 .Nav-log{
@@ -161,6 +171,49 @@
     width: 195px;
     height: 1.5px;
 }
+
+.login-float-container{
+    position: absolute;
+}
+
+.login-float {
+    margin-top: 10px;
+    margin-left: 1417px; 
+    width: 100px;
+    text-align: center;
+    border: 2px solid black;
+    background-color: rgb(255, 142, 35);
+    box-shadow: 1px 1px 6px 1px black;
+    position: relative;
+    z-index: 1;
+    animation: float-animation 3s ease-in-out infinite;
+}
+
+.login-float::before {
+    content: '';
+    position: absolute;
+    top: -10px; 
+    left: 70%; 
+    transform: translateX(-50%);
+    border-left: 10px solid transparent; 
+    border-right: 10px solid transparent; 
+    border-bottom: 10px solid black;
+}
+
+.login-float p{
+    color: white;
+    font-weight: bold;
+}
+
+@keyframes float-animation {
+  0%, 100% {
+    transform: translateY(0); 
+  }
+  50% {
+    transform: translateY(-10px); 
+  }
+}
+
  /* Dropdown Profile End */
 .dd-icon{
     font-size: 19px;

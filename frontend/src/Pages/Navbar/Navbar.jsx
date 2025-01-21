@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCartShopping, faPenToSquare, faCircleQuestion, faRightFromBracket, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faCartShopping,
+  faPenToSquare,
+  faCircleQuestion,
+  faRightFromBracket,
+  faRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { auth, onAuthStateChanged, signOut } from "../../Auth/Firebase";
 import "./Navbar.css";
 import ms_logo from "../../assets/maniyan_stores.png";
@@ -11,6 +18,8 @@ function Navbar() {
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] = useState(false);
   const [username, setUsername] = useState("Guest");
   const [profilePicture, setProfilePicture] = useState(Default_Image);
+  const [userStatus, setUserStatus] = useState(false); 
+  const [loading, setLoading] = useState(true); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,10 +27,13 @@ function Navbar() {
       if (user) {
         setUsername(user.displayName || "User");
         setProfilePicture(user.photoURL);
+        setUserStatus(true);
       } else {
         setUsername("Guest");
         setProfilePicture(Default_Image);
+        setUserStatus(false);
       }
+      setLoading(false); 
     });
     return () => unsubscribe();
   }, []);
@@ -39,7 +51,8 @@ function Navbar() {
       .then(() => {
         localStorage.clear();
         setUsername("Guest");
-        setProfilePicture(Default_Image); 
+        setProfilePicture(Default_Image);
+        setUserStatus(false); 
         setIsProfileDropdownVisible(false);
         navigate("/signin");
       })
@@ -55,16 +68,24 @@ function Navbar() {
         <div className="Nav-Links">
           <ul>
             <li>
-              <NavLink className="Navlink" to="/">Home</NavLink>
+              <NavLink className="Navlink" to="/">
+                Home
+              </NavLink>
             </li>
             <li>
-              <NavLink className="Navlink" to="/product">Products</NavLink>
+              <NavLink className="Navlink" to="/product">
+                Products
+              </NavLink>
             </li>
             <li>
-              <NavLink className="Navlink" to="/contact">Contact</NavLink>
+              <NavLink className="Navlink" to="/contact">
+                Contact
+              </NavLink>
             </li>
             <li>
-              <NavLink className="Navlink" to="/about">About</NavLink>
+              <NavLink className="Navlink" to="/about">
+                About
+              </NavLink>
             </li>
           </ul>
         </div>
@@ -83,15 +104,15 @@ function Navbar() {
               console.error(
                 `Error loading profile picture. Falling back to default. URL: ${profilePicture}`
               );
-              e.target.src = Default_Image; 
+              e.target.src = Default_Image;
               setProfilePicture(Default_Image);
             }}
           />
         </div>
-        {/* Profile Dropdown start*/}
+        {/* Profile Dropdown start */}
         {isProfileDropdownVisible && (
           <div className="dropdown-profile">
-            {JSON.parse(localStorage.getItem("userStatus")) ? (
+            {userStatus ? (
               <>
                 <div className="username-container">
                   <h2>{username}</h2>
@@ -122,8 +143,15 @@ function Navbar() {
             )}
           </div>
         )}
-        {/* Profile Dropdown end*/}
+        {/* Profile Dropdown end */}
       </div>
+      {!loading && !userStatus && !isProfileDropdownVisible && (
+        <div className="login-float-container">
+          <div className="login-float" onClick={handleSigninClick}>
+            <p>Login</p>
+          </div>
+        </div>
+      )}
     </>
   );
 }
