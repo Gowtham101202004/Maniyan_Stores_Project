@@ -80,9 +80,18 @@
     outline: none; 
 }
 
-.Navbar .search_container input:focus{
+.Navbar .search_container input:focus {
     border-color: rgb(255, 119, 0);
+    box-shadow: 0 0 5px rgba(255, 119, 0, 0.7); 
+    outline: none;
+    transition: box-shadow 0.1s ease-in-out;
 }
+
+
+/* .search-button{
+    border: none;
+    background-color: white;
+} */
 
 .search_icon{
     margin-left: -30px;

@@ -10,6 +10,7 @@ import Toaster from './Toaster';
 import Lottie from 'lottie-react';
 import Login_Animation from '../assets/Login_Animation.json'
 import ms_title from '../assets/maniyan_stores.png'
+import Loading_Animation from '../Pages/Animation/Loading_Animation';
 
 function Signin() {
   const [value, setValue] = useState('');
@@ -21,7 +22,7 @@ function Signin() {
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('userStatus') === 'true';
     if (isLoggedIn) {
-      navigate('/');
+      navigate("/");
     }
   }, [navigate]);
   
@@ -54,7 +55,7 @@ function Signin() {
         setLogInStatus({ msg: 'Login Successful! 😎', key: Math.random(), severity: 'success' });
 
         setTimeout(() => {
-          navigate('/');
+          navigate("/");
         }, 2000);
         
       } catch (err) {
@@ -98,6 +99,7 @@ function Signin() {
           });
   
           navigate("/");
+          <Loading_Animation/>
         } catch (err) {
           console.error("Google Sign-In Error -> ", err.response ? err.response.data : err.message);
           setLogInStatus({

@@ -18,8 +18,10 @@ function Navbar() {
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] = useState(false);
   const [username, setUsername] = useState("Guest");
   const [profilePicture, setProfilePicture] = useState(Default_Image);
-  const [userStatus, setUserStatus] = useState(false); 
-  const [loading, setLoading] = useState(true); 
+  const [userStatus, setUserStatus] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +35,7 @@ function Navbar() {
         setProfilePicture(Default_Image);
         setUserStatus(false);
       }
-      setLoading(false); 
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -52,13 +54,22 @@ function Navbar() {
         localStorage.clear();
         setUsername("Guest");
         setProfilePicture(Default_Image);
-        setUserStatus(false); 
+        setUserStatus(false);
         setIsProfileDropdownVisible(false);
         navigate("/signin");
       })
       .catch((error) => {
         console.error("Sign-out error:", error);
       });
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/product?search=${encodeURIComponent(searchQuery)}`);
   };
 
   return (
@@ -90,8 +101,15 @@ function Navbar() {
           </ul>
         </div>
         <div className="search_container">
-          <input type="text" placeholder="Search" />
-          <FontAwesomeIcon icon={faSearch} className="search_icon" />
+          <form onSubmit={handleSearchSubmit}>
+            <input
+              type="text"
+              placeholder="Search for Products. . ."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            <FontAwesomeIcon icon={faSearch}  className="search_icon"  type="submit"/>
+          </form>
         </div>
         <div className="Nav-log">
           <FontAwesomeIcon icon={faCartShopping} className="cart-icon" />
@@ -109,7 +127,6 @@ function Navbar() {
             }}
           />
         </div>
-        {/* Profile Dropdown start */}
         {isProfileDropdownVisible && (
           <div className="dropdown-profile">
             {userStatus ? (
@@ -143,11 +160,10 @@ function Navbar() {
             )}
           </div>
         )}
-        {/* Profile Dropdown end */}
       </div>
       {!loading && !userStatus && !isProfileDropdownVisible && (
         <div className="login-float-container">
-          <div className="login-float" onClick={handleSigninClick}>
+          <div className="login-float" >
             <p>Login</p>
           </div>
         </div>

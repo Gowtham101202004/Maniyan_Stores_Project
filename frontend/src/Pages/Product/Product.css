@@ -2,6 +2,8 @@
     padding: 20px;
     text-align: center;
     min-height: 100vh;
+    display: flex;
+    flex-direction: row;
   }
   
   .product-container h1 {
@@ -11,16 +13,49 @@
     font-weight: bold;
   }
   
+.filter-container{
+  position: relative;
+  margin-left: -5px;
+  min-width: 20%;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.filter-container hr{
+  border: 1px solid #e0e0e0;
+}
+
+.filter{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.filter-icon{
+  font-size: 20px;
+}
+
+.filter p{
+  margin:0 0 0 5px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
   .product-grid {
+    margin-left: 10px;
+    padding: 0 10px 10px 35px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 15px;
-    padding: 20px;
   }
   
   .product-card {
-    width: 250px; 
+    width: 270px; 
+    height: 390px;
     background: #ffffff;
     border-radius: 5px; 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

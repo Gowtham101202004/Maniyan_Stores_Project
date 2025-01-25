@@ -117,8 +117,9 @@ body{
 }
 
 .box h1{
-    margin: 30px 0 -65px 130px;
+    margin-bottom: -65px;
     color: white;
+    text-align: center;
 }
 
 .box form .inputBox{
@@ -131,8 +132,9 @@ body{
 
 .box form .inputBox input {
     position: relative;
+    margin-top: 10px;
     width: 100%;
-    padding: 20px 10px 10px;
+    padding: 10px 10px;
     background: transparent;
     outline: none;
     border: none;
@@ -142,7 +144,8 @@ body{
     letter-spacing: 0.05em;
     transition: 0.5s;
     z-index: 10;
-  }
+    box-sizing: border-box;
+}
   
 .box form .inputBox input:-webkit-autofill,
 .box form .inputBox input:-webkit-autofill:hover,
@@ -193,11 +196,11 @@ body{
 
 .links a{
   font-size: 12px;
-  margin: 75px 0 0 225px;
+  margin: 75px 0 0 220px;
   position: absolute;
   color: white;
   text-decoration: none;
-  transition: ease-in-out 0.2s;
+  transition: color ease-in-out 0.2s;
 }
 
 .links a:hover{
@@ -303,6 +306,10 @@ body{
     backdrop-filter: blur(3px);
   }
   
+  .box h1{
+    text-align: start;
+  }
+
   .box form .inputBox{
     margin: 80px 25px -70px 25px;
   }

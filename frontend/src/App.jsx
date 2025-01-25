@@ -7,6 +7,7 @@ import About from './Pages/About/About';
 import Signin from './Auth/Signin';
 import Signup from './Auth/Signup';
 import Footer from './Pages/Footer/Footer';
+import Loading_Animation from './Pages/Animation/Loading_Animation'
 
 function Layout() {
   const location = useLocation();
@@ -14,6 +15,7 @@ function Layout() {
 
   return (
     <>
+      <Loading_Animation/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product" element={<Product />} />
