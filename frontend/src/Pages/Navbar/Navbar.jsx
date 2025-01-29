@@ -25,18 +25,30 @@ function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const userStatusFromLocalStorage = localStorage.getItem("userStatus") === "true";
+
+    if (userStatusFromLocalStorage) {
+      const userData = JSON.parse(localStorage.getItem("userdata"));
+      if (userData) {
+        setUsername(userData.name || "User");
+        setProfilePicture(userData.profilePicture || Default_Image);
+        setUserStatus(true);
+      }
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUsername(user.displayName || "User");
-        setProfilePicture(user.photoURL);
+        setProfilePicture(user.photoURL || Default_Image);
         setUserStatus(true);
-      } else {
+      } else if (!userStatusFromLocalStorage) {
         setUsername("Guest");
         setProfilePicture(Default_Image);
         setUserStatus(false);
       }
       setLoading(false);
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -52,7 +64,7 @@ function Navbar() {
     signOut(auth)
       .then(() => {
         localStorage.clear();
-        setUsername("Guest");
+        // setUsername("Guest");
         setProfilePicture(Default_Image);
         setUserStatus(false);
         setIsProfileDropdownVisible(false);
@@ -108,7 +120,7 @@ function Navbar() {
               value={searchQuery}
               onChange={handleSearchChange}
             />
-            <FontAwesomeIcon icon={faSearch}  className="search_icon"  type="submit"/>
+            <FontAwesomeIcon icon={faSearch} className="search_icon" />
           </form>
         </div>
         <div className="Nav-log">
@@ -163,7 +175,7 @@ function Navbar() {
       </div>
       {!loading && !userStatus && !isProfileDropdownVisible && (
         <div className="login-float-container">
-          <div className="login-float" >
+          <div className="login-float">
             <p>Login</p>
           </div>
         </div>

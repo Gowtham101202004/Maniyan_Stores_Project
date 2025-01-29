@@ -15,6 +15,29 @@ function Product() {
 
   const location = useLocation();
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const options = ["Option 1", "Option 2", "Option 3"];
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleCheckboxChange = (option) => {
+    setSelectedOptions((prev) =>
+      prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
+    );
+  };
+
+  const handleSelectAllChange = () => {
+    if (selectedOptions.length === options.length) {
+      setSelectedOptions([]); // Deselect all
+    } else {
+      setSelectedOptions(options); // Select all
+    }
+  };
+
   useEffect(() => {
     let isMounted = true;
     const fetchProducts = async () => {
@@ -30,7 +53,7 @@ function Product() {
         console.error("Error fetching products:", error);
       } finally {
         if (isMounted) {
-          setTimeout(() => setLoading(false), 300); 
+          setTimeout(() => setLoading(false), 300);
         }
       }
     };
@@ -85,7 +108,40 @@ function Product() {
             </div>
             <hr />
             <div>
-              <p></p>
+              <div className="filter-select-options" >
+                Categories
+                <span className={`arrow ${isDropdownOpen ? "rotate-down" : ""}`} onClick={toggleDropdown}>&gt;</span>
+              </div>
+              {/* <button >Select Options</button> */}
+              {isDropdownOpen && (
+                <div style={{ border: "1px solid #ccc", padding: "10px", marginTop: "5px" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "10px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedOptions.length === options.length}
+                      onChange={handleSelectAllChange}
+                    />
+                    Select All
+                  </label>
+                  {options.map((option) => (
+                    <label key={option} style={{ display: "block", marginBottom: "5px" }}>
+                      <input
+                        type="checkbox"
+                        checked={selectedOptions.includes(option)}
+                        onChange={() => handleCheckboxChange(option)}
+                      />
+                      {option}
+                    </label>
+                  ))}
+                </div>
+              )}
+              <p>Selected: {selectedOptions.join(", ") || "None"}</p>
             </div>
           </div>
           <div className="product-grid">
