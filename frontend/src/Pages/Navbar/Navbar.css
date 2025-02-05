@@ -8,18 +8,15 @@
     z-index: 1;
 }
 
-.Navbar h1{
-    margin: 8px -100px 0 -110px;
-    height: 55px;
-}
-
 .ms-logo{
     height: 40px;
-    margin: 15px -110px 0 -80px;
+    margin: 15px 0;
+    padding: 0;
 }
 
 .Nav-Links ul{
-    margin-left: -90px;
+    margin-right: 450px;
+    padding: 0;
     display: flex;
     list-style-type: none;
 }
@@ -31,12 +28,12 @@
 }
 
 /* underline effects start */
-
 .Navlink {
+    margin: 0 5px;
+    padding: 0;
     position: relative;
     text-decoration: none;
     list-style: none;
-    margin: 8px 6px;
     color: #000000;
     transition: transform 0.3s ease;
     padding-bottom: 5px;
@@ -68,11 +65,16 @@
 .Navlink.active {
     color: rgb(255, 119, 0);
 }
-
 /* underline effects end */
 
+.Navbar .search_container{
+    position: absolute;
+    padding: 0;
+    margin-left: 40%;
+}
+
 .Navbar .search_container input{
-    margin: 18px 0 0 -180px;
+    margin: 18px 0;
     width: 400px;
     padding: 10px;
     border: 1px solid black;
@@ -87,11 +89,13 @@
     transition: box-shadow 0.1s ease-in-out;
 }
 
+.navlink-cart{
+    color: black;
+}
 
-/* .search-button{
-    border: none;
-    background-color: white;
-} */
+.navlink-cart:active:after{
+    color: rgb(255, 119, 0);
+}
 
 .search_icon{
     margin-left: -30px;
@@ -104,7 +108,7 @@
 }
 
 .Nav-log{
-    margin-right: -40px; 
+    margin-right: 5px;
     display: flex;
     align-items: center;
 }
@@ -117,6 +121,10 @@
 }
 
 .cart-icon:hover{
+    color: rgb(255, 119, 0);
+}
+
+.cart-icon:active{
     color: rgb(255, 119, 0);
 }
 
@@ -183,11 +191,14 @@
 
 .login-float-container{
     position: absolute;
+    top: 80px;
+    left: 1412px;
+    z-index: 1;
 }
 
 .login-float {
-    margin-top: 10px;
-    margin-left: 1417px; 
+    /* margin-top: 10px;
+    margin-left: 1417px;  */
     width: 100px;
     text-align: center;
     border: 2px solid black;
@@ -242,15 +253,15 @@
     color: rgb(234, 16, 16);
 }
 
-/* Sidebar Menu - Mobile View */
+/* Responsive */
+
 @media only screen and (max-width: 768px) {
     body {
       overflow-x: hidden;
     }
 
     .ms-logo{
-        margin-left: 0;
-        margin-top: 10px;
+        margin-left: 10px;
     }
 
     .Navbar{
@@ -258,8 +269,7 @@
     }
 
     .Nav-log{
-        margin-right: -30px;
-        margin-top: -80px; 
+        margin: -80px 10px 0 170px;
     }
     
     .cart-icon{
@@ -274,6 +284,13 @@
         margin: 0 0 0 -70px;
     }
 
+    .Navbar .search_container{
+        position: absolute;
+        margin-left: 200px;
+        margin-right: 50px;
+        margin-top: 5px;
+    }
+
     .Navbar .search_container input{
         width: 300px;
         margin-top: 60px;
@@ -283,7 +300,8 @@
     .Nav-Links ul{
         position: absolute;
         margin-top: 100px;
-        margin-left: -160px;
+        margin-left: -170px;
+        margin-right: 170px;
     }
 
     .dropdown-profile {

@@ -40,7 +40,7 @@ export default function Toaster({ message, severity = "success", onClose }) {
     >
       <Alert 
         onClose={handleClose} 
-        severity={severity}  // This will now accept either "success" or "error"
+        severity={severity}  
         className="alert"
         // sx={{ width: '30vw', borderRadius: '10px' }}
       >

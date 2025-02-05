@@ -1,7 +1,7 @@
 .toaster {
   position: fixed;
-  margin-top: -165px;
-  margin-right: -250px;
+  margin-top: -155px;
+  margin-right: -300px;
 }
 
 .alert{
@@ -25,7 +25,7 @@
   
   .toaster {
     position: fixed;
-    margin-top: -140px;
+    margin-top: -150px;
     margin-right: -30px;
   }
 

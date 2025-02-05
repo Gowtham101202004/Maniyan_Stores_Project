@@ -7,18 +7,25 @@ import About from './Pages/About/About';
 import Signin from './Auth/Signin';
 import Signup from './Auth/Signup';
 import Footer from './Pages/Footer/Footer';
-import Loading_Animation from './Pages/Animation/Loading_Animation'
+import ProductItem from './Pages/ProductItem/ProductItem';
+import Cart from './Pages/Cart/Cart';
+import Loading_Animation from './Pages/Animation/Loading_Animation';
 
 function Layout() {
   const location = useLocation();
-  const showFooter = !['/signin', '/signup', '/contact', '/product', '/about'].includes(location.pathname);
+  const showFooter = !['/signin', '/signup', '/contact', '/product', '/about', '/product'].includes(location.pathname);
 
+  // const showFooter = !['/signin', '/signup', '/contact', '/product', '/about', '/product'].some(route =>
+  //   location.pathname.startsWith(route));
+  
   return (
     <>
       <Loading_Animation/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/product/:id" element={<ProductItem />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/signin" element={<Signin />} />

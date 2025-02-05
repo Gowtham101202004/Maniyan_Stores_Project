@@ -95,7 +95,7 @@ body{
 
 .login-button{
   width: 250px;
-  margin: 100px 0 0 60px;
+  margin: 20px 0 0 60px;
   border: none;
   font-weight: bold;
   border-radius: 12px;
@@ -117,7 +117,9 @@ body{
 }
 
 .box h1{
-    margin-bottom: -65px;
+    /* margin-bottom: -60px; */
+    margin-top: 25px;
+    padding: 0;
     color: white;
     text-align: center;
 }
@@ -125,8 +127,7 @@ body{
 .box form .inputBox{
     position: relative;
     width: 250px;
-    margin-top: 80px;
-    margin-bottom: -70px;
+    margin-top: 10px;
     margin-left: 60px;
 }
 
@@ -196,7 +197,7 @@ body{
 
 .links a{
   font-size: 12px;
-  margin: 75px 0 0 220px;
+  margin: 0 0 0 220px;
   position: absolute;
   color: white;
   text-decoration: none;
@@ -222,6 +223,7 @@ body{
   border-bottom: 2px solid white; 
   margin: 0 5px 0 20px;
 }
+
 .divider::after{
   content: "";
   flex: 1;
@@ -311,15 +313,15 @@ body{
   }
 
   .box form .inputBox{
-    margin: 80px 25px -70px 25px;
+    margin: 10px 25px 0 25px;
   }
 
   .login-button{
-    margin: 100px 0 0 20px;
+    margin: 28px 0 0 20px;
   }
 
   .links a{
-    margin: 75px 0 0 180px;
+    margin: 10px 0 0 180px;
   }
 
   .last{

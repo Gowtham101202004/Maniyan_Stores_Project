@@ -1,49 +1,86 @@
-{
+[
+  {
     "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/salt/s/o/c/-original-imagnffs96srdxqh.jpeg?q=70",
     "productCategory": "Food Products",
+    "productType": "Iodized Salt",
+    "productBrand": "AASHIRVAAD",
     "productName": "AASHIRVAAD Crystal Iodized Salt",
-    "productTitle": "Salt",
     "productUnit": "1 Kg",
-    "productPrice": 22,
+    "productContainerType": "Packet",
+    "productExpirationPeriod": "1 Year",
+    "productPrice": 20,
     "productStock": 200
-}
-
-{
+  },
+  {
     "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/tea/9/c/l/50-honey-for-weight-loss-with-premium-tea-leaves-2-box-green-tea-original-imahyz74svyhndqk.jpeg?q=70",
     "productCategory": "Food Products",
+    "productType": "Green Tea",
+    "productBrand": "NutroVally",
     "productName": "NutroVally Honey, Lemon Green Tea Bags Box",
-    "productTitle": "Tea Bags",
     "productUnit": "2 x 25 Bags",
+    "productContainerType": "Box",
+    "productExpirationPeriod": "18 Months",
     "productPrice": 209,
     "productStock": 200
-}
-
-{
+  },
+  {
     "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/nut-dry-fruit/b/w/c/500-100-natural-premium-mix-dry-fruits-healthy-nutmixed-1-mason-original-imahypybbjhjgnpz.jpeg?q=70",
     "productCategory": "Food Products",
+    "productType": "Assorted Fruits & Nuts",
+    "productBrand": "Granic Farms",
     "productName": "Granic Farms 100% Natural Premium Mix Dry Fruits",
-    "productTitle": "Dry Fruits",
     "productUnit": "500 g",
-    "productPrice": 228,
+    "productContainerType": "Mason Jar",
+    "productExpirationPeriod": "12 Months",
+    "productPrice": 222,
     "productStock": 200
-}
-
-{
+  },
+  {
     "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/salt/s/p/b/-original-imah6zvy6p9uwhne.jpeg?q=70",
     "productCategory": "Food Products",
+    "productType": "Iodized Salt",
+    "productBrand": "Tata",
     "productName": "Tata Salt (Iodised Salt)",
-    "productTitle": "Salt",
-    "productUnit": "970 g",
-    "productPrice": 28,
+    "productUnit": "1 Kg",
+    "productContainerType": "Packet",
+    "productExpirationPeriod": "12 Months",
+    "productPrice": 130,
     "productStock": 200
-}
-
-{
+  },
+  {
     "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/nut-dry-fruit/n/z/q/800-dates-pack-of-2-khajur-dry-fruit-rich-in-protein-vitamins-2-original-imagzcrpzpcsftxx.jpeg?q=70",
     "productCategory": "Food Products",
+    "productType": "Dates",
+    "productBrand": "OPEN SECRET",
     "productName": "OPEN SECRET Premium Khajur | Dry fruits & Nuts",
-    "productTitle": "Dry Fruits",
     "productUnit": "2 x 400 g",
-    "productPrice": 104,
+    "productContainerType": "Pouch",
+    "productExpirationPeriod": "6 Months",
+    "productPrice": 330,
     "productStock": 200
-}
+  },
+  {
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/toothpaste/p/6/1/-original-imahfcavvab2ae3t.jpeg?q=70",
+    "productCategory": "Cleaning Supplies",
+    "productType": "Tooth Paste",
+    "productBrand": "Colgate",
+    "productName": "Active Salt Toothpaste with Salt and Mint(Combo Pack)",
+    "productUnit": "300 g",
+    "productContainerType": "Paste",
+    "productExpirationPeriod": "36 Months",
+    "productPrice": 216,
+    "productStock": 200
+  },
+  {
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/toothpaste/g/j/n/-original-imah5xsvhyf3gbrv.jpeg?q=70",
+    "productCategory": "Cleaning Supplies",
+    "productType": "Tooth Paste",
+    "productBrand": "Colgate",
+    "productName": "Colgate MaxFresh Toothpaste, Blue Gel Paste with Menthol",
+    "productUnit": "150 g x 4",
+    "productContainerType": "Paste",
+    "productExpirationPeriod": "36 Months",
+    "productPrice": 318,
+    "productStock": 200
+  }
+]

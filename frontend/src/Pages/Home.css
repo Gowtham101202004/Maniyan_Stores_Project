@@ -30,18 +30,23 @@ html, body {
 .features-section {
     display: flex;
     justify-content: space-around;
-    padding: 50px 0px;
+    padding: 20px 0 50px 0;
     width: 100%;
     background-color: #fff;
 }
 
 .feature {
   text-align: center;
-  flex-basis: 30%;
-  padding: 20px 10px;
+  padding: 30px;
   border: 2px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .feature h3 {
@@ -60,11 +65,118 @@ html, body {
   margin-bottom: 10px;
 }
 
+.random-products{
+  padding: 0 20px 20px 20px;
+}
+
+.random-products h2{
+    font-size: 1.7rem;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.random-products .product-grid {
+    margin: 30px;
+    padding: 0;
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.random-products .product-card {
+  width: 270px; 
+  height: 370px;
+  background: #ffffff;
+  border-radius: 5px; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid #e0e0e0; 
+}
+
+.random-products .product-card:hover {
+  transform: translateY(-5px); 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+}
+
+.random-products .product-image {
+  width: 100%;
+  height: 180px; 
+  object-fit: contain; 
+  background-color: #f9f9f9; 
+  border-bottom: 1px solid #e0e0e0; 
+  padding: 10px;
+}
+
+.random-products .product-details {
+  margin: 0;
+  padding: 10px 15px;
+  text-align: left;
+}
+
+.random-products .product-details h3 {
+  font-size: 0.95rem;
+  color: black; 
+  line-height: 18px;
+  margin: 5px 0;
+  font-weight: 600;
+}
+
+.random-products .product-details p {
+  font-size: 0.8rem;
+  color: #555555; 
+  margin: 3px 0;
+}
+
+.random-products .product-details .product-price {
+  font-size: 1rem;
+  color: black; 
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.random-products .product-details .product-stock {
+  font-size: 0.8rem;
+  color: #555555;  
+  margin-top: 5px;
+}
+
+.random-products .product-details .product-buttons{
+  text-align: center;
+  margin: 20px;
+}
+
+.random-products .product-details .product-buttons button{
+    padding: 12px;
+    border-radius: 8px;
+    position: relative;
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+    background-image: linear-gradient(45deg, transparent 50%, black 50%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    background-size: 280% 200%;
+    background-position: bottom right;
+}
+
+.random-products .product-details .product-buttons button:hover{
+    background-color: rgb(255, 119, 0);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 1.15);
+    background-position: top left;
+}
+
 @media only screen and (max-width: 768px) {
   
   .features-section {
     flex-direction: column;
-    padding: 50px 15px;
+    text-align: center;
+    padding: 10px 20px 20px 20px;
     width: 90%; 
   }
 
@@ -72,22 +184,73 @@ html, body {
     flex-basis: 80%;
     margin-bottom: 20px;
   }
-
   
-.feature h3 {
-  font-size: 1.1rem;
-  margin-top: 10px;
-}
+  .feature h3 {
+    font-size: 1.1rem;
+    margin-top: 10px;
+  }
 
-.feature p {
-  font-size: 0.8rem;
-  margin-top: 10px;
-}
+  .feature p {
+    font-size: 0.8rem;
+    margin-top: 10px;
+  }
 
-.feature-icon {
-  font-size: 2rem;
-  color: rgb(255, 119, 0);
-  margin-bottom: 10px;
-}
+  .feature-icon {
+    font-size: 2rem;
+    color: rgb(255, 119, 0);
+    margin-bottom: 10px;
+  }
+
+  .random-products {
+    padding: 0;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .random-products .product-grid {
+    padding: 5px;
+    gap: 0;
+    width: auto;
+    margin: 0;
+  }
+
+  .random-products .product-card {
+    width: 167px;
+    height: 320px;
+    margin: 10px 3px;
+  }
+
+  .random-products .product-image {
+    height: 150px;
+    padding: 5px;
+  }
+
+  .random-products .product-details h2{
+    font-size: 18px;
+  }
+
+  .random-products .product-details h3{
+    font-size: 12px;
+  }
+
+  .random-products .product-details p{
+    font-size: 0.8rem;
+  }
+
+  .random-products .product-details .product-price,
+  .random-products .product-details .product-stock{
+    font-size: 0.8rem;
+  }
+
+  .random-products .product-details .product-buttons{
+    margin: 15px;
+  }
+  
+  .random-products .product-details .product-buttons button{
+      font-size: 0.5em;
+      padding: 8px 10px;
+  }
 
 }

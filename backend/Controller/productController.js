@@ -1,7 +1,6 @@
 const Product = require("../Models/productModel");
 const expressAsyncHandler = require("express-async-handler");
 
-// Get all products
 const getProducts = expressAsyncHandler(async (req, res) => {
   try {
     const products = await Product.find();
@@ -11,11 +10,10 @@ const getProducts = expressAsyncHandler(async (req, res) => {
   }
 });
 
-// Create a product
 const createProduct = expressAsyncHandler(async (req, res) => {
-  const { productImage, productCategory, productName, productTitle, productUnit, productPrice, productStock } = req.body;
+  const { productImage, productCategory, productType, productBrand, productName, productUnit, productContainerType, productExpirationPeriod, productPrice, productStock } = req.body;
 
-  if (!productName || !productTitle || !productCategory || !productUnit || !productPrice || productStock === undefined) {
+  if (!productCategory || !productType || !productBrand || !productName || !productUnit || !productContainerType || !productExpirationPeriod || !productPrice || !productStock === undefined) {
     res.status(400).json({ message: "All fields are required" });
     return;
   }
@@ -23,9 +21,12 @@ const createProduct = expressAsyncHandler(async (req, res) => {
   const product = await Product.create({
     productImage,
     productCategory,
+    productType,
+    productBrand,
     productName,
-    productTitle,
     productUnit,
+    productContainerType,
+    productExpirationPeriod,
     productPrice,
     productStock,
   });
@@ -37,4 +38,20 @@ const createProduct = expressAsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getProducts, createProduct };
+const createManyProducts = expressAsyncHandler(async (req, res) => {
+  const products = req.body;
+
+  if (!Array.isArray(products) || products.length === 0) {
+    res.status(400).json({ message: "Invalid data. Expected a non-empty array of products." });
+    return;
+  }
+
+  try {
+    const createdProducts = await Product.insertMany(products);
+    res.status(201).json({ message: "Products created successfully", products: createdProducts });
+  } catch (err) {
+    res.status(500).json({ message: "Error creating products", error: err.message });
+  }
+});
+
+module.exports = { getProducts, createProduct, createManyProducts };

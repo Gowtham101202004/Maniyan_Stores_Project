@@ -59,6 +59,10 @@ function Navbar() {
   const handleSigninClick = () => {
     navigate("/signin");
   };
+  
+  const handleCartClick = () => {
+    navigate("/cart");
+  };
 
   const handleSignoutClick = () => {
     signOut(auth)
@@ -124,7 +128,7 @@ function Navbar() {
           </form>
         </div>
         <div className="Nav-log">
-          <FontAwesomeIcon icon={faCartShopping} className="cart-icon" />
+          <FontAwesomeIcon icon={faCartShopping} className="cart-icon" onClick={handleCartClick}/>
           <img
             src={profilePicture}
             alt="Profile"
