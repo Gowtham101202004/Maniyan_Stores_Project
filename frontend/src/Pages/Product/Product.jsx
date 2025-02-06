@@ -14,7 +14,6 @@ function Product() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // State for filters
   const [selectedCategory, setSelectedCategory] = useState(
     localStorage.getItem("selectedCategory") || "All"
   );
@@ -86,7 +85,7 @@ function Product() {
         console.error("Error fetching products:", error);
       } finally {
         if (isMounted) {
-          setTimeout(() => setLoading(false), 300);
+          setTimeout(() => setLoading(false), 500);
         }
       }
     };

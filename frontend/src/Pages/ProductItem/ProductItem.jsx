@@ -43,14 +43,28 @@ function ProductItem() {
       alert("Please log in first");
       return;
     }
-  
+
     try {
+      // Check if the product is already in the cart
+      const { data: cartItems } = await axios.get(
+        `http://localhost:8080/cart?userId=${userData._id}`
+      );
+
+      const productExists = cartItems.some(
+        (cartItem) => cartItem.productName === product.productName
+      );
+
+      if (productExists) {
+        alert("Product already added to the cart!");
+        return;
+      }
+
       await axios.post("http://localhost:8080/cart/add", {
         productName: product.productName,
         productImage: product.productImage,
         productPrice: product.productPrice,
         productUnit: product.productUnit,
-        userId: userData._id
+        userId: userData._id,
       });
       alert("Product added to cart successfully!");
     } catch (error) {

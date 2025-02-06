@@ -152,7 +152,7 @@ html, body {
 
 .random-products .product-details .product-buttons button{
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 5px;
     position: relative;
     border: none;
     background-color: black;

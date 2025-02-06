@@ -10,6 +10,7 @@ import {
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { auth, onAuthStateChanged, signOut } from "../../Auth/Firebase";
+import axios from "axios";
 import "./Navbar.css";
 import ms_logo from "../../assets/maniyan_stores.png";
 import Default_Image from "../../assets/default-profile.png";
@@ -21,6 +22,7 @@ function Navbar() {
   const [userStatus, setUserStatus] = useState(false);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [cartCount, setCartCount] = useState(0);
 
   const navigate = useNavigate();
 
@@ -52,6 +54,26 @@ function Navbar() {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      const userData = JSON.parse(localStorage.getItem("userdata"));
+      if (userData && userData._id) {
+        try {
+          const { data } = await axios.get(`http://localhost:8080/cart?userId=${userData._id}`);
+          setCartCount(data.length);
+        } catch (error) {
+          console.error("Error fetching cart count:", error);
+        }
+      }
+    };
+
+    fetchCartCount();
+
+    // Refetch cart count when navigating between pages
+    window.addEventListener("focus", fetchCartCount);
+    return () => window.removeEventListener("focus", fetchCartCount);
+  }, []);
+
   const handleProfileClick = () => {
     setIsProfileDropdownVisible(!isProfileDropdownVisible);
   };
@@ -59,7 +81,7 @@ function Navbar() {
   const handleSigninClick = () => {
     navigate("/signin");
   };
-  
+
   const handleCartClick = () => {
     navigate("/cart");
   };
@@ -68,7 +90,6 @@ function Navbar() {
     signOut(auth)
       .then(() => {
         localStorage.clear();
-        // setUsername("Guest");
         setProfilePicture(Default_Image);
         setUserStatus(false);
         setIsProfileDropdownVisible(false);
@@ -128,7 +149,10 @@ function Navbar() {
           </form>
         </div>
         <div className="Nav-log">
-          <FontAwesomeIcon icon={faCartShopping} className="cart-icon" onClick={handleCartClick}/>
+          <div className="cart-icon-container">
+            {cartCount > 0 && <p>{cartCount}</p>}
+            <FontAwesomeIcon icon={faCartShopping} className="cart-icon" onClick={handleCartClick} />
+          </div>
           <img
             src={profilePicture}
             alt="Profile"
