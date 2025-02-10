@@ -33,7 +33,15 @@ function ProductItem() {
     fetchProducts();
   }, []);
 
-  const handleBackClick = () => navigate(-1);
+  const calculateOffer = (previousPrice, currentPrice) => {
+    if (previousPrice && previousPrice > currentPrice) {
+      const discount = Math.round(((previousPrice - currentPrice) / previousPrice) * 100);
+      return `${discount}% off`;
+    }
+    return null;
+  };
+
+  const handleBackClick = () => navigate("/product");
 
   const handleCardClick = (product) => navigate(`/product/${product._id}`, { state: product });
 
@@ -45,13 +53,9 @@ function ProductItem() {
     }
 
     try {
-      // Check if the product is already in the cart
-      const { data: cartItems } = await axios.get(
-        `http://localhost:8080/cart?userId=${userData._id}`
-      );
-
-      const productExists = cartItems.some(
-        (cartItem) => cartItem.productName === product.productName
+      const { data: existingCart } = await axios.get(`http://localhost:8080/cart?userId=${userData._id}`);
+      const productExists = existingCart.products?.some(
+        (cartItem) => cartItem.product === product._id
       );
 
       if (productExists) {
@@ -59,13 +63,20 @@ function ProductItem() {
         return;
       }
 
-      await axios.post("http://localhost:8080/cart/add", {
+      const newCartItem = {
+        product: product._id,
         productName: product.productName,
         productImage: product.productImage,
         productPrice: product.productPrice,
         productUnit: product.productUnit,
+        quantity: 1,
+      };
+
+      await axios.post("http://localhost:8080/cart/add", {
         userId: userData._id,
+        products: [newCartItem],
       });
+
       alert("Product added to cart successfully!");
     } catch (error) {
       alert("Failed to add product to cart!");
@@ -106,7 +117,19 @@ function ProductItem() {
             <div className="product-item-details">
               <h1>{product.productName}</h1>
               <p>Units: {product.productUnit}</p>
-              <p className="product-item-price">₹ {product.productPrice}</p>
+              <div className="product-item-details-a">
+                <p className="product-item-price">₹{product.productPrice}</p>
+                {product.productPreviousPrice && (
+                  <p className="product-item-previous-price">
+                    <strike>{product.productPreviousPrice}</strike>
+                  </p>
+                )}
+                {product.productPreviousPrice && product.productPreviousPrice > product.productPrice && (
+                  <p className="product-item-offer">
+                    {calculateOffer(product.productPreviousPrice, product.productPrice)}
+                  </p>
+                )}
+              </div>
               <p>Stock: {product.productStock}</p>
               <div>
                 <h2>Product Description</h2>
@@ -160,7 +183,19 @@ function ProductItem() {
                     <div className="product-details">
                       <h3>{randomProduct.productName}</h3>
                       <p>Units: {randomProduct.productUnit}</p>
-                      <p className="product-item-price">Price: ₹{randomProduct.productPrice}</p>
+                      <div className="product-details-a">
+                        <p className="product-item-price">Price: ₹{randomProduct.productPrice}</p>
+                        {randomProduct.productPreviousPrice && (
+                          <p className="product-item-previous-price">
+                            <strike>{randomProduct.productPreviousPrice}</strike>
+                          </p>
+                        )}
+                        {randomProduct.productPreviousPrice && randomProduct.productPreviousPrice > randomProduct.productPrice && (
+                          <p className="product-item-offer">
+                            {calculateOffer(randomProduct.productPreviousPrice, randomProduct.productPrice)}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}

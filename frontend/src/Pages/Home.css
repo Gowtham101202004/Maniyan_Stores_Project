@@ -132,11 +132,29 @@ html, body {
   margin: 3px 0;
 }
 
-.random-products .product-details .product-price {
+.random-products .product-details .product-details-a{
+  display: flex;
+}
+
+.random-products .product-details .product-details-a .product-price {
   font-size: 1rem;
   color: black; 
   font-weight: bold;
   margin-top: 8px;
+}
+
+.random-products .product-details .product-details-a .product-previous-price{
+  font-size: 1rem;
+  margin-top: 8px;
+  color: #838383;
+  margin-left: 10px;
+}
+
+.random-products .product-details .product-details-a .product-offer{
+  font-size: 0.9rem;
+  margin-top: 8px;
+  color: #ff0000;
+  margin-left: 10px;
 }
 
 .random-products .product-details .product-stock {
@@ -147,7 +165,7 @@ html, body {
 
 .random-products .product-details .product-buttons{
   text-align: center;
-  margin: 20px;
+  margin: 10px;
 }
 
 .random-products .product-details .product-buttons button{
@@ -236,16 +254,34 @@ html, body {
   }
 
   .random-products .product-details p{
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 
-  .random-products .product-details .product-price,
+  .random-products .product-details .product-details-a{
+    margin-top: 5px;
+  }
+
+  .random-products .product-details .product-details-a .product-price{
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  .random-products .product-details .product-details-a .product-previous-price {
+    font-size: 0.8rem;
+    margin: 0 0 0 5px;
+  }
+
+  .random-products .product-details .product-details-a .product-offer{
+    font-size: 0.7rem;
+    margin: 0 0 0 5px;
+  }
+
   .random-products .product-details .product-stock{
     font-size: 0.8rem;
   }
 
   .random-products .product-details .product-buttons{
-    margin: 15px;
+    margin: 10px;
   }
   
   .random-products .product-details .product-buttons button{

@@ -207,21 +207,35 @@ function Product() {
           </div>
           <div className="product-grid">
             {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
-                <div
-                  className="product-card"
-                  key={product._id}
-                  onClick={() => handleCardClick(product)} 
-                >
-                  <img src={product.productImage} alt={product.productName} className="product-image" />
-                  <div className="product-details">
-                    <h3>{product.productName}</h3>
-                    <p>Units: {product.productUnit}</p>
-                    <p className="product-price">Price: ₹ {product.productPrice}</p>
-                    <p className="product-stock">In Stock: {product.productStock}</p>
+              filteredProducts.map((product) => {
+                const offerPercentage = product.productPreviousPrice && product.productPreviousPrice > product.productPrice
+                  ? Math.round(((product.productPreviousPrice - product.productPrice) / product.productPreviousPrice) * 100)
+                  : null;
+
+                return (
+                  <div
+                    className="product-card"
+                    key={product._id}
+                    onClick={() => handleCardClick(product)} 
+                  >
+                    <img src={product.productImage} alt={product.productName} className="product-image" />
+                    <div className="product-details">
+                      <h3>{product.productName}</h3>
+                      <p>Units: {product.productUnit}</p>
+                      <div className="product-details-a">
+                        <p className="product-price">Price: ₹{product.productPrice}</p>
+                        {product.productPreviousPrice && (
+                          <p className="product-previous-price"><strike>{product.productPreviousPrice}</strike></p>
+                        )}
+                        {offerPercentage && (
+                          <p className="product-offer">{offerPercentage}% off</p>
+                        )}
+                      </div>
+                      <p className="product-stock">In Stock: {product.productStock}</p>
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               !loading &&
               <div className="no-product">

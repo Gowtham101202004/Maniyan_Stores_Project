@@ -73,10 +73,27 @@
     color: #555555; 
   }
 
-  .product-item-details .product-item-price{
+  .product-item-details .product-item-details-a{
+    display: flex;
+  }
+
+  .product-item-details .product-item-details-a .product-item-price{
     font-size: 1.6rem;
     color: black;
     font-weight: bold;
+  }
+  
+  .product-item-details .product-item-details-a .product-item-previous-price{
+    margin-left: 10px;
+    font-size: 1.6rem;
+    color: #838383;
+  }
+
+  .product-item-details .product-item-details-a .product-item-offer{
+    font-size: 1.1rem;
+    margin-top: 8px;
+    color: #ff0000;
+    margin-left: 10px;
   }
 
   .product-item-random{
@@ -88,17 +105,35 @@
     text-align: center;
   }
 
-  .product-details p{
+  .product-item-random .product-details p{
     font-size: 0.8rem;
     color: #555555; 
     margin: 3px 0;
   }
 
-  .product-details .product-item-price{
+  .product-item-random .product-details .product-details-a{
+    display: flex;
+  }
+
+  .product-item-random .product-details .product-details-a .product-item-price{
     font-size: 1rem;
     color: black; 
     font-weight: bold;
     margin-top: 8px;
+  }
+
+  .product-item-random .product-details .product-details-a .product-item-previous-price{
+    font-size: 1rem;
+    margin-top: 8px;
+    margin-left: 10px;
+    color: #838383;
+  }
+
+  .product-item-random .product-details .product-details-a .product-item-offer{
+    font-size: 0.9rem;
+    margin-top: 8px;
+    color: #ff0000;
+    margin-left: 10px;
   }
 
   .product-item-grid{
@@ -207,8 +242,8 @@
       font-size: 0.8rem;
     }
   
-    .product-item-details .product-item-price {
-      font-size: 1.9rem;
+    .product-item-details .product-item-details-a .product-item-price {
+      font-size: 1.6rem;
     }
   
     .product-item-button {
@@ -232,6 +267,29 @@
     .product-item-random h2{
       margin: 0;
     }
+
+    .product-item-random .product-details p{
+      font-size: 0.7rem;
+    }
+
+    .product-item-random .product-details .product-details-a{
+      margin-top: 5px;
+    }
+
+    .product-item-random .product-details .product-details-a .product-item-price{
+      font-size: 0.8rem;
+      margin: 0;
+    }
+
+    .product-item-random .product-details .product-details-a .product-item-previous-price{
+      font-size: 0.8rem;
+      margin: 0 0 0 5px;
+    }
+
+    .product-item-random .product-details .product-details-a .product-item-offer{
+      font-size: 0.7rem;
+      margin: 0 0 0 5px;
+    }
   
     .product-item-grid {
       margin: 0;
@@ -244,7 +302,7 @@
       margin: 10px 0px;
       padding: 0;
       width: 167px;
-      height: 320px;
+      height: 280px;
     }
   
     .product-item-random img{

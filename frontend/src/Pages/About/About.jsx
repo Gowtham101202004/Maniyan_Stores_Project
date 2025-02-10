@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '../Navbar/Navbar'
 
 function About() {
-  return (
+  return ( 
     <div>
       <Navbar/>
       <h1>About</h1>

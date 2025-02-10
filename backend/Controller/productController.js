@@ -11,7 +11,7 @@ const getProducts = expressAsyncHandler(async (req, res) => {
 });
 
 const createProduct = expressAsyncHandler(async (req, res) => {
-  const { productImage, productCategory, productType, productBrand, productName, productUnit, productContainerType, productExpirationPeriod, productPrice, productStock } = req.body;
+  const { productImage, productCategory, productType, productBrand, productName, productUnit, productContainerType, productExpirationPeriod, productPrice, productPreviousPrice, productStock } = req.body;
 
   if (!productCategory || !productType || !productBrand || !productName || !productUnit || !productContainerType || !productExpirationPeriod || !productPrice || !productStock === undefined) {
     res.status(400).json({ message: "All fields are required" });
@@ -28,6 +28,7 @@ const createProduct = expressAsyncHandler(async (req, res) => {
     productContainerType,
     productExpirationPeriod,
     productPrice,
+    productPreviousPrice,
     productStock,
   });
 

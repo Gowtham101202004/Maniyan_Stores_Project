@@ -14,7 +14,7 @@ function Home() {
       try {
         const response = await fetch("http://localhost:8080/products/display-product-data");
         const data = await response.json();
-        const randomProducts = data.sort(() => 0.5 - Math.random()).slice(0, 5); // Get random 4 products
+        const randomProducts = data.sort(() => 0.5 - Math.random()).slice(0, 5); // Get random 5 products
         setProducts(randomProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -25,6 +25,14 @@ function Home() {
 
     fetchProducts();
   }, []);
+
+  const calculateOffer = (previousPrice, currentPrice) => {
+    if (previousPrice && previousPrice > currentPrice) {
+      const discount = Math.round(((previousPrice - currentPrice) / previousPrice) * 100);
+      return `${discount}% off`;
+    }
+    return null;
+  };
 
   return (
     <div>
@@ -46,8 +54,20 @@ function Home() {
                 <div className="product-details">
                   <h3>{product.productName}</h3>
                   <p>Units: {product.productUnit}</p>
-                  <p className="product-price">Price: ₹{product.productPrice}</p>
-                  <div className="product-buttons" >
+                  <div className="product-details-a">
+                    <p className="product-price">Price: ₹{product.productPrice}</p>
+                    {product.productPreviousPrice && (
+                      <p className="product-previous-price">
+                        <strike>{product.productPreviousPrice}</strike>
+                      </p>
+                    )}
+                    {product.productPreviousPrice && product.productPreviousPrice > product.productPrice && (
+                      <p className="product-offer">
+                        {calculateOffer(product.productPreviousPrice, product.productPrice)}
+                      </p>
+                    )}
+                  </div>
+                  <div className="product-buttons">
                     <button>VIEW PRODUCT</button>
                   </div>
                 </div>
@@ -56,7 +76,7 @@ function Home() {
           </div>
         )}
       </div>
-      
+
       <div className="features-section">
         <div className="feature">
           <i className="feature-icon">

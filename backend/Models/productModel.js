@@ -11,6 +11,7 @@ const productSchema = mongoose.Schema(
     productContainerType: { type: String, required: true },
     productExpirationPeriod: { type: String, required: true },
     productPrice: { type: Number, required: true },
+    productPreviousPrice: { type: Number },
     productStock: { type: Number, required: true },
   },
   {
