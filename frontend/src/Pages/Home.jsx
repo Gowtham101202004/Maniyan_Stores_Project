@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar/Navbar';
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTruckFast, faLeaf, faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import './Home.css';
 import Slider from './Slider/Slider';
 
 function Home() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handleProductClick  = () => {
+    navigate("/product");
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -68,7 +74,7 @@ function Home() {
                     )}
                   </div>
                   <div className="product-buttons">
-                    <button>VIEW PRODUCT</button>
+                    <button onClick={handleProductClick}>VIEW PRODUCT</button>
                   </div>
                 </div>
               </div>

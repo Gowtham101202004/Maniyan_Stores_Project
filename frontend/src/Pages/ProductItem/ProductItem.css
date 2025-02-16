@@ -299,7 +299,7 @@
     }    
   
     .product-item-card {
-      margin: 10px 0px;
+      margin: 10px auto;
       padding: 0;
       width: 167px;
       height: 280px;

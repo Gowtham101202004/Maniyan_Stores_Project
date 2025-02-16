@@ -40,17 +40,29 @@ function Cart() {
   }, []);
 
   const handleRemoveFromCart = async (itemId) => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (!userData || !userData._id) {
+      alert("Please log in first");
+      return;
+    }
+  
     try {
-      await axios.delete(`http://localhost:8080/cart/remove/${itemId}`);
+      console.log("Removing item:", itemId);
+      await axios.delete(`http://localhost:8080/cart/remove/${itemId}`, {
+        data: { userId: userData._id },
+        headers: { "Content-Type": "application/json" },
+      });
+  
       alert("Item removed from cart");
-      fetchCartItems();
+      fetchCartItems(); 
     } catch (error) {
       alert("Failed to remove item");
       console.error("Remove error:", error);
     }
   };
+  
 
-  const calculateOffer = (previousPrice, currentPrice) => {
+  const calculateOffer = (previousPrice, currentPrice, quantity) => {
     if (previousPrice && previousPrice > currentPrice) {
       return `${Math.round(((previousPrice - currentPrice) / previousPrice) * 100)}% off`;
     }
@@ -61,10 +73,31 @@ function Cart() {
     setCartItems(prevItems => prevItems.map(item => {
       if (item._id === itemId) {
         const newQuantity = item.quantity + delta;
-        return { ...item, quantity: newQuantity > 0 ? newQuantity : 1 };
+
+        if (newQuantity > 10) {
+          alert("Sorry! Only 10 units allowed in each order");
+          return item;
+        }
+
+        const updatedQuantity = newQuantity > 0 ? newQuantity : 1;
+
+        return { 
+          ...item, 
+          quantity: updatedQuantity 
+        };
       }
       return item;
     }));
+  };
+
+  const calculateTotalSaved = () => {
+    return cartItems.reduce((totalSaved, item) => {
+      const itemPriceSaved = item.product.productPreviousPrice - item.product.productPrice;
+      if (itemPriceSaved > 0) {
+        return totalSaved + itemPriceSaved * item.quantity;
+      }
+      return totalSaved;
+    }, 0);
   };
 
   return (
@@ -85,35 +118,39 @@ function Cart() {
             ) : (
               cartItems.map(item => (
                 <>
-                  <div key={item._id} className="cart-item">
-                    <button className="back-button" onClick={handleBackClick}>
-                      <FontAwesomeIcon icon={faArrowLeft} className="faArrowLeft" />
-                    </button>
-                    <img src={item.product.productImage} alt={item.product.productName} />
-                    <div className="cart-item-details">
-                      <h2>{item.product.productName}</h2>
-                      <p>Units: {item.product.productUnit}</p>
-                      <div className="cart-item-details-a">
-                        <p className="price">₹{item.product.productPrice * item.quantity}</p>
-                        {item.product.productPreviousPrice && (
-                          <p className="previous-price"><strike>{item.product.productPreviousPrice}</strike></p>
-                        )}
-                        {item.product.productPreviousPrice && item.product.productPreviousPrice > item.product.productPrice && (
-                          <p className="offer">{calculateOffer(item.product.productPreviousPrice, item.product.productPrice)}</p>
-                        )}
-                      </div>
-                      <div className="quantity-controls">
-                        <button onClick={() => handleQuantityChange(item._id, -1)}>-</button>
-                        <span>{item.quantity}</span>
-                        <button onClick={() => handleQuantityChange(item._id, 1)}>+</button>
-                      </div>
+                <div key={item._id} className="cart-item">
+                  <button className="back-button" onClick={handleBackClick}>
+                    <FontAwesomeIcon icon={faArrowLeft} className="faArrowLeft" />
+                  </button>
+                  <img src={item.product.productImage} alt={item.product.productName} />
+                  <div className="cart-item-details">
+                    <h2>{item.product.productName}</h2>
+                    <p>Units: {item.product.productUnit}</p>
+                    <div className="cart-item-details-a">
+                      <p className="price">₹{item.product.productPrice * item.quantity}</p>
+                      {item.product.productPreviousPrice && (
+                        <p className="previous-price"><strike>{item.product.productPreviousPrice * item.quantity}</strike></p>
+                      )}
+                      {item.product.productPreviousPrice && item.product.productPreviousPrice > item.product.productPrice && (
+                        <p className="offer">{calculateOffer(item.product.productPreviousPrice, item.product.productPrice, item.quantity)}</p>
+                      )}
                     </div>
-                    <div className="class-item-button">
-                      <button>BUY NOW</button>
-                      <button className="remove-button" onClick={() => handleRemoveFromCart(item._id)}>REMOVE</button>
+                    <div className="quantity-controls">
+                      <button onClick={() => handleQuantityChange(item._id, -1)}>-</button>
+                      <span>{item.quantity}</span>
+                      <button onClick={() => handleQuantityChange(item._id, 1)}>+</button>
                     </div>
                   </div>
-                  <hr />
+                  <div className="class-item-button">
+                    <button>BUY NOW</button>
+                    <button className="remove-button" onClick={() => handleRemoveFromCart(item._id)}>REMOVE</button>
+                  </div>
+                </div>
+                <div className="class-item-button-mobile">
+                    <button>BUY NOW</button>
+                    <button className="remove-button" onClick={() => handleRemoveFromCart(item._id)}>REMOVE</button>
+                  </div>
+                <hr/>
                 </>
               ))
             )}
@@ -136,6 +173,10 @@ function Cart() {
                   <tr>
                     <td className="total-row"><b>Total</b></td>
                     <td><b>₹{cartItems.reduce((acc, item) => acc + (item.product.productPrice * item.quantity), 0)}</b></td>
+                  </tr>
+                  <tr>
+                    <td className="total-row"><b>You Saved</b></td>
+                    <td><b>₹{calculateTotalSaved()}</b></td>
                   </tr>
                   <tr>
                     <td colSpan="2">

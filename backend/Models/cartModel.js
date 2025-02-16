@@ -1,8 +1,6 @@
-// Import required modules
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-// Define the cart schema
 const cartSchema = new mongoose.Schema(
   {
     userId: {
@@ -13,7 +11,7 @@ const cartSchema = new mongoose.Schema(
       {
         product: {
           type: Schema.Types.ObjectId,
-          ref: "Product", // Reference to the Product model
+          ref: "Product", 
           required: true,
         },
         productName: {

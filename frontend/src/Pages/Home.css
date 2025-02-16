@@ -237,7 +237,7 @@ html, body {
   .random-products .product-card {
     width: 167px;
     height: 320px;
-    margin: 10px 3px;
+    margin: 10px auto;
   }
 
   .random-products .product-image {

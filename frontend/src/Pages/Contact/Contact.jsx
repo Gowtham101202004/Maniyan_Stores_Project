@@ -63,7 +63,7 @@ function Contact() {
 
           <div className="contact-map">
               <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15657.649748570066!2d77.41782178712822!3d11.157067656179!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba909f43b09c523%3A0xc797c512901a6508!2sNellai%20Muthu%20store!5e0!3m2!1sen!2sin!4v1736679782919!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3915.2094024658654!2d77.3491801777247!3d11.09776546089203!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba907bfe83d4f77%3A0x761b138da737f59!2s357%2C%20Kangayam%20Rd%2C%20Aranmanai%20Pudur%2C%20Tiruppur%2C%20Tamil%20Nadu%20641604!5e0!3m2!1sen!2sin!4v1739376376976!5m2!1sen!2sin"
               className='contact-map-style'
               allowFullScreen=""
               loading="lazy"

@@ -8,7 +8,6 @@ const addToCart = async (req, res) => {
       return res.status(400).json({ message: "User ID and products are required" });
     }
 
-    // Check for existing cart or create a new one
     let cart = await Cart.findOne({ userId });
 
     if (!cart) {
@@ -47,20 +46,28 @@ const getCartItems = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
   try {
-    const { userId, productId } = req.body;
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
 
     const cart = await Cart.findOne({ userId });
-    if (!cart) return res.status(404).json({ message: "Cart not found" });
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
 
-    cart.products = cart.products.filter(
-      item => item.product.toString() !== productId
-    );
+    cart.products = cart.products.filter(item => item._id.toString() !== id);
+    
     await cart.save();
 
-    res.status(200).json({ message: "Item removed from cart" });
+    res.status(200).json({ message: "Item removed from cart", updatedCart: cart });
   } catch (error) {
+    console.error("Error removing item from cart:", error);
     res.status(500).json({ message: "Failed to remove item", error });
   }
 };
+
 
 module.exports = { addToCart, getCartItems, removeFromCart };
