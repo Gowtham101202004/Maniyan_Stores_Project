@@ -54,7 +54,7 @@
     font-size: 1.7rem;
     color: black; 
     font-weight: bold;
-    margin-top: 8px;
+    margin: 0;
 }
 
 .cart-item strike {
@@ -72,7 +72,13 @@
 
 .cart-item-details p{
     font-size: 1rem;
-    margin-bottom: 10px;
+    margin: 10px 0 5px 0;
+}
+
+.cart-item-details .stock{
+    margin: 5px 0;
+    font-size: 0.8rem;
+    color: black;
 }
 
 .cart-item-details .cart-item-details-a{
@@ -81,13 +87,13 @@
 
 .cart-item-details .cart-item-details-a .previous-price{
     font-size: 1.4rem;
-    margin: 10px 0 0 10px;
+    margin: 3px 0 0 10px;
     color: #838383;
 }
 
 .cart-item-details .cart-item-details-a .offer{
     font-size: 1rem;
-    margin: 12px 0 0 10px;
+    margin: 5px 0 0 10px;
     color: #ff0000;
 }
 
@@ -298,7 +304,7 @@
 
     .cart-item .price{
         font-size: 1.2rem;
-        margin-bottom: 5px;
+        margin-top: 8px;
     }
 
     .cart-item-details{
@@ -313,6 +319,12 @@
     .cart-item-details p{
         font-size: 0.7rem;
         margin: 0px;
+    }
+
+    .cart-item-details .stock{
+        margin-bottom: 5px;
+        font-size: 0.7rem;
+        color: black;
     }
     
     .cart-item-details .cart-item-details-a .previous-price{

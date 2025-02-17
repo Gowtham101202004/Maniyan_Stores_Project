@@ -27,10 +27,18 @@ function Product() {
     localStorage.getItem("selectedBrand") || "All"
   );
 
-  const categoryOptions = ["All", "Food Products", "Dairy Products", "Beverages", "Fruits and Vegetables", "Bread and Desserts", "Cleaning Supplies"];
-  const typeOptions = ["All", "Organic", "Non-Organic", "Packaged", "Fresh"];
-  const priceRangeOptions = ["All", "0 - 100", "101 - 500", "501 - 1000", "1000+"];
-  const brandOptions = ["All", "Brand A", "Brand B", "Brand C", "Brand D"];
+  const [categoryOptions, setCategoryOptions] = useState([
+    "All",
+    "Food Products",
+    "Dairy Products",
+    "Beverages",
+    "Fruits and Vegetables",
+    "Bread and Desserts",
+    "Cleaning Supplies",
+  ]);
+  const [typeOptions, setTypeOptions] = useState(["All"]);
+  const [priceRangeOptions] = useState(["All", "0 - 100", "101 - 500", "501 - 1000", "1000+"]);
+  const [brandOptions, setBrandOptions] = useState(["All"]);
 
   useEffect(() => {
     localStorage.setItem("selectedCategory", selectedCategory);
@@ -75,11 +83,26 @@ function Product() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:8080/products/display-product-data");
+        let url = "http://localhost:8080/products/display-product-data";
+        if (selectedCategory !== "All") {
+          url += `?category=${selectedCategory}`;
+        }
+  
+        const response = await fetch(url);
         const data = await response.json();
+  
         if (isMounted) {
-          setProducts(data);
-          setFilteredProducts(data);
+          setProducts(data.products);
+          setFilteredProducts(data.products);
+  
+          const uniqueTypes = [...new Set(data.products.map(p => p.productType))];
+          setTypeOptions(["All", ...uniqueTypes]);
+  
+          const filteredBrands = selectedType === "All"
+            ? [...new Set(data.products.map(p => p.productBrand))]
+            : [...new Set(data.products.filter(p => p.productType === selectedType).map(p => p.productBrand))];
+  
+          setBrandOptions(["All", ...filteredBrands]);
         }
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -93,7 +116,8 @@ function Product() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [selectedCategory, selectedType]); 
+  
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);

@@ -3,8 +3,25 @@ const expressAsyncHandler = require("express-async-handler");
 
 const getProducts = expressAsyncHandler(async (req, res) => {
   try {
-    const products = await Product.find();
-    res.status(200).json(products);
+    const { category } = req.query; 
+
+    const products = category
+      ? await Product.find({ productCategory: category })
+      : await Product.find();
+
+    const types = category
+      ? await Product.distinct("productType", { productCategory: category })
+      : await Product.distinct("productType");
+
+    const brands = category
+      ? await Product.distinct("productBrand", { productCategory: category })
+      : await Product.distinct("productBrand");
+
+    res.status(200).json({
+      products,
+      types,
+      brands,
+    });
   } catch (err) {
     res.status(500).json({ message: "Error fetching products", error: err.message });
   }

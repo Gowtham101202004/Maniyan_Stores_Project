@@ -21,17 +21,27 @@ function ProductItem() {
         setLoading(true);
         const response = await fetch("http://localhost:8080/products/display-product-data");
         const data = await response.json();
-        setProducts(data);
-        setRandomProducts(data.sort(() => 0.5 - Math.random()).slice(0, 5));
+  
+        const allProducts = data.products || data; 
+  
+        setProducts(allProducts);
+  
+        const similar = allProducts
+          .filter((p) => p._id !== product._id && p.productCategory === product.productCategory)
+          .sort(() => 0.5 - Math.random()) 
+          .slice(0, 5); 
+  
+        setRandomProducts(similar);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
         setTimeout(() => setLoading(false), 300);
       }
     };
-
+  
     fetchProducts();
-  }, []);
+  }, [product]);
+  
 
   const calculateOffer = (previousPrice, currentPrice) => {
     if (previousPrice && previousPrice > currentPrice) {

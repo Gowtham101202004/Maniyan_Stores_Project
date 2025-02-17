@@ -27,7 +27,15 @@ function Cart() {
     try {
       setLoading(true);
       const { data } = await axios.get(`http://localhost:8080/cart?userId=${userData._id}`);
-      setCartItems(data.map(item => ({ ...item, quantity: item.quantity || 1 })));
+      setCartItems(data.map(item => ({ 
+        ...item, 
+        quantity: item.quantity || 1,
+        originalStock: item.product.productStock,
+        product: {
+          ...item.product,
+          productStock: item.product.productStock - (item.quantity || 1) 
+        }
+      })));
     } catch (error) {
       console.error("Error fetching cart items:", error);
     } finally {
@@ -79,11 +87,27 @@ function Cart() {
           return item;
         }
 
+        if (newQuantity < 1) return item;
+
         const updatedQuantity = newQuantity > 0 ? newQuantity : 1;
+        const updatedStock = item.product.productStock - delta;
+
+        if (updatedStock > item.originalStock) {
+          return item;
+        }
+
+        if (updatedStock < 0) {
+          alert("Not enough stock available");
+          return item;
+        }
 
         return { 
           ...item, 
-          quantity: updatedQuantity 
+          quantity: updatedQuantity,
+          product: {
+            ...item.product,
+            productStock: updatedStock
+          }
         };
       }
       return item;
@@ -135,6 +159,7 @@ function Cart() {
                         <p className="offer">{calculateOffer(item.product.productPreviousPrice, item.product.productPrice, item.quantity)}</p>
                       )}
                     </div>
+                    <p className="stock">In Stock: {item.product.productStock}</p>
                     <div className="quantity-controls">
                       <button onClick={() => handleQuantityChange(item._id, -1)}>-</button>
                       <span>{item.quantity}</span>
