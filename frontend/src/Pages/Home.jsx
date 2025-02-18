@@ -11,21 +11,28 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const handleProductClick  = () => {
-    navigate("/product");
+  // Function to navigate to ProductItem with product details
+  const handleProductClick = (product) => {
+    navigate(`/product/${product._id}`, { state: product });
   };
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const response = await fetch("http://localhost:8080/products/display-product-data");
         const data = await response.json();
-        const randomProducts = data.sort(() => 0.5 - Math.random()).slice(0, 5); // Get random 5 products
+        const allProducts = data.products || data; 
+
+        const randomProducts = allProducts
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 5);
+
         setProducts(randomProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), 300);
       }
     };
 
@@ -74,7 +81,8 @@ function Home() {
                     )}
                   </div>
                   <div className="product-buttons">
-                    <button onClick={handleProductClick}>VIEW PRODUCT</button>
+                    {/* Update button to pass product details */}
+                    <button onClick={() => handleProductClick(product)}>VIEW PRODUCT</button>
                   </div>
                 </div>
               </div>

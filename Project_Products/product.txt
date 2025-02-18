@@ -89,5 +89,31 @@
     "productPrice": 318,
     "productPreviousPrice": 328,
     "productStock": 200
+  },
+  {
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/tea/4/o/p/-original-imagp8wdgxs3kvmr.jpeg?q=70",
+    "productCategory": "Food Products",
+    "productType": "Regular Tea",
+    "productBrand": "3 Roses",
+    "productName": "3 Roses Tea Box",
+    "productUnit": "250 g",
+    "productContainerType": "Box",
+    "productExpirationPeriod": "1 Year",
+    "productPrice": 225,
+    "productPreviousPrice": null,
+    "productStock": 60
+  },
+  {
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/l0lbrm80/tea/u/3/x/-original-imagcccehpfwptrc.jpeg?q=70",
+    "productCategory": "Food Products",
+    "productType": "Black Tea",
+    "productBrand": "Taj Mahal",
+    "productName": "Taj Mahal Tea Non South Black Tea Box",
+    "productUnit": "500 g",
+    "productContainerType": "Box",
+    "productExpirationPeriod": "12 Months",
+    "productPrice": 360,
+    "productPreviousPrice": 384,
+    "productStock": 37
   }
 ]
