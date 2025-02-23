@@ -22,6 +22,14 @@ const userModel = mongoose.Schema(
             type: Boolean,
             default: false,
         },
+        phonenumber: {
+            type: Number, 
+            default: null,
+        },
+        address: {
+            type: String,
+            default: "",
+        },
     },
     {
         timestamps: true,

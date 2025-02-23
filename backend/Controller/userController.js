@@ -2,87 +2,136 @@ const generateToken = require("../Config/generateToken");
 const userModel = require("../Models/userModel");
 const expressAsyncHandler = require("express-async-handler");
 
-const loginController = expressAsyncHandler(async(req, res)=>{
-    const {email, password} = req.body;
+const loginController = expressAsyncHandler(async (req, res) => {
+    const { email, password } = req.body;
 
-    const user = await userModel.findOne({email});
+    const user = await userModel.findOne({ email });
 
-    if(user && (await user.matchPassword(password))){
+    if (user && (await user.matchPassword(password))) {
         res.json({
             _id: user._id,
             name: user.name,
             email: user.email,
+            address: user.address,
+            phonenumber: user.phonenumber,
             token: generateToken(user._id),
-        })
-    } else{
+        });
+    } else {
         res.status(401).json({ message: "Invalid username or password" });
     }
-}); 
+});
 
 const registerController = expressAsyncHandler(async (req, res) => {
-    const { name, email, password } = req.body;
-  
+    const { name, email, password, address, phonenumber } = req.body;
+
     if (!name || !email || !password) {
-      res.status(400).json({ message: "All input fields are required" });
-      return;
-    }
-  
-    const userExist = await userModel.findOne({ email });
-    if (userExist) {
-      res.status(405).json({ message: "Email already exists !" });
-      return;
-    }
-  
-    const userNameExist = await userModel.findOne({ name });
-    if (userNameExist) {
-      res.status(406).json({ message: "Username already taken !" });
-      return;
+        res.status(400).json({ message: "Name, email, and password are required" });
+        return;
     }
 
-    const user = await userModel.create({ name, email, password });
+    const userExist = await userModel.findOne({ email });
+    if (userExist) {
+        res.status(405).json({ message: "Email already exists !" });
+        return;
+    }
+
+    const user = await userModel.create({
+        name,
+        email,
+        password,
+        address: address || "",
+        phonenumber: phonenumber || null,
+    });
+
     if (user) {
-      res.status(201).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        token: generateToken(user._id),
-      });
+        res.status(201).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            address: user.address,
+            phonenumber: user.phonenumber,
+            token: generateToken(user._id),
+        });
     } else {
-      res.status(400).json({ message: "Registration failed" });
+        res.status(400).json({ message: "Registration failed" });
     }
 });
 
 const googleLoginController = expressAsyncHandler(async (req, res) => {
-  const { name, email } = req.body;
+    const { name, email } = req.body;
 
-  if (!email || !name) {
-      return res.status(400).json({ message: "Invalid data received from Google" });
-  }
+    if (!email || !name) {
+        return res.status(400).json({ message: "Invalid data received from Google" });
+    }
 
-  let user = await userModel.findOne({ email });
+    let user = await userModel.findOne({ email });
 
-  if (!user) {
-      user = await userModel.create({
-          name,
-          email,
-          isGoogleUser: true,
-      });
+    if (!user) {
+        user = await userModel.create({
+            name,
+            email,
+            isGoogleUser: true,
+            address: "",
+            phonenumber: null,
+        });
 
-      if (!user) {
-          return res.status(400).json({ message: "Failed to create user with Google Sign-In" });
-      }
-  }
+        if (!user) {
+            return res.status(400).json({ message: "Failed to create user with Google Sign-In" });
+        }
+    }
 
-  res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-  });
+    res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        address: user.address,
+        phonenumber: user.phonenumber,
+        token: generateToken(user._id),
+    });
+});
+
+const getUserDetailsController = expressAsyncHandler(async (req, res) => {
+    const userId = req.params.id;
+
+    const user = await userModel.findById(userId).select("-password");
+
+    if (user) {
+        res.status(200).json(user);
+    } else {
+        res.status(404).json({ message: "User not found" });
+    }
+});
+
+const updateUserController = expressAsyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    const { name, address, phonenumber } = req.body;
+
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    user.name = name || user.name;
+    user.address = address || user.address;
+    user.phonenumber = phonenumber || user.phonenumber;
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        address: updatedUser.address,
+        phonenumber: updatedUser.phonenumber,
+        token: generateToken(updatedUser._id),
+    });
 });
 
 module.exports = {
     loginController,
     registerController,
     googleLoginController,
+    getUserDetailsController,
+    updateUserController,
 };

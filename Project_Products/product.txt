@@ -115,5 +115,18 @@
     "productPrice": 360,
     "productPreviousPrice": 384,
     "productStock": 37
+  },
+  {
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/l5cslu80/salt/z/p/d/200-himalayan-pink-salt-sendha-namak-non-iodised-100g-x-2-2-original-imaggfq2qznamkpc.jpeg?q=70",
+    "productCategory": "Food Products",
+    "productType": "Iodized Salt",
+    "productBrand": "Urban Organic",
+    "productName": "Urban Organic Himalayan Pink Salt",
+    "productUnit": "100 g x 2",
+    "productContainerType": "Pouch",
+    "productExpirationPeriod": "36 Months",
+    "productPrice": 213,
+    "productPreviousPrice": 398,
+    "productStock": 37
   }
 ]

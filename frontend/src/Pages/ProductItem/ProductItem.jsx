@@ -53,6 +53,10 @@ function ProductItem() {
 
   const handleBackClick = () => navigate("/product");
 
+  const handleBuyNow = () => {
+    navigate('/payment', { state: { product } }); 
+  };
+
   const handleCardClick = (product) => navigate(`/product/${product._id}`, { state: product });
 
   const handleAddToCart = async () => {
@@ -117,7 +121,7 @@ function ProductItem() {
                   <FontAwesomeIcon icon={faCartShopping} className="product-item-button-icon" />
                   ADD TO CART
                 </button>
-                <button>
+                <button onClick={handleBuyNow}>
                   <FontAwesomeIcon icon={faCartArrowDown} className="product-item-button-icon" />
                   BUY NOW
                 </button>

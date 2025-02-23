@@ -1,0 +1,231 @@
+.profile-item input[name="email"]:hover {
+  cursor: not-allowed;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  max-width: 400px;
+  width: 200%;
+  margin: 5px auto;
+  border-radius: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.profile-item {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  background-color: #fff;
+  margin-bottom: 15px;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.label {
+  font-size: 14px;
+  color: black;
+  margin-bottom: 5px;
+}
+
+.input-field {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+  width: 90%;
+}
+
+.profile-title-container {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.profile-title-container .back-button{
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+.profile-title-container .back-button .faArrowLeft {
+  position: absolute;
+  left: 40px;
+  top: 20px;
+  padding: 10px 12px;
+  font-size: 25px;
+  color: black;
+  border-radius: 50%;
+  transition: ease-in-out 0.3s;
+}
+
+.profile-title-container .back-button .faArrowLeft:hover{
+  background-color: rgb(217, 217, 217);
+}
+
+.whole-edit-profile-container {
+  display: flex;
+  margin: 20px 0;
+  justify-content: center;
+  flex-direction: row;
+  gap: 160px;
+}
+
+.profile-container .update-password-title {
+  padding: 10px;
+  font-weight: 600;
+  font-size: 22px;
+  color: black;
+  letter-spacing: 0.5px;
+}
+
+.profile-title-container h2 {
+  color: black;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin: 5px 145px;
+}
+
+.profile-title-container .edit-icon-container {
+  position: absolute;
+  margin-left: 360px;
+  margin-bottom: 2px;
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.profile-title-container .edit-icon-container:hover {
+  transform: scale(1.1);
+}
+
+.save-icon,
+.edit-icon,
+.edit-anim-icon,
+.save-anim-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.profile-picture-section{
+  margin-bottom: 15px;
+}
+
+.profile-picture-section .current-profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+  border: 2px solid #ccc;
+}
+
+.profile-picture-section .profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 520px;
+  background-color: white;
+  border: 2px solid #000;
+  box-shadow: 24;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-box .image-editor-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.modal-box .image-editor-buttons .remove{
+  padding: 12px 11px;
+  font-size: 12px; 
+  position: relative;
+  border-radius: 5px;
+  border: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  transition: ease-in-out 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  background-image: linear-gradient(45deg, transparent 50%, rgb(255, 0, 0) 50%);
+  background-size: 300% 200%;
+  background-position: bottom right;
+}
+
+.modal-box .image-editor-buttons .remove:hover{
+    background-position: top left;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 1.15);
+    background-color: black;
+}
+
+.modal-box .image-editor-buttons .cancel{
+  padding: 12px 12px;
+  font-size: 12px; 
+  position: relative;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(80, 80, 80);
+  color: white;
+  cursor: pointer;
+  transition: ease-in-out 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  background-image: linear-gradient(45deg, transparent 50%, rgb(120, 120, 120) 50%);
+  background-size: 300% 200%;
+  background-position: bottom right;
+}
+
+.modal-box .image-editor-buttons .cancel:hover{
+    background-position: top left;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 1.15);
+    background-color: rgb(80, 80, 80);
+}
+
+.modal-box .image-editor-buttons .ok{
+    padding: 12px 24px;
+    font-size: 12px; 
+    position: relative;
+    border-radius: 5px;
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    background-image: linear-gradient(45deg, transparent 50%, rgb(255, 119, 0) 50%);
+    background-size: 300% 200%;
+    background-position: bottom right;
+}
+
+.modal-box .image-editor-buttons .ok:disabled {
+    background-image: linear-gradient(45deg, transparent 50%, rgb(120, 120, 120) 50%);
+    cursor: not-allowed;
+}
+
+.modal-box .image-editor-buttons .ok:hover:not(:disabled) {
+    background-position: top left;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 1.15);
+    background-color: black;
+}

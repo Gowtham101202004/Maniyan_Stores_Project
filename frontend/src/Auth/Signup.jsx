@@ -51,7 +51,7 @@ function Signin() {
           severity: 'success',
         });
         setTimeout(() => {
-          navigate('/');
+          navigate('/signin');
         }, 2000);
       } catch (err) {
         if (err.response && err.response.data && err.response.data.message) {

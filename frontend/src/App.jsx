@@ -9,27 +9,41 @@ import Signup from './Auth/Signup';
 import Footer from './Pages/Footer/Footer';
 import ProductItem from './Pages/ProductItem/ProductItem';
 import Cart from './Pages/Cart/Cart';
+import Payment from './Pages/Payment/Payment';
+import EditProfile from './Pages/Edit_Profile/EditProfile';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import Loading_Animation from './Pages/Animation/Loading_Animation';
 
 function Layout() {
   const location = useLocation();
-  const showFooter = !['/signin', '/signup', '/contact', '/product', '/about', '/product'].includes(location.pathname);
+  const showFooter = !['/signin', '/signup', '/contact', '/product', '/about', '/product', '/payment', '/editprofile'].includes(location.pathname);
 
-  // const showFooter = !['/signin', '/signup', '/contact', '/product', '/about', '/product'].some(route =>
-  //   location.pathname.startsWith(route));
-  
+  const stripePromise = loadStripe('pk_test_51QtmfA4UOuOwfYxg19NwyFBuoXUF8OLSP5ihvTjtnx17twwzmRcPn5oAlNWChooHQDCBpmnf1JdHqNU4Gcp0HWn8005ECLGwRx');
+
   return (
     <>
-      <Loading_Animation/>
+      <Loading_Animation />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product" element={<Product />} />
         <Route path="/product/:id" element={<ProductItem />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
+        
+        {/* Wrap Payment route with Elements from Stripe */}
+        <Route
+          path="/payment"
+          element={
+            <Elements stripe={stripePromise}>
+              <Payment />
+            </Elements>
+          }
+        />
       </Routes>
       {showFooter && <Footer />}
     </>

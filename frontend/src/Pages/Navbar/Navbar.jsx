@@ -100,6 +100,10 @@ function Navbar() {
       });
   };
 
+  const handleEditProfileClick = () => {
+    navigate("/editprofile");
+  }
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -176,7 +180,7 @@ function Navbar() {
                 </div>
                 <hr />
                 <ul>
-                  <li>
+                  <li onClick={handleEditProfileClick}>
                     <FontAwesomeIcon icon={faPenToSquare} className="dd-icon" />
                     Edit Profile
                   </li>
