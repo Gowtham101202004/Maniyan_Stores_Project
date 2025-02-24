@@ -22,6 +22,10 @@ const userModel = mongoose.Schema(
             type: Boolean,
             default: false,
         },
+        image: {
+            type: String,
+            default: "",
+        },
         phonenumber: {
             type: Number, 
             default: null,

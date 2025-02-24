@@ -6,7 +6,6 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Backdrop, CircularProgress, Modal, Box } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import Avatar from 'react-avatar-edit';
-
 import DefaultProfile from './default-profile.png';
 import EditImg from './edit-img.png';
 import SaveImg from './save-img.png';
@@ -19,7 +18,7 @@ const EditProfile = () => {
     email: '',
     address: '',
     phonenumber: '',
-    profileImage: '' 
+    image: '' 
   });
   const [isLoading, setIsLoading] = useState(false);
   const [id, setId] = useState('');
@@ -42,8 +41,8 @@ const EditProfile = () => {
             const response = await axios.get(`http://localhost:8080/user/get-user/${parsedData._id}`);
             setUserData(response.data);
             setId(response.data._id);
-            if (response.data.profileImage) {
-              setPreview(response.data.profileImage);
+            if (response.data.image) {
+              setPreview(response.data.image);
             }
           } catch (error) {
             console.error("Error fetching user data:", error);
@@ -59,15 +58,20 @@ const EditProfile = () => {
   const handleProfileUpdate = async () => {
     setIsSubmitting(true);
     try {
-      const updatedData = { ...userData, profileImage: preview };
-      await axios.put(`http://localhost:8080/user/update-user/${id}`, updatedData);
-      setIsEditable(false); 
+        const updatedData = { ...userData, image: preview || "" }; // Ensure empty image is sent
+
+        await axios.put(`http://localhost:8080/user/update-user/${id}`, updatedData, {
+            headers: { "Content-Type": "application/json" },
+        });
+
+        setIsEditable(false);
     } catch (error) {
-      console.error("Error updating profile:", error);
+        console.error("Error updating profile:", error.response?.data || error.message);
     } finally {
-      setIsSubmitting(false);
+        setIsSubmitting(false);
     }
-  };
+};
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,7 +98,7 @@ const EditProfile = () => {
 
   const cancelImageEdit = () => {
     setIsImageEditorVisible(false);
-    setPreview(userData.profileImage || null);
+    setPreview(userData.image || null);
   };
 
   const confirmImageEdit = () => {
@@ -103,7 +107,7 @@ const EditProfile = () => {
 
   const removeProfileImage = () => {
     setPreview(null);
-    setUserData((prevData) => ({ ...prevData, profileImage: '' }));
+    setUserData((prevData) => ({ ...prevData, image: "" }));
     setIsImageEditorVisible(false);
   };
 
@@ -151,7 +155,9 @@ const EditProfile = () => {
                 </div>
                 <Modal open={isImageEditorVisible} onClose={cancelImageEdit}>
                   <Box className="modal-box">
-                      <Avatar width={390} height={300} onCrop={handleAvatarCrop} src={userData.profileImage || null} />
+                      <div className="avatar-container">
+                        <Avatar width={390} height={300} onCrop={handleAvatarCrop} src={userData.image || null} label="CHOOSE A FILE" />
+                      </div>
                       <div className="image-editor-buttons">
                           <button onClick={removeProfileImage} className="remove">REMOVE</button>
                           <button onClick={cancelImageEdit} className="cancel">CANCEL</button>

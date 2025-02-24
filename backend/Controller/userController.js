@@ -12,6 +12,7 @@ const loginController = expressAsyncHandler(async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            image: user.image,
             address: user.address,
             phonenumber: user.phonenumber,
             token: generateToken(user._id),
@@ -22,7 +23,7 @@ const loginController = expressAsyncHandler(async (req, res) => {
 });
 
 const registerController = expressAsyncHandler(async (req, res) => {
-    const { name, email, password, address, phonenumber } = req.body;
+    const { name, email, password, address, phonenumber, image } = req.body;
 
     if (!name || !email || !password) {
         res.status(400).json({ message: "Name, email, and password are required" });
@@ -39,6 +40,7 @@ const registerController = expressAsyncHandler(async (req, res) => {
         name,
         email,
         password,
+        image: image || "",
         address: address || "",
         phonenumber: phonenumber || null,
     });
@@ -48,6 +50,7 @@ const registerController = expressAsyncHandler(async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            image: user.image,
             address: user.address,
             phonenumber: user.phonenumber,
             token: generateToken(user._id),
@@ -71,6 +74,7 @@ const googleLoginController = expressAsyncHandler(async (req, res) => {
             name,
             email,
             isGoogleUser: true,
+            image: "",
             address: "",
             phonenumber: null,
         });
@@ -84,6 +88,7 @@ const googleLoginController = expressAsyncHandler(async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        image: user.image,
         address: user.address,
         phonenumber: user.phonenumber,
         token: generateToken(user._id),
@@ -104,7 +109,7 @@ const getUserDetailsController = expressAsyncHandler(async (req, res) => {
 
 const updateUserController = expressAsyncHandler(async (req, res) => {
     const userId = req.params.id;
-    const { name, address, phonenumber } = req.body;
+    const { name, image, address, phonenumber } = req.body;
 
     const user = await userModel.findById(userId);
 
@@ -113,6 +118,7 @@ const updateUserController = expressAsyncHandler(async (req, res) => {
     }
 
     user.name = name || user.name;
+    user.image = image === "" ? "" : image; 
     user.address = address || user.address;
     user.phonenumber = phonenumber || user.phonenumber;
 
@@ -122,6 +128,7 @@ const updateUserController = expressAsyncHandler(async (req, res) => {
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
+        image: updatedUser.image,
         address: updatedUser.address,
         phonenumber: updatedUser.phonenumber,
         token: generateToken(updatedUser._id),

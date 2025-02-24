@@ -9,7 +9,7 @@
   padding: 20px;
   background-color: #f5f5f5;
   max-width: 400px;
-  width: 200%;
+  width: 100%;
   margin: 5px auto;
   border-radius: 20px;
   font-family: Arial, sans-serif;
@@ -28,6 +28,7 @@
 
 .label {
   font-size: 14px;
+  font-weight: 600;
   color: black;
   margin-bottom: 5px;
 }
@@ -142,7 +143,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 520px;
+  width: 500px;
   background-color: white;
   border: 2px solid #000;
   box-shadow: 24;
@@ -151,6 +152,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.modal-box .avatar-container label {
+  display: inline-block;
+  padding: 0 115px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: ease 0.3s;
+}
+
+.modal-box .avatar-container input[type="file"] {
+  display: none;
 }
 
 .modal-box .image-editor-buttons {
@@ -228,4 +244,51 @@
     background-position: top left;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 1.15);
     background-color: black;
+}
+
+@media only screen and (max-width: 768px) {
+  .whole-edit-profile-container {
+    flex-direction: column;
+    align-items: center; 
+    gap: 20px;
+    padding: 0 10px;
+  }
+
+  .profile-container {
+    margin: 50px auto;
+    width: auto; 
+    max-width: none;
+    min-width: 270px; 
+    padding: 25px; 
+  }
+
+  .profile-title-container .edit-icon-container {
+    margin-left: 240px; 
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .profile-title-container h2 {
+    color: black;
+    font-weight: bold;
+    letter-spacing: 0;
+    margin: 5px auto;
+    text-align: center;
+  }
+
+  .profile-title-container .back-button .faArrowLeft {
+    left: 10px;
+  }
+
+  .modal-box {
+    width: 300px;
+  }
+
+  .label {
+    font-size: 14px;
+  }
+
+  .input-field {
+    font-size: 14px;
+  }
 }
