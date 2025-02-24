@@ -9,7 +9,7 @@ import {
   faRightFromBracket,
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import { auth, onAuthStateChanged, signOut } from "../../Auth/Firebase";
+import { auth, signOut } from "../../Auth/Firebase";
 import axios from "axios";
 import "./Navbar.css";
 import ms_logo from "../../assets/maniyan_stores.png";
@@ -17,9 +17,7 @@ import Default_Image from "../../assets/default-profile.png";
 
 function Navbar() {
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] = useState(false);
-  const [username, setUsername] = useState("Guest");
-  const [profilePicture, setProfilePicture] = useState(Default_Image);
-  const [userStatus, setUserStatus] = useState(false);
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [cartCount, setCartCount] = useState(0);
@@ -27,36 +25,27 @@ function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userStatusFromLocalStorage = localStorage.getItem("userStatus") === "true";
-
-    if (userStatusFromLocalStorage) {
-      const userData = JSON.parse(localStorage.getItem("userdata"));
-      if (userData) {
-        setUsername(userData.name || "User");
-        setProfilePicture(userData.profilePicture || Default_Image);
-        setUserStatus(true);
-      }
-    }
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUsername(user.displayName || "User");
-        setProfilePicture(user.photoURL || Default_Image);
-        setUserStatus(true);
-      } else if (!userStatusFromLocalStorage) {
-        setUsername("Guest");
-        setProfilePicture(Default_Image);
-        setUserStatus(false);
+    const fetchUserData = async () => {
+      const storedData = localStorage.getItem("userdata");
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        if (parsedData?._id) {
+          try {
+            const response = await axios.get(`http://localhost:8080/user/get-user/${parsedData._id}`);
+            setUserData(response.data);
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        }
       }
       setLoading(false);
-    });
+    };
 
-    return () => unsubscribe();
+    fetchUserData();
   }, []);
 
   useEffect(() => {
     const fetchCartCount = async () => {
-      const userData = JSON.parse(localStorage.getItem("userdata"));
       if (userData && userData._id) {
         try {
           const { data } = await axios.get(`http://localhost:8080/cart?userId=${userData._id}`);
@@ -68,11 +57,9 @@ function Navbar() {
     };
 
     fetchCartCount();
-
-    // Refetch cart count when navigating between pages
     window.addEventListener("focus", fetchCartCount);
     return () => window.removeEventListener("focus", fetchCartCount);
-  }, []);
+  }, [userData]);
 
   const handleProfileClick = () => {
     setIsProfileDropdownVisible(!isProfileDropdownVisible);
@@ -90,8 +77,7 @@ function Navbar() {
     signOut(auth)
       .then(() => {
         localStorage.clear();
-        setProfilePicture(Default_Image);
-        setUserStatus(false);
+        setUserData(null);
         setIsProfileDropdownVisible(false);
         navigate("/signin");
       })
@@ -102,7 +88,7 @@ function Navbar() {
 
   const handleEditProfileClick = () => {
     navigate("/editprofile");
-  }
+  };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -120,35 +106,22 @@ function Navbar() {
         <div className="Nav-Links">
           <ul>
             <li>
-              <NavLink className="Navlink" to="/">
-                Home
-              </NavLink>
+              <NavLink className="Navlink" to="/">Home</NavLink>
             </li>
             <li>
-              <NavLink className="Navlink" to="/product">
-                Products
-              </NavLink>
+              <NavLink className="Navlink" to="/product">Products</NavLink>
             </li>
             <li>
-              <NavLink className="Navlink" to="/contact">
-                Contact
-              </NavLink>
+              <NavLink className="Navlink" to="/contact">Contact</NavLink>
             </li>
             <li>
-              <NavLink className="Navlink" to="/about">
-                About
-              </NavLink>
+              <NavLink className="Navlink" to="/about">About</NavLink>
             </li>
           </ul>
         </div>
         <div className="search_container">
           <form onSubmit={handleSearchSubmit}>
-            <input
-              type="text"
-              placeholder="Search for Products. . ."
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
+            <input type="text" placeholder="Search for Products..." value={searchQuery} onChange={handleSearchChange} />
             <FontAwesomeIcon icon={faSearch} className="search_icon" />
           </form>
         </div>
@@ -158,56 +131,50 @@ function Navbar() {
             <FontAwesomeIcon icon={faCartShopping} className="cart-icon" onClick={handleCartClick} />
           </div>
           <img
-            src={profilePicture}
+            src={userData?.image || Default_Image}
             alt="Profile"
             className="profile"
             onClick={handleProfileClick}
             onError={(e) => {
-              console.error(
-                `Error loading profile picture. Falling back to default. URL: ${profilePicture}`
-              );
+              console.error("Error loading profile picture. Falling back to default.");
               e.target.src = Default_Image;
-              setProfilePicture(Default_Image);
             }}
           />
         </div>
         {isProfileDropdownVisible && (
           <div className="dropdown-profile">
-            {userStatus ? (
+            {userData ? (
               <>
                 <div className="username-container">
-                  <h2>{username}</h2>
+                  <h2>{userData.name}</h2>
                 </div>
                 <hr />
                 <ul>
                   <li onClick={handleEditProfileClick}>
-                    <FontAwesomeIcon icon={faPenToSquare} className="dd-icon" />
-                    Edit Profile
+                    <FontAwesomeIcon icon={faPenToSquare} className="dd-icon" /> Edit Profile
                   </li>
                   <li>
-                    <FontAwesomeIcon icon={faCircleQuestion} className="dd-icon" />
-                    Help & Support
+                    <FontAwesomeIcon icon={faCircleQuestion} className="dd-icon" /> Help & Support
                   </li>
                   <li onClick={handleSignoutClick} className="signout-item">
-                    <FontAwesomeIcon icon={faRightFromBracket} className="dd-icon" />
-                    <span>Sign out</span>
+                    <FontAwesomeIcon icon={faRightFromBracket} className="dd-icon" /> Sign out
                   </li>
                 </ul>
               </>
             ) : (
               <ul>
                 <li onClick={handleSigninClick} className="signin-item">
-                  <FontAwesomeIcon icon={faRightToBracket} className="dd-icon" />
-                  <span>Sign in</span>
+                  <FontAwesomeIcon icon={faRightToBracket} className="dd-icon" /> Sign in
                 </li>
               </ul>
             )}
           </div>
         )}
       </div>
-      {!loading && !userStatus && !isProfileDropdownVisible && (
+      {/* Login Float */}
+      {!loading && !userData && !isProfileDropdownVisible && (
         <div className="login-float-container">
-          <div className="login-float">
+          <div className="login-float" onClick={handleSigninClick}>
             <p>Login</p>
           </div>
         </div>

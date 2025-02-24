@@ -11,7 +11,6 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Function to navigate to ProductItem with product details
   const handleProductClick = (product) => {
     navigate(`/product/${product._id}`, { state: product });
   };
