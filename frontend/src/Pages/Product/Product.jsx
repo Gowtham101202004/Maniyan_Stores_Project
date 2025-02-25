@@ -74,7 +74,7 @@ function Product() {
 
   const filterProducts = useCallback(
     (productsToFilter = products) => {
-      setSearchLoading(true); // Set search loading to true before filtering
+      setSearchLoading(true); 
       const filtered = productsToFilter.filter((product) => {
         const matchesSearchQuery =
           !searchQuery || product.productName.toLowerCase().includes(searchQuery.toLowerCase());
@@ -93,8 +93,8 @@ function Product() {
 
       setTimeout(() => {
         setFilteredProducts(filtered);
-        setSearchLoading(false); // Set search loading to false after filtering
-      }, 200); // Simulate a delay for loading effect
+        setSearchLoading(false); 
+      }, 200); 
     },
     [searchQuery, selectedCategory, selectedType, selectedPriceRange, selectedBrand, products]
   );

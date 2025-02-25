@@ -58,7 +58,7 @@ const EditProfile = () => {
   const handleProfileUpdate = async () => {
     setIsSubmitting(true);
     try {
-        const updatedData = { ...userData, image: preview || "" }; // Ensure empty image is sent
+        const updatedData = { ...userData, image: preview || "" };
 
         await axios.put(`http://localhost:8080/user/update-user/${id}`, updatedData, {
             headers: { "Content-Type": "application/json" },
