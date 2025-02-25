@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,6 +10,7 @@ function Product() {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
+  const [searchLoading, setSearchLoading] = useState(false); // New state for search loading
   const [filteredProducts, setFilteredProducts] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function Product() {
     localStorage.getItem("selectedBrand") || "All"
   );
 
-  const [categoryOptions, setCategoryOptions] = useState([
+  const [categoryOptions] = useState([
     "All",
     "Food Products",
     "Dairy Products",
@@ -46,6 +47,67 @@ function Product() {
     localStorage.setItem("selectedPriceRange", selectedPriceRange);
     localStorage.setItem("selectedBrand", selectedBrand);
   }, [selectedCategory, selectedType, selectedPriceRange, selectedBrand]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch("http://localhost:8080/products/display-product-data");
+        const data = await response.json();
+        setProducts(data.products);
+
+        const uniqueTypes = [...new Set(data.products.map((p) => p.productType))];
+        const uniqueBrands = [...new Set(data.products.map((p) => p.productBrand))];
+        setTypeOptions(["All", ...uniqueTypes]);
+        setBrandOptions(["All", ...uniqueBrands]);
+
+        filterProducts(data.products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setTimeout(() => setLoading(false), 200);
+      }
+    };
+
+    fetchProducts();
+  }, []); 
+
+  const filterProducts = useCallback(
+    (productsToFilter = products) => {
+      setSearchLoading(true); // Set search loading to true before filtering
+      const filtered = productsToFilter.filter((product) => {
+        const matchesSearchQuery =
+          !searchQuery || product.productName.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = selectedCategory === "All" || product.productCategory === selectedCategory;
+        const matchesType = selectedType === "All" || product.productType === selectedType;
+        const matchesPriceRange =
+          selectedPriceRange === "All" ||
+          (selectedPriceRange === "0 - 100" && product.productPrice <= 100) ||
+          (selectedPriceRange === "101 - 500" && product.productPrice > 100 && product.productPrice <= 500) ||
+          (selectedPriceRange === "501 - 1000" && product.productPrice > 500 && product.productPrice <= 1000) ||
+          (selectedPriceRange === "1000+" && product.productPrice > 1000);
+        const matchesBrand = selectedBrand === "All" || product.productBrand === selectedBrand;
+
+        return matchesSearchQuery && matchesCategory && matchesType && matchesPriceRange && matchesBrand;
+      });
+
+      setTimeout(() => {
+        setFilteredProducts(filtered);
+        setSearchLoading(false); // Set search loading to false after filtering
+      }, 200); // Simulate a delay for loading effect
+    },
+    [searchQuery, selectedCategory, selectedType, selectedPriceRange, selectedBrand, products]
+  );
+
+  useEffect(() => {
+    filterProducts();
+  }, [searchQuery, selectedCategory, selectedType, selectedPriceRange, selectedBrand, filterProducts]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const query = params.get("search") || "";
+    setSearchQuery(query);
+  }, [location.search]);
 
   const handleCategoryChange = (event) => setSelectedCategory(event.target.value);
   const handleTypeChange = (event) => setSelectedType(event.target.value);
@@ -78,76 +140,6 @@ function Product() {
     }
   };
 
-  useEffect(() => {
-    let isMounted = true;
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        let url = "http://localhost:8080/products/display-product-data";
-        if (selectedCategory !== "All") {
-          url += `?category=${selectedCategory}`;
-        }
-  
-        const response = await fetch(url);
-        const data = await response.json();
-  
-        if (isMounted) {
-          setProducts(data.products);
-          setFilteredProducts(data.products);
-  
-          const uniqueTypes = [...new Set(data.products.map(p => p.productType))];
-          setTypeOptions(["All", ...uniqueTypes]);
-  
-          const filteredBrands = selectedType === "All"
-            ? [...new Set(data.products.map(p => p.productBrand))]
-            : [...new Set(data.products.filter(p => p.productType === selectedType).map(p => p.productBrand))];
-  
-          setBrandOptions(["All", ...filteredBrands]);
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        if (isMounted) {
-          setTimeout(() => setLoading(false), 500);
-        }
-      }
-    };
-    fetchProducts();
-    return () => {
-      isMounted = false;
-    };
-  }, [selectedCategory, selectedType]); 
-  
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const query = params.get("search") || "";
-    setSearchQuery(query);
-  }, [location.search]);
-
-  useEffect(() => {
-    setLoading(true);
-
-    const filtered = products.filter((product) => {
-      const matchesSearchQuery =
-        !searchQuery || product.productName.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = selectedCategory === "All" || product.productCategory === selectedCategory;
-      const matchesType = selectedType === "All" || product.productType === selectedType;
-      const matchesPriceRange =
-        selectedPriceRange === "All" ||
-        (selectedPriceRange === "0 - 100" && product.productPrice <= 100) ||
-        (selectedPriceRange === "101 - 500" && product.productPrice > 100 && product.productPrice <= 500) ||
-        (selectedPriceRange === "501 - 1000" && product.productPrice > 500 && product.productPrice <= 1000) ||
-        (selectedPriceRange === "1000+" && product.productPrice > 1000);
-      const matchesBrand = selectedBrand === "All" || product.productBrand === selectedBrand;
-
-      return matchesSearchQuery && matchesCategory && matchesType && matchesPriceRange && matchesBrand;
-    });
-
-    setFilteredProducts(filtered);
-    setTimeout(() => setLoading(false), 300);
-  }, [products, searchQuery, selectedCategory, selectedType, selectedPriceRange, selectedBrand]);
-
   const handleCardClick = (product) => {
     navigate(`/product/${product._id}`, { state: product });
   };
@@ -168,7 +160,6 @@ function Product() {
             </div>
             <hr />
 
-            {/* Selected Filters */}
             <div className="selected-filters">
               {selectedCategory !== "All" && (
                 <span className="filter-tag">
@@ -230,7 +221,11 @@ function Product() {
             </div>
           </div>
           <div className="product-grid">
-            {filteredProducts.length > 0 ? (
+            {searchLoading ? ( // Show loading animation while searching
+              <div className="loading-wrapper">
+                <Loading_Animation />
+              </div>
+            ) : filteredProducts.length > 0 ? (
               filteredProducts.map((product) => {
                 const offerPercentage = product.productPreviousPrice && product.productPreviousPrice > product.productPrice
                   ? Math.round(((product.productPreviousPrice - product.productPrice) / product.productPreviousPrice) * 100)
@@ -263,7 +258,7 @@ function Product() {
             ) : (
               !loading &&
               <div className="no-product">
-                <img src="https://img.freepik.com/premium-vector/vector-illustration-about-concept-no-items-found-no-results-found_675567-6604.jpg?w=740" />
+                <img src="https://img.freepik.com/premium-vector/vector-illustration-about-concept-no-items-found-no-results-found_675567-6604.jpg?w=740" alt="No products found" />
               </div>
             )}
           </div>

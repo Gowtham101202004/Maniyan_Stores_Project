@@ -22,7 +22,7 @@ function Loading_Animation() {
                         <Lottie 
                             animationData={LoaderAnimation} 
                             loop={true}
-                            style={{ width: '150px', height: '150px' }} 
+                            style={{ width: '110px', height: '110px' }} 
                         /> 
                     </div>
                 </>

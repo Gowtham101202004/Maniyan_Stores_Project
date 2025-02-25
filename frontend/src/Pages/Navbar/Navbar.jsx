@@ -171,10 +171,9 @@ function Navbar() {
           </div>
         )}
       </div>
-      {/* Login Float */}
       {!loading && !userData && !isProfileDropdownVisible && (
         <div className="login-float-container">
-          <div className="login-float" onClick={handleSigninClick}>
+          <div className="login-float" onClick={handleProfileClick}>
             <p>Login</p>
           </div>
         </div>

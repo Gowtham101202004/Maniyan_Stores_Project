@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar/Navbar';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Loading_Animation from "../Pages/Animation/Loading_Animation";
 import { faTruckFast, faLeaf, faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import './Home.css';
 import Slider from './Slider/Slider';
@@ -10,6 +11,11 @@ function Home() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(true); // State to handle initial page loading
+
+  useEffect(() => {
+    setTimeout(() => setPageLoading(false), 500); // Show loading animation for 500ms
+  }, []);
 
   const handleProductClick = (product) => {
     navigate(`/product/${product._id}`, { state: product });
@@ -46,6 +52,14 @@ function Home() {
     return null;
   };
 
+  if (pageLoading) {
+    return (
+      <div className="loading-wrapper">
+        <Loading_Animation />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Navbar />
@@ -80,7 +94,6 @@ function Home() {
                     )}
                   </div>
                   <div className="product-buttons">
-                    {/* Update button to pass product details */}
                     <button onClick={() => handleProductClick(product)}>VIEW PRODUCT</button>
                   </div>
                 </div>

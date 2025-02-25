@@ -211,10 +211,9 @@
 }
 
 .login-float {
-    /* margin-top: 10px;
-    margin-left: 1417px;  */
     width: 100px;
     text-align: center;
+    cursor: pointer;
     border: 2px solid black;
     background-color: rgb(255, 142, 35);
     box-shadow: 1px 1px 6px 1px black;
@@ -334,6 +333,9 @@
     .dropdown-profile {
         margin-top: -90px;
     }
-  
+
+    .login-float-container{
+        left: 70%;
+    }
   }
   

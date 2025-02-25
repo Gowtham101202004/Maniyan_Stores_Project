@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
 import { useLocation } from 'react-router-dom';
 import './payment.css';
 
@@ -56,10 +56,14 @@ const Payment = () => {
       return;
     }
 
-    const cardElement = elements.getElement(CardElement);
+    const cardNumberElement = elements.getElement(CardNumberElement);
+    const cardExpiryElement = elements.getElement(CardExpiryElement);
+    const cardCvcElement = elements.getElement(CardCvcElement);
 
     const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: { card: cardElement },
+      payment_method: {
+        card: cardNumberElement,
+      },
     });
 
     if (error) {
@@ -80,8 +84,12 @@ const Payment = () => {
         
         {paymentMethod === 'card' && (
           <form onSubmit={handleSubmit} className="payment-form">
-            <label>Card Details</label>
-            <CardElement className="card-element" />
+            <label>Card Number</label>
+            <CardNumberElement className="card-element" />
+            <label>Expiry Date</label>
+            <CardExpiryElement className="card-element" />
+            <label>CVC</label>
+            <CardCvcElement className="card-element" />
             <button type="submit" disabled={!stripe || !clientSecret || loading} className="pay-button">
               {loading ? 'Processing...' : `Pay ₹${amount}`}
             </button>
@@ -97,7 +105,7 @@ const Payment = () => {
 
       <div className="payment-right">
         <h3>Order Summary</h3>
-        <p>Product: {product?.productName || 'Tyre'}</p>
+        <p>Product: {product?.productName || 'Product'}</p>
         <p>Price: ₹{amount}</p>
       </div>
     </div>
