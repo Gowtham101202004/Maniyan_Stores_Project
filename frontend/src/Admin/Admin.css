@@ -1,13 +1,16 @@
 .admin-container{
     background-color: rgb(0, 139, 129);
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
     display: flex;
     flex-direction: row;
 }
 
 .admin-navbar{
+    position: fixed;
     margin: 5px;
+    padding-bottom: 15px;
     width: 20%;
     text-align: center;
     background-color: black;
@@ -72,7 +75,7 @@
 
 .admin-navbar ul .logout {
     margin-top: 230px;
-    padding-left: 80px;
+    padding-left: 70px;
     color: red;
 }
 
@@ -84,6 +87,7 @@
 /* admin */
 
 .admin-main {
+    margin-left: 310px;
     flex-grow: 1;
     padding: 10px;
     color: white;
@@ -106,7 +110,7 @@
     color: white;
     padding: 10px 0;
     border-radius: 10px;
-    box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.5);
     text-align: center;
     cursor: pointer;
     width: 250px;
@@ -114,7 +118,7 @@
 }
 
 .card:hover{
-    box-shadow: 1px 1px 10px 5px rgba(0, 0, 0, 0.7);
+    box-shadow: 2px 2px 7px 4px rgba(0, 0, 0, 0.5);
 }
 
 .card h3{
@@ -123,21 +127,32 @@
 }
 
 .card p{
-    margin: 10px;
+    margin: 0 0 10px 0;
     font-size: 26px;
     font-weight: bold;
+}
+
+.card-icon-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.card-icon-container h3{
+    padding: 0 10px;
 }
 
 .card-icon {
     font-size: 2rem;
     padding: 0;
-    margin-top: 5px;
 }
 
 /* users */
 
 .users {
     padding: 10px;
+    margin-left: 320px;
 }
 
 .users h1{
@@ -158,26 +173,33 @@
     border: 2px solid #ddd; 
 }
 
-.user-table th, 
-.user-table td {
-    padding: 12px 5px;
-    text-align: center;
-    border: 1px solid #ddd;
+.user-table input{
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
 }
 
 .user-table th {
-    background-color: #f4f4f4;
+    background-color: black;
+    color: white;
     font-weight: bold;
-    border-bottom: 2px solid #bbb; 
+    padding: 12px 10px;
+    text-align: center;
+    border: 1px solid #ddd;
 }
-/* 
-.user-table tbody tr:hover {
-    background-color: #f1f1f1;
-} */
+ 
+.user-table td {
+    min-width: 160px;
+    padding: 12px 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    line-height: 20px;
+}
 
 .user-profile {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
+    padding: 0 5px;
     border-radius: 50%;
 }
 
@@ -188,35 +210,186 @@
 }
 
 .user-icons .edit-icon {
+    margin: 0;
     width: 20px;
+    padding: 3px 13px;
     color: #007bff;
+    border: 2px solid none;
+    border-radius: 50%;
     transition: ease 0.3s;
 }
 
 .user-icons .edit-icon:hover{
-    transform: scale(1.2);
+    background-color: #bdbdbdbd;
 }
 
 .user-icons .delete-icon {
-    margin-bottom: 10px;
+    margin: 0;
     width: 20px;
+    padding:  14px 13px;
     color: #dc3545;
+    border: 2px solid none;
+    border-radius: 50%;
     transition: ease 0.3s;
 }
 
 .user-icons .delete-icon:hover{
-    transform: scale(1.2);
+    background-color: #bdbdbdbd;
 }
 
-.user-icons button {
-    padding: 6px 12px;
+.user-table button {
+    padding: 10px 20px;
+    font-size: 12px; 
+    position: relative;
+    border-radius: 5px;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: #007bff;
+    background-color: rgb(255, 119, 0);
     color: white;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    background-image: linear-gradient(45deg, transparent 50%, black 50%);
+    background-size: 300% 200%;
+    background-position: bottom right;
 }
 
-.user-icons button:hover {
+.user-table button:hover {
     opacity: 0.8;
+    background-position: top left;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 1.15);
 } 
+
+/* products */
+
+.products{
+    padding: 10px;
+    margin-left: 320px;
+}
+
+.products h1{
+    color: white;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 25px;
+}
+
+.products .add-product-form{
+    margin: 10px;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px; 
+    background: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    border: 2px solid #ddd; 
+}
+
+.product-table input {
+    width: 100%; 
+    box-sizing: border-box; 
+    padding: 5px;
+    font-size: 14px;
+  }
+
+.product-table th{
+    top: 0;
+    background-color: black;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    position: sticky;
+    line-height: 25px;
+    border: 1px solid #ddd;
+    border-bottom: 2px solid #ddd;;
+    z-index: 2;
+}
+.product-table td {
+    padding: 8px;
+    min-width: 60px;
+    text-align: left;
+    line-height: 25px;
+    border: 1px solid #ddd;
+}
+
+.product-table .action{
+    text-align: center;
+}
+
+.product-table .product-image {
+    width: 50px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.product-table .product-icons {
+    display: flex;
+    gap: 10px;
+}
+  
+.product-table .product-icons .edit-icon, .delete-icon {
+    cursor: pointer;
+    font-size: 18px;
+    margin: 0 5px;
+}
+
+.product-table .product-icons .edit-icon {
+    margin: 0;
+    width: 20px;
+    padding: 3px 13px;
+    color: #007bff;
+    border: 2px solid none;
+    border-radius: 50%;
+    transition: ease 0.3s;
+}
+
+.product-table .product-icons .edit-icon:hover{
+    background-color: #bdbdbdbd;
+}
+
+.product-table .product-icons .delete-icon {
+    margin: 0;
+    width: 20px;
+    padding:  14px 13px;
+    color: #dc3545;
+    border: 2px solid none;
+    border-radius: 50%;
+    transition: ease 0.3s;
+}
+
+.product-table .product-icons .delete-icon:hover{
+    background-color: #bdbdbdbd;
+}
+
+.product-table button {
+    padding: 10px 20px;
+    font-size: 12px; 
+    position: relative;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(255, 119, 0);
+    color: white;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    background-image: linear-gradient(45deg, transparent 50%, black 50%);
+    background-size: 300% 200%;
+    background-position: bottom right;
+}
+
+.product-table button:hover {
+    opacity: 0.8;
+    background-position: top left;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 1.15);
+} 
+
+/* orders */
+
+.orders{
+    padding: 10px;
+    margin-left: 320px;
+}

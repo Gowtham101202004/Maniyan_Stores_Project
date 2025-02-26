@@ -13,7 +13,6 @@ const countUsersAndProducts = expressAsyncHandler(async (req, res) => {
 });
 
 const allUsersData = expressAsyncHandler(async (req, res) => {
-    console.log("User data fetched by ADMIN");
     try {
         const users = await userModel.find().select("-password");
         return res.status(200).json({ message: "User data fetched!", data: users });
@@ -23,7 +22,6 @@ const allUsersData = expressAsyncHandler(async (req, res) => {
 });
 
 const updateUser = expressAsyncHandler(async (req, res) => {
-    console.log("Updated User ID -> ", req.params.id);
     const { name, email, address, phonenumber, image } = req.body;
 
     try {
