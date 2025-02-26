@@ -5,7 +5,8 @@ require('dotenv').config();
 const userRoutes = require('./Routes/userRoutes');
 const productRoutes = require('./Routes/productRoutes');
 const cartRoutes = require('./Routes/cartRoutes');
-const paymentRoutes = require('./Routes/paymentRoutes')
+const paymentRoutes = require('./Routes/paymentRoutes');
+const adminRoutes = require('./Routes/adminRoutes');
 
 require('dotenv').config();
 
@@ -38,6 +39,7 @@ app.get("/", (req, res) => {
   });
   
 app.use("/user", userRoutes);
+app.use("/admin", adminRoutes);
 app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
 app.use('/payment', paymentRoutes);
