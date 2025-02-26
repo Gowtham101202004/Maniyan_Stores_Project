@@ -3,11 +3,9 @@ const userModel = require("../Models/userModel");
 const Product = require("../Models/productModel");
 
 const countUsersAndProducts = expressAsyncHandler(async (req, res) => {
-    console.log("Fetched Count by ADMIN");
     try {
         const userCount = await userModel.countDocuments();
         const productCount = await Product.countDocuments();
-        console.log(`Users: ${userCount}, Products: ${productCount}`);
         return res.status(200).json({ message: "Count fetched!", data: { userCount, productCount }});
     } catch (err) {
         res.status(500).json({ message: err.message });
