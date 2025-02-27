@@ -47,27 +47,26 @@ function Admin() {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const { data } = await response.json(); 
+      const { data } = await response.json();
       setDashboardData({
         userCount: data.userCount || 0,
         productCount: data.productCount || 0
       });
     } catch (error) {
       console.error("Error fetching dashboard data:", error.message);
-    }
-    finally {
+    } finally {
       setIsLoading(false);
     }
   };
 
   const fetchAdminData = async () => {
     setIsLoading(true);
-    try{
+    try {
       const storedData = localStorage.getItem("userdata");
       if (storedData) {
         setAdminData(JSON.parse(storedData));
       }
-    }catch (error) {
+    } catch (error) {
       console.error("Error fetching admin data:", error);
     } finally {
       setIsLoading(false);
@@ -251,6 +250,7 @@ function Admin() {
                   <th>Profile</th>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Role</th>
                   <th>Phone</th>
                   <th>Address</th>
                   <th>Actions</th>
@@ -270,16 +270,33 @@ function Admin() {
                       )}
                     </td>
                     <td>{user.email}</td>
-                    <td>{editingUser === user._id ? (
-                      <input type="text" value={editedUser.phonenumber} onChange={(e) => setEditedUser({ ...editedUser, phonenumber: e.target.value })} />
-                    ) : (
-                      user.phonenumber || "N/A"
-                    )}</td>
-                    <td>{editingUser === user._id ? (
-                      <input type="text" value={editedUser.address} onChange={(e) => setEditedUser({ ...editedUser, address: e.target.value })} />
-                    ) : (
-                      user.address || "N/A"
-                    )}</td>
+                    <td>
+                      {editingUser === user._id ? (
+                        <select
+                          value={editedUser.isAdmin ? "Admin" : "User"}
+                          onChange={(e) => setEditedUser({ ...editedUser, isAdmin: e.target.value === "Admin" })}
+                        >
+                          <option value="User">User</option>
+                          <option value="Admin">Admin</option>
+                        </select>
+                      ) : (
+                        user.isAdmin ? "Admin" : "User"
+                      )}
+                    </td>
+                    <td>
+                      {editingUser === user._id ? (
+                        <input type="text" value={editedUser.phonenumber} onChange={(e) => setEditedUser({ ...editedUser, phonenumber: e.target.value })} />
+                      ) : (
+                        user.phonenumber || "N/A"
+                      )}
+                    </td>
+                    <td>
+                      {editingUser === user._id ? (
+                        <input type="text" value={editedUser.address} onChange={(e) => setEditedUser({ ...editedUser, address: e.target.value })} />
+                      ) : (
+                        user.address || "N/A"
+                      )}
+                    </td>
                     <td>
                       {editingUser === user._id ? (
                         <button onClick={handleSaveUser}>Save</button>
@@ -441,42 +458,43 @@ function Admin() {
 
   return (
     <>
-     <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isLoading}>
+      <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isLoading}>
         <CircularProgress sx={{ color: "rgb(255, 119, 0)" }} />
       </Backdrop>
-    <div className="admin-container">
-      <div className="admin-navbar">
-        <div className="admin-profile">
-          <img
-            src={adminData?.image || Default_Profile}
-            alt="Admin Profile"
-            onError={(e) => {
-              console.error("Error loading admin profile picture. Falling back to default.");
-              e.target.src = Default_Profile;
-            }}/>
-          <h2>{adminData?.name || "Admin"}</h2>
-        </div>
-        <hr />
-        <ul>
-          <li onClick={() => setActiveSection('dashboard')} className={activeSection === 'dashboard' ? 'active' : ''}>
-            <FaTachometerAlt className="icon" />DASHBOARD
-          </li>
-          <li onClick={() => setActiveSection('users')} className={activeSection === 'users' ? 'active' : ''}>
-            <FaUsers className="icon" />USERS
-          </li>
-          <li onClick={() => setActiveSection('products')} className={activeSection === 'products' ? 'active' : ''}>
-            <FaBoxOpen className="icon" />PRODUCTS
-          </li>
-          <li onClick={() => setActiveSection('orders')} className={activeSection === 'orders' ? 'active' : ''}>
-            <FaShoppingCart className="icon" />ORDERS
-          </li>
+      <div className="admin-container">
+        <div className="admin-navbar">
+          <div className="admin-profile">
+            <img
+              src={adminData?.image || Default_Profile}
+              alt="Admin Profile"
+              onError={(e) => {
+                console.error("Error loading admin profile picture. Falling back to default.");
+                e.target.src = Default_Profile;
+              }}
+            />
+            <h2>{adminData?.name || "Admin"}</h2>
+          </div>
           <hr />
-          <li onClick={handleHomeClick}><FaHome className="icon" />HOME</li>
-          <li className="logout"><FaSignOutAlt className="icon" /> LOGOUT</li>
-        </ul>
+          <ul>
+            <li onClick={() => setActiveSection('dashboard')} className={activeSection === 'dashboard' ? 'active' : ''}>
+              <FaTachometerAlt className="icon" />DASHBOARD
+            </li>
+            <li onClick={() => setActiveSection('users')} className={activeSection === 'users' ? 'active' : ''}>
+              <FaUsers className="icon" />USERS
+            </li>
+            <li onClick={() => setActiveSection('products')} className={activeSection === 'products' ? 'active' : ''}>
+              <FaBoxOpen className="icon" />PRODUCTS
+            </li>
+            <li onClick={() => setActiveSection('orders')} className={activeSection === 'orders' ? 'active' : ''}>
+              <FaShoppingCart className="icon" />ORDERS
+            </li>
+            <hr />
+            <li onClick={handleHomeClick}><FaHome className="icon" />HOME</li>
+            <li className="logout"><FaSignOutAlt className="icon" /> LOGOUT</li>
+          </ul>
+        </div>
+        {renderSection()}
       </div>
-      {renderSection()}
-    </div>
     </>
   );
 }

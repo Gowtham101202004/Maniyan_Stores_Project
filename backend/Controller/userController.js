@@ -15,6 +15,7 @@ const loginController = expressAsyncHandler(async (req, res) => {
             image: user.image,
             address: user.address,
             phonenumber: user.phonenumber,
+            isAdmin: user.isAdmin,
             token: generateToken(user._id),
         });
     } else {
@@ -23,7 +24,7 @@ const loginController = expressAsyncHandler(async (req, res) => {
 });
 
 const registerController = expressAsyncHandler(async (req, res) => {
-    const { name, email, password, address, phonenumber, image } = req.body;
+    const { name, email, password, address, phonenumber, image, isAdmin } = req.body;
 
     if (!name || !email || !password) {
         res.status(400).json({ message: "Name, email, and password are required" });
@@ -43,6 +44,7 @@ const registerController = expressAsyncHandler(async (req, res) => {
         image: image || "",
         address: address || "",
         phonenumber: phonenumber || null,
+        isAdmin: isAdmin || false,
     });
 
     if (user) {
@@ -53,6 +55,7 @@ const registerController = expressAsyncHandler(async (req, res) => {
             image: user.image,
             address: user.address,
             phonenumber: user.phonenumber,
+            isAdmin: user.isAdmin,
             token: generateToken(user._id),
         });
     } else {
@@ -77,6 +80,7 @@ const googleLoginController = expressAsyncHandler(async (req, res) => {
             image: "",
             address: "",
             phonenumber: null,
+            isAdmin: false,
         });
 
         if (!user) {
@@ -91,6 +95,7 @@ const googleLoginController = expressAsyncHandler(async (req, res) => {
         image: user.image,
         address: user.address,
         phonenumber: user.phonenumber,
+        isAdmin: user.isAdmin,
         token: generateToken(user._id),
     });
 });
@@ -109,7 +114,7 @@ const getUserDetailsController = expressAsyncHandler(async (req, res) => {
 
 const updateUserController = expressAsyncHandler(async (req, res) => {
     const userId = req.params.id;
-    const { name, image, address, phonenumber } = req.body;
+    const { name, image, address, phonenumber, isAdmin } = req.body;
 
     const user = await userModel.findById(userId);
 
@@ -121,6 +126,7 @@ const updateUserController = expressAsyncHandler(async (req, res) => {
     user.image = image === "" ? "" : image; 
     user.address = address || user.address;
     user.phonenumber = phonenumber || user.phonenumber;
+    user.isAdmin = isAdmin !== undefined ? isAdmin : user.isAdmin;
 
     const updatedUser = await user.save();
 
@@ -131,6 +137,7 @@ const updateUserController = expressAsyncHandler(async (req, res) => {
         image: updatedUser.image,
         address: updatedUser.address,
         phonenumber: updatedUser.phonenumber,
+        isAdmin: updatedUser.isAdmin,
         token: generateToken(updatedUser._id),
     });
 });

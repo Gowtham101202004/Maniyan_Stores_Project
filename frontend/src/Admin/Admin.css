@@ -176,8 +176,9 @@
     border: 2px solid #ddd; 
 }
 
-.user-table input{
+.user-table input,select{
     padding: 5px;
+    width: 110px;
     border-radius: 5px;
     border: 1px solid black;
 }
@@ -192,7 +193,7 @@
 }
  
 .user-table td {
-    min-width: 160px;
+    min-width: 130px;
     padding: 12px 10px;
     text-align: center;
     border: 1px solid #ddd;

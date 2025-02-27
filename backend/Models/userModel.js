@@ -18,6 +18,10 @@ const userModel = mongoose.Schema(
                 return !this.isGoogleUser;
             },
         },
+        isAdmin: {
+            type: Boolean,
+            default: false,
+        },
         isGoogleUser: {
             type: Boolean,
             default: false,

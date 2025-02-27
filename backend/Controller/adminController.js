@@ -22,7 +22,7 @@ const allUsersData = expressAsyncHandler(async (req, res) => {
 });
 
 const updateUser = expressAsyncHandler(async (req, res) => {
-    const { name, email, address, phonenumber, image } = req.body;
+    const { name, email, isAdmin, address, phonenumber, image } = req.body;
 
     try {
         const user = await userModel.findById(req.params.id);
@@ -32,6 +32,7 @@ const updateUser = expressAsyncHandler(async (req, res) => {
 
         user.name = name || user.name;
         user.email = email || user.email;
+        user.isAdmin = isAdmin !== undefined ? isAdmin : user.isAdmin;
         user.address = address || user.address;
         user.phonenumber = phonenumber || user.phonenumber;
         user.image = image === "" ? "" : image;
