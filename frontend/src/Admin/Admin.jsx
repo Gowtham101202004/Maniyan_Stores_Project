@@ -280,6 +280,8 @@ function Admin() {
                 <input type="text" placeholder="Price" value={newProduct.productPrice} onChange={(e) => setNewProduct({ ...newProduct, productPrice: e.target.value })} />
                 <input type="text" placeholder="Previous Price" value={newProduct.productPreviousPrice} onChange={(e) => setNewProduct({ ...newProduct, productPreviousPrice: e.target.value })} />
                 <input type="text" placeholder="Stock" value={newProduct.productStock} onChange={(e) => setNewProduct({ ...newProduct, productStock: e.target.value })} />
+              </div>
+              <div>
                 <button onClick={handleAddProduct}>Add Product</button>
               </div>
             </div>
