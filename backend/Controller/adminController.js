@@ -44,7 +44,6 @@ const updateUser = expressAsyncHandler(async (req, res) => {
 });
 
 const deleteUserById = expressAsyncHandler(async (req, res) => {
-    console.log("User ID to delete -> ", req.params.id);
     try {
         const user = await userModel.findByIdAndDelete(req.params.id);
         if (!user) {
@@ -57,7 +56,6 @@ const deleteUserById = expressAsyncHandler(async (req, res) => {
 });
 
 const allProductsData = expressAsyncHandler(async (req, res) => {
-    console.log("Product data fetched by ADMIN");
     try {
         const products = await Product.find();
         return res.status(200).json({ message: "Product data fetched!", data: products });
@@ -66,8 +64,44 @@ const allProductsData = expressAsyncHandler(async (req, res) => {
     }
 });
 
+const addProduct = expressAsyncHandler(async (req, res) => {
+    const { 
+        productImage, 
+        productCategory, 
+        productType, 
+        productBrand, 
+        productName, 
+        productUnit, 
+        productContainerType, 
+        productExpirationPeriod, 
+        productPrice, 
+        productPreviousPrice, 
+        productStock 
+    } = req.body;
+
+    try {
+        const newProduct = new Product({
+            productImage,
+            productCategory,
+            productType,
+            productBrand,
+            productName,
+            productUnit,
+            productContainerType,
+            productExpirationPeriod,
+            productPrice,
+            productPreviousPrice,
+            productStock
+        });
+
+        await newProduct.save();
+        res.status(201).json({ message: "Product added successfully!", data: newProduct });
+    } catch (err) {
+        res.status(500).json({ message: "Server error, please try again later." });
+    }
+});
+
 const updateProduct = expressAsyncHandler(async (req, res) => {
-    console.log("Updated Product ID -> ", req.params.id);
     const { productImage, productCategory, productType, productBrand, productName, productUnit, productContainerType, productExpirationPeriod, productPrice, productPreviousPrice, productStock } = req.body;
 
     try {
@@ -96,7 +130,6 @@ const updateProduct = expressAsyncHandler(async (req, res) => {
 });
 
 const deleteProductById = expressAsyncHandler(async (req, res) => {
-    console.log("Product ID to delete -> ", req.params.id);
     try {
         const product = await Product.findByIdAndDelete(req.params.id);
         if (!product) {
@@ -114,6 +147,7 @@ module.exports = {
     updateUser,
     deleteUserById,
     allProductsData,
+    addProduct,
     updateProduct,
-    deleteProductById,
+    deleteProductById
 };

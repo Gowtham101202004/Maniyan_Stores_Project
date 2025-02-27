@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import './Admin.css';
 import { useNavigate } from "react-router-dom";
 import Default_Profile from "../assets/default-profile.png";
+import { Backdrop, CircularProgress } from "@mui/material";
 import { FaTachometerAlt, FaUsers, FaBoxOpen, FaShoppingCart, FaSignOutAlt, FaHome, FaMoneyBillWave, FaEdit, FaPen, FaTrash, FaPlus } from 'react-icons/fa';
 
 function Admin() {
+  const [isLoading, setIsLoading] = useState(false);
   const [activeSection, setActiveSection] = useState('dashboard');
   const [dashboardData, setDashboardData] = useState({ users: 0, products: 0, orders: 0, revenue: 0 });
   const [adminData, setAdminData] = useState(null);
@@ -37,6 +39,7 @@ function Admin() {
   }, []);
 
   const fetchDashboardData = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch("http://localhost:8080/admin/count", {
         headers: { "Content-Type": "application/json" }
@@ -52,16 +55,27 @@ function Admin() {
     } catch (error) {
       console.error("Error fetching dashboard data:", error.message);
     }
+    finally {
+      setIsLoading(false);
+    }
   };
 
   const fetchAdminData = async () => {
-    const storedData = localStorage.getItem("userdata");
-    if (storedData) {
-      setAdminData(JSON.parse(storedData));
+    setIsLoading(true);
+    try{
+      const storedData = localStorage.getItem("userdata");
+      if (storedData) {
+        setAdminData(JSON.parse(storedData));
+      }
+    }catch (error) {
+      console.error("Error fetching admin data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchUserData = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch("http://localhost:8080/admin/users");
       if (!response.ok) throw new Error("Failed to fetch users");
@@ -69,10 +83,13 @@ function Admin() {
       setUsers(data);
     } catch (error) {
       console.error("Error fetching user data:", error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchProductData = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch("http://localhost:8080/admin/products");
       if (!response.ok) throw new Error("Failed to fetch products");
@@ -80,6 +97,8 @@ function Admin() {
       setProducts(data);
     } catch (error) {
       console.error("Error fetching product data:", error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -89,6 +108,7 @@ function Admin() {
   };
 
   const handleSaveUser = async () => {
+    setIsLoading(true);
     try {
       await fetch(`http://localhost:8080/admin/users/${editingUser}`, {
         method: 'PUT',
@@ -99,15 +119,20 @@ function Admin() {
       setEditingUser(null);
     } catch (error) {
       console.error("Error updating user:", error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDeleteUser = async (userId) => {
+    setIsLoading(true);
     try {
       await fetch(`http://localhost:8080/admin/users/${userId}`, { method: 'DELETE' });
       fetchUserData();
     } catch (error) {
       console.error("Error deleting user:", error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -117,6 +142,7 @@ function Admin() {
   };
 
   const handleSaveProduct = async () => {
+    setIsLoading(true);
     try {
       await fetch(`http://localhost:8080/admin/products/${editingProduct}`, {
         method: 'PUT',
@@ -127,21 +153,27 @@ function Admin() {
       setEditingProduct(null);
     } catch (error) {
       console.error("Error updating product:", error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDeleteProduct = async (productId) => {
+    setIsLoading(true);
     try {
       await fetch(`http://localhost:8080/admin/products/${productId}`, { method: 'DELETE' });
       fetchProductData();
     } catch (error) {
       console.error("Error deleting product:", error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleAddProduct = async () => {
+    setIsLoading(true);
     try {
-      await fetch("http://localhost:8080/admin/products", {
+      await fetch("http://localhost:8080/admin/add-products", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newProduct)
@@ -162,6 +194,8 @@ function Admin() {
       });
     } catch (error) {
       console.error("Error adding product:", error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -406,6 +440,10 @@ function Admin() {
   };
 
   return (
+    <>
+     <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isLoading}>
+        <CircularProgress sx={{ color: "rgb(255, 119, 0)" }} />
+      </Backdrop>
     <div className="admin-container">
       <div className="admin-navbar">
         <div className="admin-profile">
@@ -439,6 +477,7 @@ function Admin() {
       </div>
       {renderSection()}
     </div>
+    </>
   );
 }
 
