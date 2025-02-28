@@ -8,6 +8,7 @@ import {
   faCircleQuestion,
   faRightFromBracket,
   faRightToBracket,
+  faGauge,
 } from "@fortawesome/free-solid-svg-icons";
 import { auth, signOut } from "../../Auth/Firebase";
 import axios from "axios";
@@ -90,6 +91,10 @@ function Navbar() {
     navigate("/editprofile");
   };
 
+  const handleAdminDashboardClick = () => {
+    navigate("/admin");
+  };
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -156,6 +161,11 @@ function Navbar() {
                   <li>
                     <FontAwesomeIcon icon={faCircleQuestion} className="dd-icon" /> Help & Support
                   </li>
+                  {userData?.isAdmin && (
+                  <li onClick={handleAdminDashboardClick}>
+                      <FontAwesomeIcon icon={faGauge} className="dd-icon" /> Admin Dashboard
+                  </li>
+                  )}
                   <li onClick={handleSignoutClick} className="signout-item">
                     <FontAwesomeIcon icon={faRightFromBracket} className="dd-icon" /> Sign out
                   </li>

@@ -55,7 +55,11 @@ function Signin() {
         setLogInStatus({ msg: 'Login Successful! 😎', key: Math.random(), severity: 'success' });
 
         setTimeout(() => {
-          navigate("/");
+          if (res.data.isAdmin) {
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
         }, 2000);
         
       } catch (err) {
@@ -98,7 +102,11 @@ function Signin() {
             severity: "success",
           });
   
-          navigate("/");
+          if (res.data.isAdmin) {
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
           <Loading_Animation/>
         } catch (err) {
           console.error("Google Sign-In Error -> ", err.response ? err.response.data : err.message);

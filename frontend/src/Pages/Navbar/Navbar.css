@@ -167,6 +167,8 @@
 }
 
 .dropdown-profile .username-container{
+    margin-top: -5px;
+    margin-bottom: 15px;
     text-align: center;
 }
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Admin.css';
 import { useNavigate } from "react-router-dom";
 import Default_Profile from "../assets/default-profile.png";
+import { auth, signOut } from "../Auth/Firebase";
 import { Backdrop, CircularProgress } from "@mui/material";
 import { FaTachometerAlt, FaUsers, FaBoxOpen, FaShoppingCart, FaSignOutAlt, FaHome, FaMoneyBillWave, FaEdit, FaPen, FaTrash, FaPlus } from 'react-icons/fa';
 
@@ -201,6 +202,17 @@ function Admin() {
   const handleHomeClick = () => {
     navigate("/");
   };
+
+  const handleSignoutClick = () => {
+      signOut(auth)
+        .then(() => {
+          localStorage.clear();
+          navigate("/signin");
+        })
+        .catch((error) => {
+          console.error("Sign-out error:", error);
+        });
+    };
 
   const renderSection = () => {
     switch (activeSection) {
@@ -490,7 +502,7 @@ function Admin() {
             </li>
             <hr />
             <li onClick={handleHomeClick}><FaHome className="icon" />HOME</li>
-            <li className="logout"><FaSignOutAlt className="icon" /> LOGOUT</li>
+            <li className="logout" onClick={handleSignoutClick}><FaSignOutAlt className="icon" /> LOGOUT</li>
           </ul>
         </div>
         {renderSection()}
