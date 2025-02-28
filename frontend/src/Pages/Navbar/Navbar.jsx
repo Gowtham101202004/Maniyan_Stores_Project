@@ -158,14 +158,14 @@ function Navbar() {
                   <li onClick={handleEditProfileClick}>
                     <FontAwesomeIcon icon={faPenToSquare} className="dd-icon" /> Edit Profile
                   </li>
-                  <li>
-                    <FontAwesomeIcon icon={faCircleQuestion} className="dd-icon" /> Help & Support
-                  </li>
                   {userData?.isAdmin && (
                   <li onClick={handleAdminDashboardClick}>
                       <FontAwesomeIcon icon={faGauge} className="dd-icon" /> Admin Dashboard
                   </li>
                   )}
+                  <li>
+                    <FontAwesomeIcon icon={faCircleQuestion} className="dd-icon" /> Help & Support
+                  </li>
                   <li onClick={handleSignoutClick} className="signout-item">
                     <FontAwesomeIcon icon={faRightFromBracket} className="dd-icon" /> Sign out
                   </li>
@@ -174,7 +174,7 @@ function Navbar() {
             ) : (
               <ul>
                 <li onClick={handleSigninClick} className="signin-item">
-                  <FontAwesomeIcon icon={faRightToBracket} className="dd-icon" /> Sign in
+                  <FontAwesomeIcon icon={faRightToBracket} className="db-icon" /> Sign in
                 </li>
               </ul>
             )}

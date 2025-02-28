@@ -4,8 +4,8 @@ const cors = require('cors');
 require('dotenv').config();
 const userRoutes = require('./Routes/userRoutes');
 const productRoutes = require('./Routes/productRoutes');
+const orderRoutes = require('./Routes/orderRoutes');
 const cartRoutes = require('./Routes/cartRoutes');
-const paymentRoutes = require('./Routes/paymentRoutes');
 const adminRoutes = require('./Routes/adminRoutes');
 
 require('dotenv').config();
@@ -42,8 +42,7 @@ app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
-app.use('/payment', paymentRoutes);
-
+app.use("/payment",orderRoutes);
 // Another method
 // mongoose.connect(process.env.MONGO_URI)
 // .then(()=>console.log("MongoDB connected"))

@@ -16,7 +16,7 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "router": "^1.3.8",
-    "stripe": "^17.6.0"
+    "stripe": "^17.7.0"
   },
   "name": "backend",
   "version": "1.0.0",

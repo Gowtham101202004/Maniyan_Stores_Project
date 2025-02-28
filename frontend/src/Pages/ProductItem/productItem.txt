@@ -1,3 +1,4 @@
+//original
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
@@ -53,35 +54,8 @@ function ProductItem() {
 
   const handleBackClick = () => navigate("/product");
 
-  const handleBuyNow = async () => {
-    const userData = JSON.parse(localStorage.getItem("userdata"));
-    if (!userData || !userData._id) {
-      alert("Please log in first");
-      return;
-    }
-  
-    const payload = {
-      cartItems: [{
-        product: product._id,
-        name: product.productName, 
-        images: [product.productImage], 
-        price: product.productPrice, 
-        quantity: 1,
-      }],
-      email: userData.email,
-    };
-  
-    console.log("Sending payload to backend:", payload);
-  
-    try {
-      const response = await axios.post("http://localhost:8080/payment/checkout", payload);
-      if (response.data.url) {
-        window.location.href = response.data.url;
-      }
-    } catch (error) {
-      console.error("Error during checkout:", error);
-      alert("Failed to proceed to checkout!");
-    }
+  const handleBuyNow = () => {
+    navigate('/payment', { state: { product } }); 
   };
 
   const handleCardClick = (product) => navigate(`/product/${product._id}`, { state: product });

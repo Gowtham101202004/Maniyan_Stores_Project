@@ -182,23 +182,28 @@
 .dropdown-profile ul {
     list-style: none;
     width: 100%;
+    max-width: 150px;
     margin-top: 10px;
 }
 
 .dropdown-profile li {
-    margin-bottom: 20px;
+    margin-left: -30px;
+    margin-bottom: 5px;
+    max-width: 170px;
+    padding: 7px 5px;
+    border-radius: 5px;
     align-items: center;
     cursor: pointer;
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition: ease 0.2s;
 }
 
 .dropdown-profile li:hover {
-    color: rgb(255, 119, 0);
-    transform: scale(1.05);
+    background-color: black;
+    color: white;
 }
 
 .dropdown-profile hr {
-    margin: -10px 0 15px -3px;
+    margin: -10px 0 5px -3px;
     border: none;
     background-color: black; 
     width: 195px;
@@ -252,12 +257,20 @@
  /* Dropdown Profile End */
 .dd-icon{
     font-size: 19px;
-    margin-left: -20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.db-icon{
+    font-size: 19px;
+    margin-left: 30px;
     margin-right: 5px;
 }
 
 .dropdown-profile .signin-item{
-    margin: 0 0 0 30px;
+    margin: -10px;
+    margin-left: -35px;
+    margin-bottom: -15px;
 }
 
 .dropdown-profile .signin-item:hover{
