@@ -21,6 +21,9 @@ const paymentController = async (req, res) => {
         product_data: {
           name: item.name, 
           images: item.images, 
+          metadata : {
+              productId : item._id,
+          },
         },
         unit_amount: Math.round(item.price * 100), 
       },
@@ -42,6 +45,9 @@ const paymentController = async (req, res) => {
       cancel_url: 'http://localhost:5173/cancel', 
       customer_email: user.email, 
       shipping_options: [{ shipping_rate: 'shr_1QxTpj4UOuOwfYxghjdIwZcb' }],
+      metadata : {
+        userId : String(user._id),
+      }
     });
 
     console.log("Stripe session created successfully:", session);
