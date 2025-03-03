@@ -11,9 +11,10 @@ const Success = () => {
     <>
         <div className='success-image-container'>
             <div className='success-image'>
-               <img src={SuccessImage}/>
-                <p>Payment Successfull</p>
-                <button onClick={handleOrderClick}>SEE ORDER</button> 
+              <h1>Thank You</h1>
+              <img src={SuccessImage}/>
+              <p>Payment Successfull</p>
+              <button onClick={handleOrderClick}>SEE ORDER</button> 
             </div>
         </div>
     </>

@@ -145,13 +145,13 @@
     border-radius: 12px;
     padding: 7px 10px;
     background-color: white;
-    box-shadow: black 1px 2px 10px 1px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     transition: ease-in-out 0.3s;
 }
 
 .send-button:hover{
-    box-shadow: black 2px 3px 10px 2px;
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.7);
     color: white;
     background-color: black;
 }

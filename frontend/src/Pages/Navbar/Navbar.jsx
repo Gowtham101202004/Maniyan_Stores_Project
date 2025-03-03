@@ -117,10 +117,10 @@ function Navbar() {
               <NavLink className="Navlink" to="/product">Products</NavLink>
             </li>
             <li>
-              <NavLink className="Navlink" to="/contact">Contact</NavLink>
+              <NavLink className="Navlink" to="/order">Orders</NavLink>
             </li>
             <li>
-              <NavLink className="Navlink" to="/about">About</NavLink>
+              <NavLink className="Navlink" to="/contact">Contact</NavLink>
             </li>
           </ul>
         </div>

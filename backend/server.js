@@ -5,9 +5,10 @@ require('dotenv').config();
 
 const userRoutes = require('./Routes/userRoutes');
 const productRoutes = require('./Routes/productRoutes');
-const orderRoutes = require('./Routes/orderRoutes');
+const paymentRoutes = require('./Routes/paymentRoutes');
 const cartRoutes = require('./Routes/cartRoutes');
 const adminRoutes = require('./Routes/adminRoutes');
+const orderRoutes = require('./Routes/orderRoutes');
 
 const app = express();
 
@@ -44,7 +45,8 @@ app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
-app.use("/payment", orderRoutes);
+app.use("/payment", paymentRoutes);
+app.use('/order', orderRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

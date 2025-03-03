@@ -11,12 +11,18 @@
     align-items: center;
     background-color: rgb(210, 255, 240);
     width: 400px;
-    height: 330px;
+    height: 360px;
     margin: auto;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
     box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.success-image h1{
+    font-weight: bold;
+    color: #22c466;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .success-image p{
@@ -28,6 +34,7 @@
 
 .success-image button{
     padding: 12px 12px;
+    margin-bottom: 20px;
     font-size: 14px; 
     font-weight: bold;
     position: relative;
@@ -76,7 +83,7 @@
     font-size: 24px;
     font-weight: bold;
     color: red;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .cancel-image button{

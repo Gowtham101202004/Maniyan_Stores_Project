@@ -16,7 +16,7 @@ async function getlineItems(lineItems) {
                 name: product.name,
                 price: item.price.unit_amount / 100,
                 quantity: item.quantity,
-                image: product.image,
+                image: product.images,
             };
             ProductItems.push(productData);
         }

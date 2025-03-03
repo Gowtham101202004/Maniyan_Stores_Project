@@ -1,7 +1,10 @@
-// const express = require('express');
-// const { createPaymentIntent } = require('../Controller/paymentController');
-// const router = express.Router();
+const express = require("express");
+const { paymentController } = require("../Controller/Payment/paymentController");
+const { webhooks } = require("../Controller/Payment/webhooks");
 
-// router.post('/create-payment-intent', createPaymentIntent);
+const router = express.Router();
 
-// module.exports = router;
+router.post("/webhook", express.raw({ type: 'application/json' }), webhooks);
+router.post("/checkout", paymentController);
+
+module.exports = router;
