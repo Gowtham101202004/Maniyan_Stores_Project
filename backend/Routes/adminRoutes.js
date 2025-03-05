@@ -8,7 +8,9 @@ const {
     allProductsData,
     updateProduct,
     deleteProductById,
-    addProduct
+    addProduct,
+    getAllOrders,
+    updateOrderStatus
 } = require("../Controller/adminController");
 
 router.get("/count", countUsersAndProducts);
@@ -20,5 +22,8 @@ router.get("/products", allProductsData);
 router.post("/add-products", addProduct);
 router.put("/products/:id", updateProduct);
 router.delete("/products/:id", deleteProductById);
+
+router.get("/orders", getAllOrders);
+router.put("/update-order", updateOrderStatus);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import axios from "axios";
-import "./Order.css"; 
+import "./Order.css";
 
 const Order = () => {
   const [orders, setOrders] = useState([]);
@@ -33,17 +33,17 @@ const Order = () => {
 
   const calculateTotalAmount = (products) => {
     const productTotal = products.reduce((total, product) => total + product.price * product.quantity, 0);
-    return productTotal + 40; 
+    return productTotal + 40; // Adding delivery charge
   };
 
   const getProgressPercentage = (status) => {
     switch (status) {
       case "Ordered":
-        return 0;
+        return 20;
       case "Shipped":
-        return 33;
+        return 40;
       case "Arrived":
-        return 66;
+        return 60;
       case "Delivered":
         return 100;
       default:
@@ -67,13 +67,13 @@ const Order = () => {
             <div key={order._id} className="order-card">
               <div className="order-header">
                 <div className="order-info">
-                  <p className="order-date">Order Date: {new Date(order.createdAt).toLocaleDateString()}</p>
+                  <p className="order-date"><b>Order Date : </b>{new Date(order.createdAt).toLocaleDateString()}</p>
                 </div>
                 <div className="order-status">
                   <p className={`order-payment-status ${order.paymentDetails.payment_status === "paid" ? "paid" : "pending"}`}>
-                    Payment Status: {order.paymentDetails.payment_status}
+                    <span> Payment Status : </span>{order.paymentDetails.payment_status}
                   </p>
-                  <p className="order-product-status">Product Status: {order.orderStatus || "Processing"}</p>
+                  <p className="order-product-status">Product Status : <span>{order.orderStatus || "Processing"}</span></p>
                 </div>
               </div>
               <div className="order-details">
@@ -92,20 +92,20 @@ const Order = () => {
                 <div className="order-tracking">
                   <div className="tracking-progress">
                     <div className="tracking-line" style={{ width: `${getProgressPercentage(order.orderStatus)}%` }}></div>
-                    <div className="tracking-step">
-                      <span className={`step-icon ${order.orderStatus === "Ordered" ? "active" : ""}`}>✔</span>
+                    <div className={`tracking-step ${order.orderStatus === "Ordered" ? "active" : ""}`}>
+                      <span className="step-icon">✔</span>
                       <span className="step-label">Ordered</span>
                     </div>
-                    <div className="tracking-step">
-                      <span className={`step-icon ${order.orderStatus === "Shipped" ? "active" : ""}`}>✔</span>
+                    <div className={`tracking-step ${order.orderStatus === "Shipped" ? "active" : ""}`}>
+                      <span className="step-icon">✔</span>
                       <span className="step-label">Shipped</span>
                     </div>
-                    <div className="tracking-step">
-                      <span className={`step-icon ${order.orderStatus === "Arrived" ? "active" : ""}`}>✔</span>
+                    <div className={`tracking-step ${order.orderStatus === "Arrived" ? "active" : ""}`}>
+                      <span className="step-icon">✔</span>
                       <span className="step-label">Arrived</span>
                     </div>
-                    <div className="tracking-step">
-                      <span className={`step-icon ${order.orderStatus === "Delivered" ? "active" : ""}`}>✔</span>
+                    <div className={`tracking-step ${order.orderStatus === "Delivered" ? "active" : ""}`}>
+                      <span className="step-icon">✔</span>
                       <span className="step-label">Delivered</span>
                     </div>
                   </div>

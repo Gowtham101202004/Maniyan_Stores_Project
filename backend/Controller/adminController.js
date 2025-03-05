@@ -1,12 +1,23 @@
 const expressAsyncHandler = require("express-async-handler");
 const userModel = require("../Models/userModel");
 const Product = require("../Models/productModel");
+const Order = require("../Models/orderModel");
 
 const countUsersAndProducts = expressAsyncHandler(async (req, res) => {
     try {
         const userCount = await userModel.countDocuments();
         const productCount = await Product.countDocuments();
-        return res.status(200).json({ message: "Count fetched!", data: { userCount, productCount }});
+        const orderCount = await Order.countDocuments();
+        const revenueResult = await Order.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalRevenue: { $sum: "$totalAmount" }
+                }
+            }
+        ]);
+        const revenueCount = revenueResult.length > 0 ? revenueResult[0].totalRevenue : 0;
+        return res.status(200).json({ message: "Count fetched!", data: { userCount, productCount, orderCount, revenueCount } });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -142,6 +153,33 @@ const deleteProductById = expressAsyncHandler(async (req, res) => {
     }
 });
 
+const getAllOrders = expressAsyncHandler(async (req, res) => {
+    try {
+        const orders = await Order.find();
+        return res.status(200).json({ message: "Orders fetched successfully!", data: orders });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+const updateOrderStatus = expressAsyncHandler(async (req, res) => {
+    const { orderId, orderStatus } = req.body;
+
+    try {
+        const order = await Order.findById(orderId);
+        if (!order) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+
+        order.orderStatus = orderStatus || order.orderStatus;
+        await order.save();
+
+        return res.status(200).json({ message: "Order status updated!", data: order });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 module.exports = {
     countUsersAndProducts,
     allUsersData,
@@ -150,5 +188,7 @@ module.exports = {
     allProductsData,
     addProduct,
     updateProduct,
-    deleteProductById
+    deleteProductById,
+    getAllOrders,
+    updateOrderStatus
 };

@@ -1,4 +1,3 @@
-/* Order Page Container */
 .order-container {
     padding: 20px;
     max-width: 1200px;
@@ -7,16 +6,15 @@
     background-color: #f9f9f9;
 }
 
-/* Title */
 .order-title {
     font-size: 24px;
     font-weight: bold;
+    margin-top: 0;
     margin-bottom: 20px;
     color: #333;
     text-align: center;
 }
 
-/* Order Card */
 .order-card {
     background-color: white;
     border-radius: 8px;
@@ -25,7 +23,6 @@
     padding: 15px;
 }
 
-/* Order Header */
 .order-header {
     display: flex;
     justify-content: space-between;
@@ -43,7 +40,7 @@
 
 .order-date {
     font-size: 14px;
-    color: #777;
+    color: black;
 }
 
 .order-status {
@@ -52,13 +49,17 @@
     align-items: flex-end;
 }
 
-.order-status p{
-    margin : 5px 0;
+.order-status p {
+    margin: 5px 0;
 }
 
 .order-payment-status {
     font-size: 14px;
     font-weight: bold;
+}
+
+.order-payment-status span {
+    color: black;
 }
 
 .order-payment-status.paid {
@@ -71,16 +72,19 @@
 
 .order-product-status {
     font-size: 14px;
-    color: #555;
+    color: #000000;
+    font-weight: bold;
 }
 
-/* Order Details */
+.order-product-status span {
+    color: rgb(15, 190, 203);
+}
+
 .order-details {
     display: flex;
     gap: 20px;
 }
 
-/* Order Products */
 .order-products {
     flex: 1;
     display: flex;
@@ -125,9 +129,8 @@
     font-weight: bold;
 }
 
-/* Order Tracking */
 .order-tracking {
-    width: 50%; 
+    width: 50%;
     padding: 10px;
     margin: 20px 0;
 }
@@ -142,7 +145,7 @@
 .tracking-line {
     position: absolute;
     height: 2px;
-    width: 20%;
+    width: 100%;
     background-color: #28a745;
     top: 50%;
     left: 0;
@@ -168,12 +171,17 @@
     color: #ccc;
 }
 
-.tracking-step.active .step-icon {
+.tracking-step.active .step-icon{
     color: #28a745;
 }
 
-.tracking-step .step-label {
+.tracking-step .step-label{
     font-size: 12px;
+    margin: 10px 0;
+}
+
+.tracking-step.active .step-label {
+    color: black;
 }
 
 /* Order Footer */

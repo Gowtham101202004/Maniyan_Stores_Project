@@ -73,26 +73,22 @@ function Contact() {
         </div>
         <div className='contact-right'>
           <form ref={form} onSubmit={sendEmail}>
-            {/* Sender's Name */}
             <div className="inputBox">
               <input type="text" id="from_name" name="from_name" required />
               <span>Name</span>
               <i></i>
             </div>
             
-            {/* Sender's Email */}
             <div className="inputBox">
               <input type="email" id="user_email" name="user_email" required />
               <span>Email</span>
               <i></i>
             </div>
 
-            {/* Message */}
             <div className="contact-message">
               <textarea id="message" name="message"  placeholder='Message' required />
             </div>
 
-            {/* Button */}
             <div className="contact-message">
               <input className="send-button" type="submit" value="Send" />
             </div>

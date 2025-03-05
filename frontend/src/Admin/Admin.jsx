@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 import Default_Profile from "../assets/default-profile.png";
 import { auth, signOut } from "../Auth/Firebase";
 import { Backdrop, CircularProgress } from "@mui/material";
-import { FaTachometerAlt, FaUsers, FaBoxOpen, FaShoppingCart, FaSignOutAlt, FaHome, FaMoneyBillWave, FaEdit, FaPen, FaTrash, FaPlus } from 'react-icons/fa';
+import { FaTachometerAlt, FaUsers, FaBoxOpen, FaShoppingCart, FaSignOutAlt, FaHome, FaMoneyBillWave, FaPen, FaTrash, } from 'react-icons/fa';
+import { Pie, Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
 
 function Admin() {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,10 +16,13 @@ function Admin() {
   const [adminData, setAdminData] = useState(null);
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [editedUser, setEditedUser] = useState({});
   const [editingProduct, setEditingProduct] = useState(null);
   const [editedProduct, setEditedProduct] = useState({});
+  const [editingOrder, setEditingOrder] = useState(null);
+  const [editedOrderStatus, setEditedOrderStatus] = useState('');
   const [newProduct, setNewProduct] = useState({
     productImage: '',
     productCategory: '',
@@ -37,6 +43,7 @@ function Admin() {
     fetchAdminData();
     fetchUserData();
     fetchProductData();
+    fetchOrders();
   }, []);
 
   const fetchDashboardData = async () => {
@@ -51,7 +58,9 @@ function Admin() {
       const { data } = await response.json();
       setDashboardData({
         userCount: data.userCount || 0,
-        productCount: data.productCount || 0
+        productCount: data.productCount || 0,
+        orderCount: data.orderCount || 0,
+        revenueCount: data.revenueCount || 0
       });
     } catch (error) {
       console.error("Error fetching dashboard data:", error.message);
@@ -102,10 +111,169 @@ function Admin() {
     }
   };
 
-  const handleEditUser = (user) => {
-    setEditingUser(user._id);
-    setEditedUser({ ...user });
-  };
+  const fetchOrders = async () => {
+    setIsLoading(true);
+    try {
+        const response = await fetch("http://localhost:8080/admin/orders");
+        if (!response.ok) throw new Error("Failed to fetch orders");
+        const { data } = await response.json();
+        setOrders(data);
+    } catch (error) {
+        console.error("Error fetching orders:", error.message);
+    } finally {
+        setIsLoading(false);
+    }
+};
+
+const handleUpdateOrderStatus = async (orderId, status) => {
+  setIsLoading(true);
+  try {
+      const response = await fetch("http://localhost:8080/admin/update-order", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId, orderStatus: status }),
+      });
+      if (!response.ok) throw new Error("Failed to update order status");
+      fetchOrders(); 
+  } catch (error) {
+      console.error("Error updating order status:", error.message);
+  } finally {
+      setIsLoading(false);
+  }
+};
+
+const pieChartData = {
+  labels: ['Users', 'Products', 'Orders', 'Revenue'],
+  datasets: [
+    {
+      label: 'Count',
+      data: [dashboardData.userCount, dashboardData.productCount, dashboardData.orderCount, dashboardData.revenueCount],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
+
+const barChartData = {
+  labels: ['Users', 'Products', 'Orders', 'Revenue'],
+  datasets: [
+    {
+      label: 'Count',
+      data: [dashboardData.userCount, dashboardData.productCount, dashboardData.orderCount, dashboardData.revenueCount],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
+
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: 'Dashboard Data',
+    },
+  },
+  animation: {
+    duration: 2000, 
+    easing: 'easeInOutQuad', 
+    animateRotate: true,  
+    animateScale: true,
+  },
+};
+
+const barChartOptions = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: 'Dashboard Data',
+    },
+  },
+  animation: {
+    duration: 2000,
+    easing: 'easeInOutQuad',
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      grid: {
+        color: 'rgba(0, 0, 0, 0.1)',
+      },
+    },
+    x: {
+      grid: {
+        color: 'rgba(0, 0, 0, 0.1)',
+      },
+    },
+  },
+  transitions: {
+    show: {
+      animations: {
+        y: {
+          from: 0,
+        },
+      },
+    },
+    hide: {
+      animations: {
+        y: {
+          to: 0,
+        },
+      },
+    },
+  },
+};
+
+const handleEditOrder = (order) => {
+  setEditingOrder(order._id);
+  setEditedOrderStatus(order.orderStatus);
+};
+
+const handleSaveOrder = async (orderId) => {
+  setIsLoading(true);
+  try {
+    await fetch("http://localhost:8080/admin/update-order", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderId, orderStatus: editedOrderStatus }),
+    });
+    fetchOrders(); // Refresh orders after update
+    setEditingOrder(null); // Exit edit mode
+  } catch (error) {
+    console.error("Error updating order status:", error.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleSaveUser = async () => {
     setIsLoading(true);
@@ -240,14 +408,30 @@ function Admin() {
                   <FaShoppingCart className="card-icon" />
                   <h3>ORDERS</h3>
                 </div>
-                <p>70</p>
+                <p>{dashboardData.orderCount}</p>
               </div>
               <div className="card" style={{ backgroundColor: 'rgb(185, 14, 28)' }}>
                 <div className="card-icon-container">
                   <FaMoneyBillWave className="card-icon" />
                   <h3>REVENUE</h3>
                 </div>
-                <p>₹ 15000</p>
+                <p>₹ {dashboardData.revenueCount}</p>
+              </div>
+            </div>
+            <div className="charts-container">
+            <div className="charts-container">
+                <div className="chart">
+                  <h2>Pie Chart</h2>
+                  <div className="pie-chart-container">
+                    <Pie data={pieChartData} options={options} />
+                  </div>
+                </div>
+                <div className="chart">
+                  <h2>Bar Chart</h2>
+                  <div className="bar-chart-container">
+                    <Bar data={barChartData} options={barChartOptions} />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -428,11 +612,12 @@ function Admin() {
                       )}
                     </td>
                     <td>
+                      <span >
                       {editingProduct === product._id ? (
                         <input type="text" value={editedProduct.productPreviousPrice} onChange={(e) => setEditedProduct({ ...editedProduct, productPreviousPrice: e.target.value })} />
                       ) : (
                         product.productPreviousPrice
-                      )}
+                      )}</span>
                     </td>
                     <td>
                       {editingProduct === product._id ? (
@@ -459,8 +644,74 @@ function Admin() {
         );
       case 'orders':
         return (
-          <div className="orders">
-            <h1>Orders Section</h1>
+          <div className="admin-orders">
+            <h1>Orders</h1>
+            <table className="admin-order-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>User Email</th>
+                  <th>Products</th>
+                  <th>Total Amount</th>
+                  <th>Payment Status</th>
+                  <th>Order Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order) => (
+                  <tr key={order._id}>
+                    <td>{order._id}</td>
+                    <td>{order.email}</td>
+                    <td>
+                      <span style={{ textAlign: "left"}}>
+                        {order.productDetails.map((product, index) => (
+                        <div key={index}>
+                          <p>{product.name} (x{product.quantity})</p>
+                        </div>
+                        ))}
+                      </span>
+                    </td>
+                    <td>
+                      <span style={{ display: "flex", justifyContent: "center", textAlign: "center" }}>
+                      ₹{order.totalAmount}
+                      </span>
+                    </td>
+                    <td>
+                      <span
+                        className={`payment-status ${order.paymentDetails.payment_status === "paid" ? "paid" : "pending"}`}
+                        style={{ display: "flex", justifyContent: "center", textAlign: "center", margin: "10px" }}> 
+                        {order.paymentDetails.payment_status}
+                      </span>
+                    </td>
+                    <td>
+                      {editingOrder === order._id ? (
+                        <select
+                          value={editedOrderStatus}
+                          onChange={(e) => setEditedOrderStatus(e.target.value)}
+                        >
+                          <option value="Ordered">Ordered</option>
+                          <option value="Shipped">Shipped</option>
+                          <option value="Arrived">Arrived</option>
+                          <option value="Delivered">Delivered</option>
+                        </select>
+                      ) : (
+                        order.orderStatus
+                      )}
+                    </td>
+                    <td>
+                      {editingOrder === order._id ? (
+                        <button onClick={() => handleSaveOrder(order._id)}>Save</button>
+                      ) : (
+                        <div className='order-icons'>
+                          <FaPen className="edit-icon" onClick={() => handleEditOrder(order)} />
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         );
       default:
