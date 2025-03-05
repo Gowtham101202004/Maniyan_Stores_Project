@@ -23,6 +23,7 @@ function Admin() {
   const [editedProduct, setEditedProduct] = useState({});
   const [editingOrder, setEditingOrder] = useState(null);
   const [editedOrderStatus, setEditedOrderStatus] = useState('');
+  const [editedDeliveryDate, setEditedDeliveryDate] = useState('');
   const [newProduct, setNewProduct] = useState({
     productImage: '',
     productCategory: '',
@@ -149,16 +150,16 @@ const pieChartData = {
       label: 'Count',
       data: [dashboardData.userCount, dashboardData.productCount, dashboardData.orderCount, dashboardData.revenueCount],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
+        'rgba(255, 99, 132, 0.3)',
+        'rgba(0, 153, 255, 0.3)',
+        'rgba(255, 206, 86, 0.3)',
+        'rgba(75, 192, 192, 0.3)',
       ],
       borderColor: [
         'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
+        'rgb(0, 99, 165)',
         'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
+        'rgb(60, 157, 157)',
       ],
       borderWidth: 1,
     },
@@ -172,10 +173,10 @@ const barChartData = {
       label: 'Count',
       data: [dashboardData.userCount, dashboardData.productCount, dashboardData.orderCount, dashboardData.revenueCount],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
+        'rgba(255, 99, 132, 0.3)',
+        'rgba(0, 153, 255, 0.3)',
+        'rgba(255, 206, 86, 0.3)',
+        'rgba(75, 192, 192, 0.3)',
       ],
       borderColor: [
         'rgba(255, 99, 132, 1)',
@@ -200,7 +201,7 @@ const options = {
     },
   },
   animation: {
-    duration: 2000, 
+    duration: 1300, 
     easing: 'easeInOutQuad', 
     animateRotate: true,  
     animateScale: true,
@@ -219,7 +220,7 @@ const barChartOptions = {
     },
   },
   animation: {
-    duration: 2000,
+    duration: 1300,
     easing: 'easeInOutQuad',
   },
   scales: {
@@ -253,25 +254,37 @@ const barChartOptions = {
   },
 };
 
+const handleEditUser = (user) => {
+  setEditingUser(user._id);
+  setEditedUser({ ...user });
+};
+
 const handleEditOrder = (order) => {
   setEditingOrder(order._id);
   setEditedOrderStatus(order.orderStatus);
+  setEditedDeliveryDate(order.deliveryDate ? new Date(order.deliveryDate).toISOString().split('T')[0] : '');
 };
 
 const handleSaveOrder = async (orderId) => {
   setIsLoading(true);
   try {
-    await fetch("http://localhost:8080/admin/update-order", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId, orderStatus: editedOrderStatus }),
-    });
-    fetchOrders(); // Refresh orders after update
-    setEditingOrder(null); // Exit edit mode
+      console.log("Saving order with deliveryDate:", editedDeliveryDate);
+      const response = await fetch("http://localhost:8080/admin/update-order", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+              orderId,
+              orderStatus: editedOrderStatus,
+              deliveryDate: editedDeliveryDate ? new Date(editedDeliveryDate).toISOString() : null
+          }),
+      });
+      if (!response.ok) throw new Error("Failed to update order status");
+      fetchOrders();
+      setEditingOrder(null);
   } catch (error) {
-    console.error("Error updating order status:", error.message);
+      console.error("Error updating order status:", error.message);
   } finally {
-    setIsLoading(false);
+      setIsLoading(false);
   }
 };
 
@@ -655,6 +668,7 @@ const handleSaveOrder = async (orderId) => {
                   <th>Total Amount</th>
                   <th>Payment Status</th>
                   <th>Order Status</th>
+                  <th>Delivery Date</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -697,6 +711,16 @@ const handleSaveOrder = async (orderId) => {
                         </select>
                       ) : (
                         order.orderStatus
+                      )}
+                    </td>
+                    <td>
+                      {editingOrder === order._id ? (
+                        <input
+                          type="date"
+                          value={editedDeliveryDate}
+                          onChange={(e) => setEditedDeliveryDate(e.target.value)}/>
+                      ) : (
+                        order.deliveryDate ? new Date(order.deliveryDate).toLocaleDateString('en-GB') : "Not Assigned"
                       )}
                     </td>
                     <td>

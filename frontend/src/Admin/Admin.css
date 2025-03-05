@@ -523,7 +523,7 @@
     background-color: black;
     color: white;
     padding: 12px;
-    text-align: left;
+    text-align: center;
     font-weight: bold;
     position: sticky;
     line-height: 25px;
@@ -538,10 +538,6 @@
     text-align: center;
     line-height: 25px;
     border: 1px solid #ddd;
-}
-
-.admin-order-table tr:hover {
-    background-color: #f9f9f9;
 }
 
 .admin-order-table .order-icons .edit-icon {

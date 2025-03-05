@@ -51,6 +51,12 @@ const Order = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
+      .toString().padStart(2, '0')}/${date.getFullYear()}`; 
+  };
+
   return (
     <>
       <Navbar />
@@ -67,7 +73,8 @@ const Order = () => {
             <div key={order._id} className="order-card">
               <div className="order-header">
                 <div className="order-info">
-                  <p className="order-date"><b>Order Date : </b>{new Date(order.createdAt).toLocaleDateString()}</p>
+                  <p className="order-date"><b>Order Date : </b> {formatDate(order.createdAt)}</p>
+                  <p className="expected-date"><b>Expected Delivery Date : </b>{formatDate(order.deliveryDate)}</p>
                 </div>
                 <div className="order-status">
                   <p className={`order-payment-status ${order.paymentDetails.payment_status === "paid" ? "paid" : "pending"}`}>

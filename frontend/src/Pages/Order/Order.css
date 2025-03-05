@@ -34,11 +34,11 @@
 
 .order-info {
     display: flex;
-    flex-direction: column;
-    gap: 5px;
+    flex-direction: row;
+    gap: 25px;
 }
 
-.order-date {
+.order-date, .expected-date {
     font-size: 14px;
     color: black;
 }

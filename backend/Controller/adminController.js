@@ -163,7 +163,7 @@ const getAllOrders = expressAsyncHandler(async (req, res) => {
 });
 
 const updateOrderStatus = expressAsyncHandler(async (req, res) => {
-    const { orderId, orderStatus } = req.body;
+    const { orderId, orderStatus, deliveryDate } = req.body;
 
     try {
         const order = await Order.findById(orderId);
@@ -172,8 +172,16 @@ const updateOrderStatus = expressAsyncHandler(async (req, res) => {
         }
 
         order.orderStatus = orderStatus || order.orderStatus;
-        await order.save();
 
+        if (deliveryDate) {
+            order.deliveryDate = new Date(deliveryDate); 
+        } else if (orderStatus === "Shipped" || orderStatus === "Arrived") {
+            const newDeliveryDate = new Date();
+            newDeliveryDate.setDate(newDeliveryDate.getDate() + 3);
+            order.deliveryDate = newDeliveryDate;
+        }
+
+        await order.save();
         return res.status(200).json({ message: "Order status updated!", data: order });
     } catch (err) {
         res.status(500).json({ message: err.message });
