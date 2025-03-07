@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Default_Profile from "../assets/default-profile.png";
 import { auth, signOut } from "../Auth/Firebase";
 import { Backdrop, CircularProgress } from "@mui/material";
-import { FaTachometerAlt, FaUsers, FaBoxOpen, FaShoppingCart, FaSignOutAlt, FaHome, FaMoneyBillWave, FaPen, FaTrash, } from 'react-icons/fa';
+import { FaTachometerAlt, FaUsers, FaBoxOpen, FaShoppingCart, FaSignOutAlt, FaHome, FaMoneyBillWave, FaPen, FaTrash, FaBars, FaTimes } from 'react-icons/fa';
 import { Pie, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
@@ -38,6 +38,24 @@ function Admin() {
     productStock: ''
   });
   const navigate = useNavigate();
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isMenuOpen && !event.target.closest('.admin-navbar')) {
+        setIsMenuOpen(false);
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     fetchDashboardData();
@@ -124,23 +142,6 @@ function Admin() {
     } finally {
         setIsLoading(false);
     }
-};
-
-const handleUpdateOrderStatus = async (orderId, status) => {
-  setIsLoading(true);
-  try {
-      const response = await fetch("http://localhost:8080/admin/update-order", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ orderId, orderStatus: status }),
-      });
-      if (!response.ok) throw new Error("Failed to update order status");
-      fetchOrders(); 
-  } catch (error) {
-      console.error("Error updating order status:", error.message);
-  } finally {
-      setIsLoading(false);
-  }
 };
 
 const pieChartData = {
@@ -618,6 +619,7 @@ const handleSaveOrder = async (orderId) => {
                       )}
                     </td>
                     <td>
+                      ₹
                       {editingProduct === product._id ? (
                         <input type="text" value={editedProduct.productPrice} onChange={(e) => setEditedProduct({ ...editedProduct, productPrice: e.target.value })} />
                       ) : (
@@ -749,38 +751,40 @@ const handleSaveOrder = async (orderId) => {
         <CircularProgress sx={{ color: "rgb(255, 119, 0)" }} />
       </Backdrop>
       <div className="admin-container">
-        <div className="admin-navbar">
-          <div className="admin-profile">
-            <img
-              src={adminData?.image || Default_Profile}
-              alt="Admin Profile"
-              onError={(e) => {
-                console.error("Error loading admin profile picture. Falling back to default.");
-                e.target.src = Default_Profile;
-              }}
-            />
-            <h2>{adminData?.name || "Admin"}</h2>
-          </div>
-          <hr />
-          <ul>
-            <li onClick={() => setActiveSection('dashboard')} className={activeSection === 'dashboard' ? 'active' : ''}>
-              <FaTachometerAlt className="icon" />DASHBOARD
-            </li>
-            <li onClick={() => setActiveSection('users')} className={activeSection === 'users' ? 'active' : ''}>
-              <FaUsers className="icon" />USERS
-            </li>
-            <li onClick={() => setActiveSection('products')} className={activeSection === 'products' ? 'active' : ''}>
-              <FaBoxOpen className="icon" />PRODUCTS
-            </li>
-            <li onClick={() => setActiveSection('orders')} className={activeSection === 'orders' ? 'active' : ''}>
-              <FaShoppingCart className="icon" />ORDERS
-            </li>
-            <hr />
-            <li onClick={handleHomeClick}><FaHome className="icon" />HOME</li>
-            <li className="logout" onClick={handleSignoutClick}><FaSignOutAlt className="icon" /> LOGOUT</li>
-          </ul>
+        <button className="menu-toggle" onClick={toggleMenu}>
+          {isMenuOpen ? <FaTimes /> : <FaBars />}
+        </button>
+      <div className={`admin-navbar ${isMenuOpen ? 'active' : ''}`}>
+        <div className="admin-profile">
+          <img
+            src={adminData?.image || Default_Profile}
+            alt="Admin Profile"
+            onError={(e) => {
+              console.error("Error loading admin profile picture. Falling back to default.");
+              e.target.src = Default_Profile;
+            }}/>
+          <h2>{adminData?.name || "Admin"}</h2>
         </div>
-        {renderSection()}
+        <hr />
+        <ul>
+          <li onClick={() => { setActiveSection('dashboard'); setIsMenuOpen(false); }} className={activeSection === 'dashboard' ? 'active' : ''}>
+            <FaTachometerAlt className="icon" />DASHBOARD
+          </li>
+          <li onClick={() => { setActiveSection('users'); setIsMenuOpen(false); }} className={activeSection === 'users' ? 'active' : ''}>
+            <FaUsers className="icon" />USERS
+          </li>
+          <li onClick={() => { setActiveSection('products'); setIsMenuOpen(false); }} className={activeSection === 'products' ? 'active' : ''}>
+            <FaBoxOpen className="icon" />PRODUCTS
+          </li>
+          <li onClick={() => { setActiveSection('orders'); setIsMenuOpen(false); }} className={activeSection === 'orders' ? 'active' : ''}>
+            <FaShoppingCart className="icon" />ORDERS
+          </li>
+          <hr />
+          <li onClick={handleHomeClick}><FaHome className="icon" />HOME</li>
+          <li className="logout" onClick={handleSignoutClick}><FaSignOutAlt className="icon" /> LOGOUT</li>
+        </ul>
+      </div>
+      {renderSection()}
       </div>
     </>
   );

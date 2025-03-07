@@ -33,7 +33,14 @@ const Order = () => {
 
   const calculateTotalAmount = (products) => {
     const productTotal = products.reduce((total, product) => total + product.price * product.quantity, 0);
-    return productTotal + 40; // Adding delivery charge
+    return productTotal + 40; 
+  };
+
+
+  const isStepActive = (stepStatus, currentStatus) => 
+  {
+    const statusOrder = ["Ordered", "Shipped", "Arrived", "Delivered"];
+    return statusOrder.indexOf(stepStatus) <= statusOrder.indexOf(currentStatus);
   };
 
   const getProgressPercentage = (status) => {
@@ -98,25 +105,25 @@ const Order = () => {
                 </div>
                 <div className="order-tracking">
                   <div className="tracking-progress">
-                    <div className="tracking-line" style={{ width: `${getProgressPercentage(order.orderStatus)}%` }}></div>
-                    <div className={`tracking-step ${order.orderStatus === "Ordered" ? "active" : ""}`}>
-                      <span className="step-icon">✔</span>
-                      <span className="step-label">Ordered</span>
-                    </div>
-                    <div className={`tracking-step ${order.orderStatus === "Shipped" ? "active" : ""}`}>
-                      <span className="step-icon">✔</span>
-                      <span className="step-label">Shipped</span>
-                    </div>
-                    <div className={`tracking-step ${order.orderStatus === "Arrived" ? "active" : ""}`}>
-                      <span className="step-icon">✔</span>
-                      <span className="step-label">Arrived</span>
-                    </div>
-                    <div className={`tracking-step ${order.orderStatus === "Delivered" ? "active" : ""}`}>
-                      <span className="step-icon">✔</span>
-                      <span className="step-label">Delivered</span>
-                    </div>
+                  <div className="tracking-line" style={{ width: `${getProgressPercentage(order.orderStatus)}%` }}></div>
+                  <div className={`tracking-step ${isStepActive("Ordered", order.orderStatus) ? "active" : ""}`}>
+                    <span className="step-icon">✔</span>
+                    <span className="step-label">Ordered</span>
+                  </div>
+                  <div className={`tracking-step ${isStepActive("Shipped", order.orderStatus) ? "active" : ""}`}>
+                    <span className="step-icon">✔</span>
+                    <span className="step-label">Shipped</span>
+                  </div>
+                  <div className={`tracking-step ${isStepActive("Arrived", order.orderStatus) ? "active" : ""}`}>
+                    <span className="step-icon">✔</span>
+                    <span className="step-label">Arrived</span>
+                  </div>
+                  <div className={`tracking-step ${isStepActive("Delivered", order.orderStatus) ? "active" : ""}`}>
+                    <span className="step-icon">✔</span>
+                    <span className="step-label">Delivered</span>
                   </div>
                 </div>
+              </div>
               </div>
               <div className="order-footer">
                 <p className="order-total-amount">

@@ -68,7 +68,6 @@ function Cart() {
       console.error("Remove error:", error);
     }
   };
-  
 
   const calculateOffer = (previousPrice, currentPrice, quantity) => {
     if (previousPrice && previousPrice > currentPrice) {
@@ -124,6 +123,68 @@ function Cart() {
     }, 0);
   };
 
+  const handleOrderAll = async () => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (!userData || !userData._id) {
+      alert("Please log in first");
+      return;
+    }
+
+    const payload = {
+      cartItems: cartItems.map(item => ({
+        product: item.product._id,
+        name: item.product.productName,
+        images: [item.product.productImage],
+        price: item.product.productPrice,
+        quantity: item.quantity,
+      })),
+      email: userData.email,
+    };
+
+    console.log("Sending payload to backend:", payload);
+
+    try {
+      const response = await axios.post("http://localhost:8080/payment/checkout", payload);
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      alert("Failed to proceed to checkout!");
+    }
+  };
+
+  const handleBuyNow = async (item) => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (!userData || !userData._id) {
+      alert("Please log in first");
+      return;
+    }
+
+    const payload = {
+      cartItems: [{
+        product: item.product._id,
+        name: item.product.productName,
+        images: [item.product.productImage],
+        price: item.product.productPrice,
+        quantity: item.quantity,
+      }],
+      email: userData.email,
+    };
+
+    console.log("Sending payload to backend:", payload);
+
+    try {
+      const response = await axios.post("http://localhost:8080/payment/checkout", payload);
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      alert("Failed to proceed to checkout!");
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -167,12 +228,12 @@ function Cart() {
                     </div>
                   </div>
                   <div className="class-item-button">
-                    <button>BUY NOW</button>
+                    <button onClick={() => handleBuyNow(item)}>BUY NOW</button>
                     <button className="remove-button" onClick={() => handleRemoveFromCart(item._id)}>REMOVE</button>
                   </div>
                 </div>
                 <div className="class-item-button-mobile">
-                    <button>BUY NOW</button>
+                    <button onClick={() => handleBuyNow(item)}>BUY NOW</button>
                     <button className="remove-button" onClick={() => handleRemoveFromCart(item._id)}>REMOVE</button>
                   </div>
                 <hr/>
@@ -196,16 +257,22 @@ function Cart() {
                     </tr>
                   ))}
                   <tr>
+                    <td className="total-row"><b>Delivery Charge</b></td>
+                    <td><b>₹40</b></td>
+                  </tr>
+                  <tr>
                     <td className="total-row"><b>Total</b></td>
                     <td><b>₹{cartItems.reduce((acc, item) => acc + (item.product.productPrice * item.quantity), 0)}</b></td>
                   </tr>
+                  {calculateTotalSaved() > 0 && (
                   <tr>
                     <td className="total-row"><b>You Saved</b></td>
                     <td><b>₹{calculateTotalSaved()}</b></td>
                   </tr>
+                  )}
                   <tr>
                     <td colSpan="2">
-                      <button>ORDER ALL</button>
+                      <button onClick={handleOrderAll}>ORDER ALL</button>
                     </td>
                   </tr>
                 </tbody>

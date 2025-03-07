@@ -612,3 +612,80 @@
     height: 300px; 
     margin: 0 auto; 
 }
+
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+    .admin-container {
+        flex-direction: column;
+    }
+
+    .admin-navbar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 250px;
+        height: 100vh;
+        transition: left 0.3s ease-in-out;
+        z-index: 1000;
+        background-color: black; 
+        overflow-y: auto;
+    }
+    
+    .admin-navbar.active {
+        left: 0; 
+    }
+
+    .admin-main {
+        margin-left: 0;
+        padding-top: 60px; 
+    }
+
+    .dashboard-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 80%;
+        max-width: none;
+    }
+
+    .users, .products, .admin-orders {
+        margin-left: 0;
+    }
+
+    .user-table, .product-table, .admin-order-table {
+        min-width: 100%;
+    }
+
+    .charts-container {
+        flex-direction: column;
+    }
+
+    .chart {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .pie-chart-container, .bar-chart-container {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .menu-toggle {
+        display: block; 
+    }
+}
