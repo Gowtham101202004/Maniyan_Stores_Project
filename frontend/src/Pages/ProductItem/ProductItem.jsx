@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +13,7 @@ function ProductItem() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [randomProducts, setRandomProducts] = useState([]);
+  const [showPaymentModal, setShowPaymentModal] = useState(false); 
   const product = location.state;
 
   useEffect(() => {
@@ -21,16 +22,16 @@ function ProductItem() {
         setLoading(true);
         const response = await fetch("http://localhost:8080/products/display-product-data");
         const data = await response.json();
-  
-        const allProducts = data.products || data; 
-  
+
+        const allProducts = data.products || data;
+
         setProducts(allProducts);
-  
+
         const similar = allProducts
           .filter((p) => p._id !== product._id && p.productCategory === product.productCategory)
-          .sort(() => 0.5 - Math.random()) 
-          .slice(0, 5); 
-  
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 5);
+
         setRandomProducts(similar);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -38,10 +39,9 @@ function ProductItem() {
         setTimeout(() => setLoading(false), 300);
       }
     };
-  
+
     fetchProducts();
   }, [product]);
-  
 
   const calculateOffer = (previousPrice, currentPrice) => {
     if (previousPrice && previousPrice > currentPrice) {
@@ -53,26 +53,39 @@ function ProductItem() {
 
   const handleBackClick = () => navigate("/product");
 
-  const handleBuyNow = async () => {
+  const handleBuyNow = () => {
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentMethodSelect = (method) => {
+    setShowPaymentModal(false);
+    if (method === "card") {
+      handleCardPayment();
+    } else if (method === "upi") {
+      navigate("/google-payment", { state: { product } }); 
+    } else if (method === "cod") {
+      handleCashOnDelivery();
+    }
+  };
+
+  const handleCardPayment = async () => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
     if (!userData || !userData._id) {
       alert("Please log in first");
       return;
     }
-  
+
     const payload = {
       cartItems: [{
         product: product._id,
-        name: product.productName, 
-        images: [product.productImage], 
-        price: product.productPrice, 
+        name: product.productName,
+        images: [product.productImage],
+        price: product.productPrice,
         quantity: 1,
       }],
       email: userData.email,
     };
-  
-    console.log("Sending payload to backend:", payload);
-  
+
     try {
       const response = await axios.post("http://localhost:8080/payment/checkout", payload);
       if (response.data.url) {
@@ -82,6 +95,11 @@ function ProductItem() {
       console.error("Error during checkout:", error);
       alert("Failed to proceed to checkout!");
     }
+  };
+
+  const handleCashOnDelivery = () => {
+    alert("Cash on Delivery selected. Your order will be confirmed shortly!");
+    // Add logic to handle COD order confirmation
   };
 
   const handleCardClick = (product) => navigate(`/product/${product._id}`, { state: product });
@@ -244,6 +262,18 @@ function ProductItem() {
             ) : (
               <p>No similar products found.</p>
             )}
+          </div>
+        </div>
+      )}
+
+      {showPaymentModal && (
+        <div className="payment-modal-overlay">
+          <div className="payment-modal">
+            <h2>Select Payment Method</h2>
+            <button onClick={() => handlePaymentMethodSelect("card")}>Debit/Credit Card</button>
+            <button onClick={() => handlePaymentMethodSelect("upi")}>UPI Payment</button>
+            <button onClick={() => handlePaymentMethodSelect("cod")}>Cash on Delivery</button>
+            <button onClick={() => setShowPaymentModal(false)}>Close</button>
           </div>
         </div>
       )}

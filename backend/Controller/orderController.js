@@ -31,4 +31,31 @@ const getOrders = async (req, res) => {
   }
 };
 
-module.exports = { getOrders };
+const createOrder = async (req, res) => {
+  try {
+    const { productDetails, email, userId, paymentDetails, totalAmount, shippingOptions } = req.body;
+
+    if (!productDetails || !email || !userId || !paymentDetails || !totalAmount || !shippingOptions) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const newOrder = new Order({
+      productDetails,
+      email,
+      userId,
+      paymentDetails,
+      shipping_options: shippingOptions, 
+      totalAmount,
+      orderStatus: "Ordered", 
+    });
+
+    await newOrder.save();
+
+    res.status(201).json({ message: "Order created successfully", order: newOrder });
+  } catch (error) {
+    console.error("Error creating order:", error);
+    res.status(500).json({ message: "Error creating order", error: error.message });
+  }
+};
+
+module.exports = { getOrders, createOrder };

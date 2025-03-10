@@ -198,6 +198,60 @@
     color:rgb(132, 132, 132);
   }
 
+  /* Payment Modal Styles */
+.payment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.payment-modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.payment-modal h2 {
+  margin-bottom: 20px;
+}
+
+.payment-modal button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.payment-modal button:hover {
+  background-color: #45a049;
+}
+
+.payment-modal button:last-child {
+  background-color: #f44336;
+}
+
+.payment-modal button:last-child:hover {
+  background-color: #e53935;
+}
+
   @media (max-width: 768px) {
     .product-item-container {
       padding: 10px;

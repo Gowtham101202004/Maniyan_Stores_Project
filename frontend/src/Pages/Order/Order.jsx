@@ -20,7 +20,7 @@ const Order = () => {
 
       try {
         const response = await axios.get(`http://localhost:8080/order/get-orders?userId=${user._id}`);
-        setOrders(response.data);
+        setOrders(response.data || []); 
       } catch (err) {
         setError(err.response?.data?.message || "Failed to load orders");
       } finally {
@@ -29,16 +29,15 @@ const Order = () => {
     };
 
     fetchOrders();
-  }, []);
+  }, [user]);
 
   const calculateTotalAmount = (products) => {
-    const productTotal = products.reduce((total, product) => total + product.price * product.quantity, 0);
+    if (!products || !Array.isArray(products)) return 0; 
+    const productTotal = products.reduce((total, product) => total + (product.price || 0) * (product.quantity || 0), 0);
     return productTotal + 40; 
   };
 
-
-  const isStepActive = (stepStatus, currentStatus) => 
-  {
+  const isStepActive = (stepStatus, currentStatus) => {
     const statusOrder = ["Ordered", "Shipped", "Arrived", "Delivered"];
     return statusOrder.indexOf(stepStatus) <= statusOrder.indexOf(currentStatus);
   };
@@ -59,11 +58,11 @@ const Order = () => {
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return "N/A"; 
     const date = new Date(dateString);
     return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
-      .toString().padStart(2, '0')}/${date.getFullYear()}`; 
+      .toString().padStart(2, '0')}/${date.getFullYear()}`;
   };
-
   return (
     <>
       <Navbar />
@@ -84,46 +83,46 @@ const Order = () => {
                   <p className="expected-date"><b>Expected Delivery Date : </b>{formatDate(order.deliveryDate)}</p>
                 </div>
                 <div className="order-status">
-                  <p className={`order-payment-status ${order.paymentDetails.payment_status === "paid" ? "paid" : "pending"}`}>
-                    <span> Payment Status : </span>{order.paymentDetails.payment_status}
+                  <p className={`order-payment-status ${order.paymentDetails?.payment_status === "paid" ? "paid" : "pending"}`}>
+                    <span> Payment Status : </span>{order.paymentDetails?.payment_status || "N/A"}
                   </p>
                   <p className="order-product-status">Product Status : <span>{order.orderStatus || "Processing"}</span></p>
                 </div>
               </div>
               <div className="order-details">
                 <div className="order-products">
-                  {order.productDetails.map((product, index) => (
+                  {order.productDetails?.map((product, index) => (
                     <div key={index} className="order-product">
-                      <img src={product.image[0]} alt={product.name} className="product-image" />
+                      <img src={product.image?.[0]} alt={product.name} className="product-image" />
                       <div className="product-details">
-                        <p className="product-name">{product.name}</p>
-                        <p className="product-quantity">Quantity: {product.quantity}</p>
-                        <p className="product-price">₹{product.price}</p>
+                        <p className="product-name">{product.name || "N/A"}</p>
+                        <p className="product-quantity">Quantity: {product.quantity || 0}</p>
+                        <p className="product-price">₹{product.price || 0}</p>
                       </div>
                     </div>
                   ))}
                 </div>
                 <div className="order-tracking">
                   <div className="tracking-progress">
-                  <div className="tracking-line" style={{ width: `${getProgressPercentage(order.orderStatus)}%` }}></div>
-                  <div className={`tracking-step ${isStepActive("Ordered", order.orderStatus) ? "active" : ""}`}>
-                    <span className="step-icon">✔</span>
-                    <span className="step-label">Ordered</span>
-                  </div>
-                  <div className={`tracking-step ${isStepActive("Shipped", order.orderStatus) ? "active" : ""}`}>
-                    <span className="step-icon">✔</span>
-                    <span className="step-label">Shipped</span>
-                  </div>
-                  <div className={`tracking-step ${isStepActive("Arrived", order.orderStatus) ? "active" : ""}`}>
-                    <span className="step-icon">✔</span>
-                    <span className="step-label">Arrived</span>
-                  </div>
-                  <div className={`tracking-step ${isStepActive("Delivered", order.orderStatus) ? "active" : ""}`}>
-                    <span className="step-icon">✔</span>
-                    <span className="step-label">Delivered</span>
+                    <div className="tracking-line" style={{ width: `${getProgressPercentage(order.orderStatus)}%` }}></div>
+                    <div className={`tracking-step ${isStepActive("Ordered", order.orderStatus) ? "active" : ""}`}>
+                      <span className="step-icon">✔</span>
+                      <span className="step-label">Ordered</span>
+                    </div>
+                    <div className={`tracking-step ${isStepActive("Shipped", order.orderStatus) ? "active" : ""}`}>
+                      <span className="step-icon">✔</span>
+                      <span className="step-label">Shipped</span>
+                    </div>
+                    <div className={`tracking-step ${isStepActive("Arrived", order.orderStatus) ? "active" : ""}`}>
+                      <span className="step-icon">✔</span>
+                      <span className="step-label">Arrived</span>
+                    </div>
+                    <div className={`tracking-step ${isStepActive("Delivered", order.orderStatus) ? "active" : ""}`}>
+                      <span className="step-icon">✔</span>
+                      <span className="step-label">Delivered</span>
+                    </div>
                   </div>
                 </div>
-              </div>
               </div>
               <div className="order-footer">
                 <p className="order-total-amount">
