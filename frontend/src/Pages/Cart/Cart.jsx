@@ -12,6 +12,7 @@ import Empty from "./empty.json";
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showPaymentModal, setShowPaymentModal] = useState(false); // State for payment modal
   const navigate = useNavigate();
 
   const handleBackClick = () => navigate(-1);
@@ -114,16 +115,45 @@ function Cart() {
   };
 
   const calculateTotalSaved = () => {
-    return cartItems.reduce((totalSaved, item) => {
+    const subtotalSaved = cartItems.reduce((totalSaved, item) => {
       const itemPriceSaved = item.product.productPreviousPrice - item.product.productPrice;
       if (itemPriceSaved > 0) {
         return totalSaved + itemPriceSaved * item.quantity;
       }
       return totalSaved;
     }, 0);
+
+    const deliveryCharge = 40; // Delivery charge is ₹40
+    return subtotalSaved - deliveryCharge; // Subtract delivery charge from total savings
+  };
+
+  const calculateTotalAmount = () => {
+    const subtotal = cartItems.reduce((acc, item) => acc + (item.product.productPrice * item.quantity), 0);
+    const deliveryCharge = 40; // Delivery charge is ₹40
+    return subtotal + deliveryCharge;
   };
 
   const handleOrderAll = async () => {
+    setShowPaymentModal(true); // Show payment modal when ordering all items
+  };
+
+  const handlePaymentMethodSelect = (method) => {
+    setShowPaymentModal(false);
+    if (method === "card") {
+      handleCardPayment();
+    } else if (method === "upi") {
+      // Pass all cart items for UPI payment
+      if (cartItems.length > 0) {
+        navigate("/google-payment", { state: { cartItems } }); // Pass all cart items
+      } else {
+        alert("No items in the cart!");
+      }
+    } else if (method === "cod") {
+      handleCashOnDelivery();
+    }
+  };
+
+  const handleCardPayment = async () => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
     if (!userData || !userData._id) {
       alert("Please log in first");
@@ -141,8 +171,6 @@ function Cart() {
       email: userData.email,
     };
 
-    console.log("Sending payload to backend:", payload);
-
     try {
       const response = await axios.post("http://localhost:8080/payment/checkout", payload);
       if (response.data.url) {
@@ -154,35 +182,14 @@ function Cart() {
     }
   };
 
+  const handleCashOnDelivery = () => {
+    alert("Cash on Delivery selected. Your order will be confirmed shortly!");
+    // Add logic to handle COD order confirmation
+  };
+
   const handleBuyNow = async (item) => {
-    const userData = JSON.parse(localStorage.getItem("userdata"));
-    if (!userData || !userData._id) {
-      alert("Please log in first");
-      return;
-    }
-
-    const payload = {
-      cartItems: [{
-        product: item.product._id,
-        name: item.product.productName,
-        images: [item.product.productImage],
-        price: item.product.productPrice,
-        quantity: item.quantity,
-      }],
-      email: userData.email,
-    };
-
-    console.log("Sending payload to backend:", payload);
-
-    try {
-      const response = await axios.post("http://localhost:8080/payment/checkout", payload);
-      if (response.data.url) {
-        window.location.href = response.data.url;
-      }
-    } catch (error) {
-      console.error("Error during checkout:", error);
-      alert("Failed to proceed to checkout!");
-    }
+    // Pass only the selected product for "Buy Now"
+    navigate("/google-payment", { state: { product: item.product } });
   };
 
   return (
@@ -262,7 +269,7 @@ function Cart() {
                   </tr>
                   <tr>
                     <td className="total-row"><b>Total</b></td>
-                    <td><b>₹{cartItems.reduce((acc, item) => acc + (item.product.productPrice * item.quantity), 0)}</b></td>
+                    <td><b>₹{calculateTotalAmount()}</b></td>
                   </tr>
                   {calculateTotalSaved() > 0 && (
                   <tr>
@@ -279,6 +286,18 @@ function Cart() {
               </table>
             </div>
           )}
+        </div>
+      )}
+
+      {showPaymentModal && (
+        <div className="payment-modal-overlay">
+          <div className="payment-modal">
+            <h2>Select Payment Method</h2>
+            <button onClick={() => handlePaymentMethodSelect("card")}>Debit/Credit Card</button>
+            <button onClick={() => handlePaymentMethodSelect("upi")}>UPI Payment</button>
+            <button onClick={() => handlePaymentMethodSelect("cod")}>Cash on Delivery</button>
+            <button onClick={() => setShowPaymentModal(false)}>Close</button>
+          </div>
         </div>
       )}
     </>
