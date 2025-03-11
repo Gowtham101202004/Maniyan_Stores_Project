@@ -7,13 +7,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const Gpay = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { product, cartItems } = location.state || {}; // Receive both product and cartItems
+  const { product, cartItems } = location.state || {};
 
   const [upiId, setUpiId] = useState('');
   const [amount, setAmount] = useState(
     product
-      ? product.productPrice // Single product amount
-      : cartItems?.reduce((total, item) => total + item.product.productPrice * item.quantity, 0) // Total cart amount
+      ? product.productPrice 
+      : cartItems?.reduce((total, item) => total + item.product.productPrice * item.quantity, 0) 
   );
 
   useEffect(() => {
@@ -22,6 +22,18 @@ const Gpay = () => {
       navigate("/");
     }
   }, [product, cartItems, navigate]);
+
+  const calculateTotalAmount = () => {
+    const shippingAmount = 4000; 
+    if (product) {
+      const quantity = location.state.quantity || 1; 
+      return (product.productPrice * quantity) + (shippingAmount / 100); 
+    } else if (cartItems) {
+      const totalProductAmount = cartItems.reduce((total, item) => total + item.product.productPrice * item.quantity, 0);
+      return totalProductAmount + (shippingAmount / 100);
+    }
+    return 0;
+  };
 
   const handleUPIPayment = async () => {
     if (!upiId) {
@@ -36,7 +48,8 @@ const Gpay = () => {
     }
 
     try {
-      alert(`Payment of ₹${amount} to ${upiId} initiated!`);
+      const totalAmount = calculateTotalAmount();
+      alert(`Payment of ₹${totalAmount} to ${upiId} initiated!`);
 
       const userData = JSON.parse(localStorage.getItem("userdata"));
       if (!userData || !userData._id) {
@@ -50,7 +63,7 @@ const Gpay = () => {
               {
                 name: product.productName,
                 price: product.productPrice,
-                quantity: 1,
+                quantity: location.state.quantity || 1,
                 image: [product.productImage],
               },
             ]
@@ -69,11 +82,11 @@ const Gpay = () => {
         },
         shippingOptions: [
           {
-            shipping_amount: 4000, // Shipping amount in paise (₹40)
+            shipping_amount: 4000, 
             shipping_rate: "shr_1QxTpj4UOuOwfYxghjdIwZcb",
           },
         ],
-        totalAmount: amount,
+        totalAmount: totalAmount,
       };
 
       const response = await axios.post("http://localhost:8080/order/create-order", orderPayload);
@@ -89,7 +102,8 @@ const Gpay = () => {
 
   const handleQRPayment = async () => {
     try {
-      alert(`Payment of ₹${amount} initiated!`);
+      const totalAmount = calculateTotalAmount();
+      alert(`Payment of ₹${totalAmount} initiated!`);
 
       const userData = JSON.parse(localStorage.getItem("userdata"));
       if (!userData || !userData._id) {
@@ -103,7 +117,7 @@ const Gpay = () => {
               {
                 name: product.productName,
                 price: product.productPrice,
-                quantity: 1,
+                quantity: location.state.quantity || 1,
                 image: [product.productImage],
               },
             ]
@@ -122,11 +136,11 @@ const Gpay = () => {
         },
         shippingOptions: [
           {
-            shipping_amount: 4000, // Shipping amount in paise (₹40)
+            shipping_amount: 4000, 
             shipping_rate: "shr_1QxTpj4UOuOwfYxghjdIwZcb",
           },
         ],
-        totalAmount: amount,
+        totalAmount: totalAmount,
       };
 
       const response = await axios.post("http://localhost:8080/order/create-order", orderPayload);
@@ -146,7 +160,7 @@ const Gpay = () => {
 
       <div className="upi-section">
         <div>
-          <h3>Total Amount : ₹{amount}</h3>
+          <h3>Total Amount : ₹{calculateTotalAmount()} (Incl. ₹40 Delivery Charge)</h3>
         </div>
         <div className="input-group">
           <label>
@@ -169,7 +183,6 @@ const Gpay = () => {
       </div>
 
       <div className="qr-section">
-        <h2>Pay via QR Code</h2> 
         <div className="qr-code-container">
           <img src={gpay_qr} alt="UPI QR Code" className="qr-code-image" />
           <button className="pay-button" onClick={handleQRPayment}>

@@ -97,7 +97,7 @@ const Order = () => {
                       <div className="product-details">
                         <p className="product-name">{product.name || "N/A"}</p>
                         <p className="product-quantity">Quantity: {product.quantity || 0}</p>
-                        <p className="product-price">₹{product.price || 0}</p>
+                        <p className="product-price">₹{product.price * product.quantity || 0}</p>
                       </div>
                     </div>
                   ))}

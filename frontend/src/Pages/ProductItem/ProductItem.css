@@ -199,58 +199,90 @@
   }
 
   /* Payment Modal Styles */
-.payment-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
+  .payment-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .payment-modal {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    animation: slideUp 0.3s ease-in-out;
+    position: relative;
+  }
+  
+  .payment-modal h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: #333;
+  }
+  
+  .payment-modal button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: ease 0.3s;
+    transition: ease color 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
 
-.payment-modal {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  max-width: 400px;
-  width: 100%;
-}
-
-.payment-modal h2 {
-  margin-bottom: 20px;
-}
-
-.payment-modal button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 5px;
-  background-color: #4caf50;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.payment-modal button:hover {
-  background-color: #45a049;
-}
-
-.payment-modal button:last-child {
-  background-color: #f44336;
-}
-
-.payment-modal button:last-child:hover {
-  background-color: #e53935;
-}
+  .payment-modal button:hover{
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    color: white;
+  }
+  
+  .payment-modal button:last-child {
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    color: white;
+  }
+  
+  .payment-modal button:last-child:hover {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
 
   @media (max-width: 768px) {
     .product-item-container {

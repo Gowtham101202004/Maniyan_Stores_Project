@@ -12,7 +12,8 @@ import Empty from "./empty.json";
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showPaymentModal, setShowPaymentModal] = useState(false); // State for payment modal
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
 
   const handleBackClick = () => navigate(-1);
@@ -123,37 +124,49 @@ function Cart() {
       return totalSaved;
     }, 0);
 
-    const deliveryCharge = 40; // Delivery charge is ₹40
-    return subtotalSaved - deliveryCharge; // Subtract delivery charge from total savings
+    const deliveryCharge = 40;
+    return subtotalSaved - deliveryCharge; 
   };
 
   const calculateTotalAmount = () => {
     const subtotal = cartItems.reduce((acc, item) => acc + (item.product.productPrice * item.quantity), 0);
-    const deliveryCharge = 40; // Delivery charge is ₹40
+    const deliveryCharge = 40;
     return subtotal + deliveryCharge;
   };
 
   const handleOrderAll = async () => {
-    setShowPaymentModal(true); // Show payment modal when ordering all items
+    setShowPaymentModal(true);
+    setSelectedItem(null);
+  };
+
+  const handleBuyNow = async (item) => {
+    setSelectedItem(item);
+    setShowPaymentModal(true);
   };
 
   const handlePaymentMethodSelect = (method) => {
     setShowPaymentModal(false);
     if (method === "card") {
-      handleCardPayment();
+      handleCardPayment(selectedItem);
     } else if (method === "upi") {
-      // Pass all cart items for UPI payment
-      if (cartItems.length > 0) {
-        navigate("/google-payment", { state: { cartItems } }); // Pass all cart items
+      if (selectedItem) {
+        navigate("/google-payment", { 
+          state: { 
+            product: selectedItem.product, 
+            quantity: selectedItem.quantity 
+          } 
+        });
+      } else if (cartItems.length > 0) {
+        navigate("/google-payment", { state: { cartItems } });
       } else {
         alert("No items in the cart!");
       }
     } else if (method === "cod") {
-      handleCashOnDelivery();
+      handleCashOnDelivery(selectedItem);
     }
   };
 
-  const handleCardPayment = async () => {
+  const handleCardPayment = async (selectedItem) => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
     if (!userData || !userData._id) {
       alert("Please log in first");
@@ -161,13 +174,21 @@ function Cart() {
     }
 
     const payload = {
-      cartItems: cartItems.map(item => ({
-        product: item.product._id,
-        name: item.product.productName,
-        images: [item.product.productImage],
-        price: item.product.productPrice,
-        quantity: item.quantity,
-      })),
+      cartItems: selectedItem
+        ? [{
+            product: selectedItem.product._id,
+            name: selectedItem.product.productName,
+            images: [selectedItem.product.productImage],
+            price: selectedItem.product.productPrice,
+            quantity: selectedItem.quantity,
+          }]
+        : cartItems.map(item => ({
+            product: item.product._id,
+            name: item.product.productName,
+            images: [item.product.productImage],
+            price: item.product.productPrice,
+            quantity: item.quantity,
+          })),
       email: userData.email,
     };
 
@@ -182,14 +203,9 @@ function Cart() {
     }
   };
 
-  const handleCashOnDelivery = () => {
+  const handleCashOnDelivery = (selectedItem) => {
     alert("Cash on Delivery selected. Your order will be confirmed shortly!");
     // Add logic to handle COD order confirmation
-  };
-
-  const handleBuyNow = async (item) => {
-    // Pass only the selected product for "Buy Now"
-    navigate("/google-payment", { state: { product: item.product } });
   };
 
   return (
