@@ -9,7 +9,7 @@ const getOrders = async (req, res) => {
     let orders = await Order.find({ userId }).sort({ createdAt: -1 });
 
     if (!orders.length) {
-      return res.status(404).json({ message: "No orders found for this user" });
+      return res.status(404).json({ message: "No orders found !" });
     }
 
     orders = await Promise.all(

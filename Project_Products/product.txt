@@ -128,5 +128,31 @@
     "productPrice": 213,
     "productPreviousPrice": 398,
     "productStock": 37
+  },
+  {
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/tea/r/p/j/-original-imah8ac2ahkrysvd.jpeg?q=70",
+    "productCategory": "Food Products",
+    "productType": "Green Tea",
+    "productBrand": "Lipton",
+    "productName": "Lipton Lemon Honey, Lemon Green Tea Bags Box",
+    "productUnit": "50 Bags",
+    "productContainerType": "Box",
+    "productExpirationPeriod": "1 Year",
+    "productPrice": 270,
+    "productPreviousPrice": 360,
+    "productStock": 150
+  },
+  {
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/tea/j/m/k/25-green-tea-with-tulsi-for-weight-loss-immunity-booster-loaded-original-imagwwgkna4eb8tg.jpeg?q=70",
+    "productCategory": "Food Products",
+    "productType": "Green Tea",
+    "productBrand": "NutroVally",
+    "productName": "NutroVally Green Tea with Tulsi for Weight Loss",
+    "productUnit": "25 Sachets",
+    "productContainerType": "Box",
+    "productExpirationPeriod": "18 Months",
+    "productPrice": 172,
+    "productPreviousPrice": 249,
+    "productStock": 200
   }
 ]

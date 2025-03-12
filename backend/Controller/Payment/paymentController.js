@@ -22,7 +22,7 @@ const paymentController = async (req, res) => {
           name: item.name, 
           images: item.images, 
           metadata : {
-              productId : item._id,
+              productId : item.product,
           },
         },
         unit_amount: Math.round(item.price * 100), 
@@ -38,7 +38,7 @@ const paymentController = async (req, res) => {
     console.log("Creating Stripe session with lineItems:", lineItems);
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      payment_method_types: ["card"],
       line_items: lineItems,
       mode: 'payment',
       success_url: 'http://localhost:5173/success', 

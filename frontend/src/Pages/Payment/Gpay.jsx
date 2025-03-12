@@ -77,8 +77,8 @@ const Gpay = () => {
         userId: userData._id,
         paymentDetails: {
           paymentId: `UPI-${Date.now()}`,
-          payment_method_type: ["UPI"],
           payment_status: "paid",
+          payment_method_type: ["UPI"],
         },
         shippingOptions: [
           {
