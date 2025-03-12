@@ -250,7 +250,13 @@ function Product() {
                           <p className="product-offer">{offerPercentage}% off</p>
                         )}
                       </div>
-                      <p className="product-stock">In Stock: {product.productStock}</p>
+                      <p className={`product-stock ${product.productStock === 0 || product.productStock < 10 ? "low-stock" : ""}`}>
+                        {product.productStock === 0
+                          ? "Out of Stock!"
+                          : product.productStock < 10
+                          ? `Only ${product.productStock} left!`
+                          : `In Stock: ${product.productStock}`}
+                      </p>
                     </div>
                   </div>
                 );

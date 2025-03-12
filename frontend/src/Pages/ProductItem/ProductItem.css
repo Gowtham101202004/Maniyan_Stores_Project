@@ -96,6 +96,11 @@
     margin-left: 10px;
   }
 
+  .product-item-details .product-stock.low-stock {
+    color: red;
+    font-weight: bold;
+}
+
   .product-item-random{
     margin-top: 60px;
   }
@@ -282,6 +287,92 @@
       opacity: 1;
     }
   }
+
+  /* Out of Stock Modal */
+.out-of-stock-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.out-of-stock-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+  transform: scale(0.8); 
+  animation: scaleUp 0.3s ease-in-out forwards; 
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.out-of-stock-modal h2 {
+  font-size: 28px;
+  margin: 15px 0;
+  color: red; 
+}
+
+.out-of-stock-modal p {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: black; 
+}
+
+.out-of-stock-modal button {
+  padding: 10px 20px;
+  font-size: 15px;
+  border-radius: 5px;
+  position: relative;
+  border: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  transition: ease-in-out 0.3s;
+  background-image: linear-gradient(45deg, transparent 50%, red 50%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  background-size: 280% 120%;
+  background-position: bottom right;
+}
+
+.out-of-stock-modal button:hover {
+  background-color: black;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 1.15);
+  background-position: top left; 
+}
+
+.out-of-stock-modal button:active {
+  transform: scale(0.95);
+}
   
 
   @media (max-width: 768px) {

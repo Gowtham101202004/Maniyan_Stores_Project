@@ -140,6 +140,11 @@
   margin-top: 5px;
 }
 
+.product-details .product-stock.low-stock {
+    color: red;
+    font-weight: bold;
+}
+
 .filter-select-label{
   font-weight: bold;
   font-size: 14px;

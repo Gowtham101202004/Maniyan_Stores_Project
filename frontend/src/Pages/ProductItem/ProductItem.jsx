@@ -13,7 +13,8 @@ function ProductItem() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [randomProducts, setRandomProducts] = useState([]);
-  const [showPaymentModal, setShowPaymentModal] = useState(false); 
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showOutOfStockModal, setShowOutOfStockModal] = useState(false);
   const product = location.state;
 
   useEffect(() => {
@@ -54,7 +55,11 @@ function ProductItem() {
   const handleBackClick = () => navigate("/product");
 
   const handleBuyNow = () => {
-    setShowPaymentModal(true);
+    if (product.productStock === 0) {
+      setShowOutOfStockModal(true); 
+    } else {
+      setShowPaymentModal(true);
+    }
   };
 
   const handlePaymentMethodSelect = (method) => {
@@ -62,7 +67,7 @@ function ProductItem() {
     if (method === "card") {
       handleCardPayment();
     } else if (method === "upi") {
-      navigate("/google-payment", { state: { product } }); 
+      navigate("/google-payment", { state: { product } });
     } else if (method === "cod") {
       handleCashOnDelivery();
     }
@@ -105,23 +110,30 @@ function ProductItem() {
   const handleCardClick = (product) => navigate(`/product/${product._id}`, { state: product });
 
   const handleAddToCart = async () => {
+    if (product.productStock === 0) {
+      setShowOutOfStockModal(true); 
+      return;
+    }
+  
     const userData = JSON.parse(localStorage.getItem("userdata"));
     if (!userData || !userData._id) {
       alert("Please log in first");
       return;
     }
-
+  
     try {
       const { data: existingCart } = await axios.get(`http://localhost:8080/cart?userId=${userData._id}`);
-      const productExists = existingCart.products?.some(
-        (cartItem) => cartItem.product === product._id
+      const cartProducts = existingCart.products || [];
+  
+      const productExists = cartProducts.some(
+        (cartItem) => cartItem.product.toString() === product._id.toString()
       );
-
+  
       if (productExists) {
         alert("Product already added to the cart!");
         return;
       }
-
+  
       const newCartItem = {
         product: product._id,
         productName: product.productName,
@@ -130,12 +142,12 @@ function ProductItem() {
         productUnit: product.productUnit,
         quantity: 1,
       };
-
+  
       await axios.post("http://localhost:8080/cart/add", {
         userId: userData._id,
         products: [newCartItem],
       });
-
+  
       alert("Product added to cart successfully!");
     } catch (error) {
       alert("Failed to add product to cart!");
@@ -189,7 +201,13 @@ function ProductItem() {
                   </p>
                 )}
               </div>
-              <p>Stock: {product.productStock}</p>
+              <p className={`product-stock ${product.productStock === 0 || product.productStock < 10 ? "low-stock" : ""}`}>
+                {product.productStock === 0
+                  ? "Out of Stock!"
+                  : product.productStock < 10
+                  ? `Only ${product.productStock} left!`
+                  : `In Stock: ${product.productStock}`}
+              </p>
               <div>
                 <h2>Product Description</h2>
                 <table>
@@ -274,6 +292,16 @@ function ProductItem() {
             <button onClick={() => handlePaymentMethodSelect("upi")}>UPI Payment</button>
             <button onClick={() => handlePaymentMethodSelect("cod")}>Cash on Delivery</button>
             <button onClick={() => setShowPaymentModal(false)}>Close</button>
+          </div>
+        </div>
+      )}
+
+      {showOutOfStockModal && (
+        <div className="out-of-stock-modal-overlay">
+          <div className="out-of-stock-modal">
+            <h2>Out of Stock</h2>
+            <p>Sorry for the Inconvenience!</p>
+            <button onClick={() => setShowOutOfStockModal(false)}>Close</button>
           </div>
         </div>
       )}
