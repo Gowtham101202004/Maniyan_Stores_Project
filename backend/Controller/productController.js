@@ -72,4 +72,28 @@ const createManyProducts = expressAsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getProducts, createProduct, createManyProducts };
+const updateStock = async (req, res) => {
+  const { productId } = req.params;
+  const { quantity } = req.body;
+
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    if (product.productStock < quantity) {
+      return res.status(400).json({ message: "Insufficient stock" });
+    }
+
+    product.productStock -= quantity;
+    await product.save();
+
+    res.status(200).json({ message: "Stock updated successfully", product });
+  } catch (error) {
+    console.error("Error updating stock:", error);
+    res.status(500).json({ message: "Error updating stock", error: error.message });
+  }
+};
+
+module.exports = { getProducts, createProduct, createManyProducts, updateStock };

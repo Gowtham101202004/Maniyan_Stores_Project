@@ -243,7 +243,13 @@ function Cart() {
                         <p className="offer">{calculateOffer(item.product.productPreviousPrice, item.product.productPrice, item.quantity)}</p>
                       )}
                     </div>
-                    <p className="stock">In Stock: {item.product.productStock}</p>
+                    <p className={`stock ${item.product.productStock === 0 || item.product.productStock < 10 ? "low-stock" : ""}`}>
+                      {item.product.productStock === 0
+                      ? "Out of Stock!"
+                      : item.product.productStock < 10
+                      ? `Only ${item.product.productStock} left!`
+                      : `In Stock: ${item.product.productStock}`}
+                    </p>
                     <div className="quantity-controls">
                       <button onClick={() => handleQuantityChange(item._id, -1)}>-</button>
                       <span>{item.quantity}</span>

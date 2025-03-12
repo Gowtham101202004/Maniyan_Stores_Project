@@ -40,23 +40,23 @@ const Gpay = () => {
       alert('Please enter UPI ID');
       return;
     }
-
+  
     const upiIdRegex = /^[a-zA-Z0-9.\-_]{2,49}@[a-zA-Z]{2,}$/;
     if (!upiIdRegex.test(upiId)) {
       alert('Please enter a valid UPI ID.');
       return;
     }
-
+  
     try {
       const totalAmount = calculateTotalAmount();
       alert(`Payment of ₹${totalAmount} to ${upiId} initiated!`);
-
+  
       const userData = JSON.parse(localStorage.getItem("userdata"));
       if (!userData || !userData._id) {
         alert("Please log in first");
         return;
       }
-
+  
       const orderPayload = {
         productDetails: product
           ? [
@@ -88,11 +88,38 @@ const Gpay = () => {
         ],
         totalAmount: totalAmount,
       };
-
+  
       const response = await axios.post("http://localhost:8080/order/create-order", orderPayload);
       if (response.data.message === "Order created successfully") {
-        alert("Order placed successfully!");
-        navigate("/order");
+        if (product) {
+          const quantity = location.state.quantity || 1;
+          try {
+            const stockResponse = await axios.put(
+              `http://localhost:8080/products/update-stock/${product._id}`,
+              { quantity: quantity }
+            );
+            console.log("Stock update response:", stockResponse.data);
+          } catch (error) {
+            console.error("Error updating stock for single product:", error);
+            alert("Failed to update stock for the product. Please contact support.");
+          }
+        }
+        else if (cartItems) {
+          for (const item of cartItems) {
+            try {
+              const stockResponse = await axios.put(
+                `http://localhost:8080/products/update-stock/${item.product._id}`,
+                { quantity: item.quantity }
+              );
+              console.log("Stock update response for cart item:", stockResponse.data);
+            } catch (error) {
+              console.error("Error updating stock for cart item:", error);
+              alert("Failed to update stock for one or more cart items. Please contact support.");
+            }
+          }
+        }
+  
+        navigate("/success");
       }
     } catch (error) {
       console.error("Error creating order:", error);
@@ -145,8 +172,35 @@ const Gpay = () => {
 
       const response = await axios.post("http://localhost:8080/order/create-order", orderPayload);
       if (response.data.message === "Order created successfully") {
-        alert("Order placed successfully!");
-        navigate("/order");
+        if (product) {
+          const quantity = location.state.quantity || 1;
+          try {
+            const stockResponse = await axios.put(
+              `http://localhost:8080/products/update-stock/${product._id}`,
+              { quantity: quantity }
+            );
+            console.log("Stock update response:", stockResponse.data);
+          } catch (error) {
+            console.error("Error updating stock for single product:", error);
+            alert("Failed to update stock for the product. Please contact support.");
+          }
+        }
+        else if (cartItems) {
+          for (const item of cartItems) {
+            try {
+              const stockResponse = await axios.put(
+                `http://localhost:8080/products/update-stock/${item.product._id}`,
+                { quantity: item.quantity }
+              );
+              console.log("Stock update response for cart item:", stockResponse.data);
+            } catch (error) {
+              console.error("Error updating stock for cart item:", error);
+              alert("Failed to update stock for one or more cart items. Please contact support.");
+            }
+          }
+        }
+  
+        navigate("/success");
       }
     } catch (error) {
       console.error("Error creating order:", error);

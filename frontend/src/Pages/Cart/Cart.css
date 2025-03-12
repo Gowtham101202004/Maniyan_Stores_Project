@@ -77,8 +77,13 @@
 
 .cart-item-details .stock{
     margin: 5px 0;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: black;
+}
+
+.cart-item-details .stock.low-stock {
+    color: red;
+    font-weight: bold;
 }
 
 .cart-item-details .cart-item-details-a{

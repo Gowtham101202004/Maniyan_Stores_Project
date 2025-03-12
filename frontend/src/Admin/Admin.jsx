@@ -619,11 +619,11 @@ const handleSaveOrder = async (orderId) => {
                       )}
                     </td>
                     <td>
-                      ₹
+                      
                       {editingProduct === product._id ? (
                         <input type="text" value={editedProduct.productPrice} onChange={(e) => setEditedProduct({ ...editedProduct, productPrice: e.target.value })} />
                       ) : (
-                        product.productPrice
+                        <>₹{product.productPrice}</>
                       )}
                     </td>
                     <td>
