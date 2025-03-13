@@ -47,6 +47,7 @@ const paymentController = async (req, res) => {
       shipping_options: [{ shipping_rate: 'shr_1QxTpj4UOuOwfYxghjdIwZcb' }],
       metadata : {
         userId : String(user._id),
+        address : String(user.address)
       }
     });
 

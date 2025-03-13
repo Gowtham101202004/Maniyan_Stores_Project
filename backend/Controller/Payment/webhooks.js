@@ -57,6 +57,7 @@ const webhooks = async (request, response) => {
         productDetails: productDetails,
         email: session.customer_email,
         userId: session.metadata.userId,
+        address: session.metadata.address,
         paymentDetails: {
           paymentId: session.payment_intent,
           payment_method_type: session.payment_method_types,

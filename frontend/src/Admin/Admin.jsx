@@ -668,8 +668,10 @@ const handleSaveOrder = async (orderId) => {
                   <th>User Email</th>
                   <th>Products</th>
                   <th>Total Amount</th>
+                  <th>Payment Method</th>
                   <th>Payment Status</th>
                   <th>Order Status</th>
+                  <th>Order Date</th>
                   <th>Delivery Date</th>
                   <th>Actions</th>
                 </tr>
@@ -677,13 +679,13 @@ const handleSaveOrder = async (orderId) => {
               <tbody>
                 {orders.map((order) => (
                   <tr key={order._id}>
-                    <td>{order._id}</td>
-                    <td>{order.email}</td>
-                    <td>
+                    <td className='product-order'>{order._id}</td>
+                    <td className='product-order'>{order.email}</td>
+                    <td className='product-names'>
                       <span style={{ textAlign: "left"}}>
                         {order.productDetails.map((product, index) => (
                         <div key={index}>
-                          <p>{product.name} (x{product.quantity})</p>
+                          <p>{product.name} <b>(x{product.quantity})</b></p>
                         </div>
                         ))}
                       </span>
@@ -692,6 +694,9 @@ const handleSaveOrder = async (orderId) => {
                       <span style={{ display: "flex", justifyContent: "center", textAlign: "center" }}>
                       ₹{order.totalAmount}
                       </span>
+                    </td>
+                    <td>
+                      {order.paymentDetails.payment_method_type}
                     </td>
                     <td>
                       <span
@@ -714,6 +719,9 @@ const handleSaveOrder = async (orderId) => {
                       ) : (
                         order.orderStatus
                       )}
+                    </td>
+                    <td>
+                      {order.createdAt ? new Date(order.createdAt).toLocaleDateString('en-GB') : "Not Assigned"}
                     </td>
                     <td>
                       {editingOrder === order._id ? (

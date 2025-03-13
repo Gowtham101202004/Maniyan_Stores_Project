@@ -33,9 +33,9 @@ const getOrders = async (req, res) => {
 
 const createOrder = async (req, res) => {
   try {
-    const { productDetails, email, userId, paymentDetails, totalAmount, shippingOptions } = req.body;
+    const { productDetails, email, userId, address, paymentDetails, totalAmount, shippingOptions } = req.body;
 
-    if (!productDetails || !email || !userId || !paymentDetails || !totalAmount || !shippingOptions) {
+    if (!productDetails || !email || !userId || !address || !paymentDetails || !totalAmount || !shippingOptions) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -43,6 +43,7 @@ const createOrder = async (req, res) => {
       productDetails,
       email,
       userId,
+      address,
       paymentDetails,
       shipping_options: shippingOptions, 
       totalAmount,

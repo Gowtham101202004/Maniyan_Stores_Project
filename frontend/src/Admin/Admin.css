@@ -576,6 +576,14 @@
     border: 1px solid #ddd;
 }
 
+.admin-order-table .product-order{
+    font-size: 12px;
+}
+
+.admin-order-table .product-names{
+    font-size: 15px;
+}
+
 /* charts */
 
 .charts-container {

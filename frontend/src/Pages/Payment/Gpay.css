@@ -83,22 +83,22 @@
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
-.divider {
+.gpay-container .divider {
   display: flex;
   align-items: center;
   text-align: center;
   margin: 25px 0;
 }
 
-.divider::before,
-.divider::after {
+.gpay-container .divider::before,
+.gpay-container .divider::after {
   content: '';
   flex: 1;
   height: 1px;
   background: #e0e0e0;
 }
 
-.divider span {
+.gpay-container .divider span {
   padding: 0 10px;
   background: #ffffff;
   color: #888;

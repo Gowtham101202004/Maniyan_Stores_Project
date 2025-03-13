@@ -108,7 +108,7 @@ function ProductItem() {
   };
 
   const handleCardClick = (product) => navigate(`/product/${product._id}`, { state: product });
-
+  
   const handleAddToCart = async () => {
     if (product.productStock === 0) {
       setShowOutOfStockModal(true); 

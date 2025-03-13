@@ -75,10 +75,11 @@ const Gpay = () => {
             })),
         email: userData.email,
         userId: userData._id,
+        address: userData.address,
         paymentDetails: {
           paymentId: `UPI-${Date.now()}`,
-          payment_status: "paid",
           payment_method_type: ["UPI"],
+          payment_status: "paid",
         },
         shippingOptions: [
           {
@@ -156,6 +157,7 @@ const Gpay = () => {
             })),
         email: userData.email,
         userId: userData._id,
+        address: userData.address,
         paymentDetails: {
           paymentId: `UPI-${Date.now()}`,
           payment_method_type: ["UPI"],
