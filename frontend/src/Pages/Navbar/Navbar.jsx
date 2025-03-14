@@ -71,6 +71,10 @@ function Navbar() {
   };
 
   const handleCartClick = () => {
+    if (!userData) {
+      alert("Please log in first");
+      return;
+    }
     navigate("/cart");
   };
 
@@ -117,7 +121,18 @@ function Navbar() {
               <NavLink className="Navlink" to="/product">Products</NavLink>
             </li>
             <li>
-              <NavLink className="Navlink" to="/order">Orders</NavLink>
+              <NavLink
+                className="Navlink"
+                to="/order"
+                onClick={(e) => {
+                  if (!userData) {
+                    e.preventDefault();
+                    alert("Please log in first");
+                  }
+                }}
+              >
+                Orders
+              </NavLink>
             </li>
             <li>
               <NavLink className="Navlink" to="/contact">Contact</NavLink>
@@ -159,9 +174,9 @@ function Navbar() {
                     <FontAwesomeIcon icon={faPenToSquare} className="dd-icon" /> Edit Profile
                   </li>
                   {userData?.isAdmin && (
-                  <li onClick={handleAdminDashboardClick}>
+                    <li onClick={handleAdminDashboardClick}>
                       <FontAwesomeIcon icon={faGauge} className="dd-icon" /> Admin Dashboard
-                  </li>
+                    </li>
                   )}
                   <li>
                     <FontAwesomeIcon icon={faCircleQuestion} className="dd-icon" /> Help & Support

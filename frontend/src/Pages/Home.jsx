@@ -11,10 +11,10 @@ function Home() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [pageLoading, setPageLoading] = useState(true); // State to handle initial page loading
+  const [pageLoading, setPageLoading] = useState(true); 
 
   useEffect(() => {
-    setTimeout(() => setPageLoading(false), 500); // Show loading animation for 500ms
+    setTimeout(() => setPageLoading(false), 500);
   }, []);
 
   const handleProductClick = (product) => {

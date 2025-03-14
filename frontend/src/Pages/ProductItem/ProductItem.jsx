@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faCartShopping, faCartArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCartShopping, faCartArrowDown, faCreditCard, faMobileAlt, faMoneyBillAlt } from "@fortawesome/free-solid-svg-icons";
 import Loading_Animation from "../Animation/Loading_Animation";
 import "./ProductItem.css";
 import axios from "axios";
@@ -55,6 +55,12 @@ function ProductItem() {
   const handleBackClick = () => navigate("/product");
 
   const handleBuyNow = () => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (!userData || !userData._id) {
+      alert("Please log in first");
+      return;
+    }
+
     if (product.productStock === 0) {
       setShowOutOfStockModal(true); 
     } else {
@@ -75,10 +81,6 @@ function ProductItem() {
 
   const handleCardPayment = async () => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
-    if (!userData || !userData._id) {
-      alert("Please log in first");
-      return;
-    }
 
     const payload = {
       cartItems: [{
@@ -288,9 +290,18 @@ function ProductItem() {
         <div className="payment-modal-overlay">
           <div className="payment-modal">
             <h2>Select Payment Method</h2>
-            <button onClick={() => handlePaymentMethodSelect("card")}>Debit/Credit Card</button>
-            <button onClick={() => handlePaymentMethodSelect("upi")}>UPI Payment</button>
-            <button onClick={() => handlePaymentMethodSelect("cod")}>Cash on Delivery</button>
+            <button onClick={() => handlePaymentMethodSelect("card")}>
+              <FontAwesomeIcon icon={faCreditCard} className="credit-icon" />
+              Debit/Credit Card
+            </button>
+            <button onClick={() => handlePaymentMethodSelect("upi")}>
+              <FontAwesomeIcon icon={faMobileAlt} className="upi-icon" />
+              UPI Payment
+            </button>
+            <button onClick={() => handlePaymentMethodSelect("cod")}>
+              <FontAwesomeIcon icon={faMoneyBillAlt} className="cash-icon" />
+              Cash on Delivery
+            </button>
             <button onClick={() => setShowPaymentModal(false)}>Close</button>
           </div>
         </div>

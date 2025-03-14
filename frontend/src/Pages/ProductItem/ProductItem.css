@@ -373,6 +373,21 @@
 .out-of-stock-modal button:active {
   transform: scale(0.95);
 }
+
+.payment-modal-overlay .payment-modal .credit-icon{
+  color: #FF6B6B;
+  margin: 0 10px;
+}
+
+.payment-modal-overlay .payment-modal .upi-icon{
+  color: #4ECDC4;
+  margin: 0 10px;
+}
+
+.payment-modal-overlay .payment-modal .cash-icon{
+  color: #4bfe5d;
+  margin: 0 10px;
+}
   
 
   @media (max-width: 768px) {

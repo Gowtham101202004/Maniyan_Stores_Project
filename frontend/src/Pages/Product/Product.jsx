@@ -10,7 +10,7 @@ function Product() {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
-  const [searchLoading, setSearchLoading] = useState(false); // New state for search loading
+  const [searchLoading, setSearchLoading] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
@@ -65,12 +65,20 @@ function Product() {
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
-        setTimeout(() => setLoading(false), 200);
+        setTimeout(() => setLoading(false), 500);
       }
     };
 
     fetchProducts();
   }, []); 
+
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
   const filterProducts = useCallback(
     (productsToFilter = products) => {
@@ -91,8 +99,10 @@ function Product() {
         return matchesSearchQuery && matchesCategory && matchesType && matchesPriceRange && matchesBrand;
       });
 
+      const shuffledProducts = shuffleArray(filtered);
+
       setTimeout(() => {
-        setFilteredProducts(filtered);
+        setFilteredProducts(shuffledProducts);
         setSearchLoading(false); 
       }, 200); 
     },
@@ -221,7 +231,7 @@ function Product() {
             </div>
           </div>
           <div className="product-grid">
-            {searchLoading ? ( // Show loading animation while searching
+            {searchLoading ? (
               <div className="loading-wrapper">
                 <Loading_Animation />
               </div>

@@ -52,10 +52,6 @@ const Gpay = () => {
       alert(`Payment of ₹${totalAmount} to ${upiId} initiated!`);
   
       const userData = JSON.parse(localStorage.getItem("userdata"));
-      if (!userData || !userData._id) {
-        alert("Please log in first");
-        return;
-      }
   
       const orderPayload = {
         productDetails: product
@@ -134,10 +130,6 @@ const Gpay = () => {
       alert(`Payment of ₹${totalAmount} initiated!`);
 
       const userData = JSON.parse(localStorage.getItem("userdata"));
-      if (!userData || !userData._id) {
-        alert("Please log in first");
-        return;
-      }
 
       const orderPayload = {
         productDetails: product

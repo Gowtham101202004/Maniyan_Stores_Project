@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCreditCard, faMobileAlt, faMoneyBillAlt  } from "@fortawesome/free-solid-svg-icons";
 import Loading_Animation from "../Animation/Loading_Animation";
 import Lottie from 'lottie-react';
 import "./Cart.css";
@@ -20,11 +20,6 @@ function Cart() {
 
   const fetchCartItems = async () => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
-    if (!userData || !userData._id) {
-      alert("Please log in first");
-      setLoading(false);
-      return;
-    }
 
     try {
       setLoading(true);
@@ -51,10 +46,6 @@ function Cart() {
 
   const handleRemoveFromCart = async (itemId) => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
-    if (!userData || !userData._id) {
-      alert("Please log in first");
-      return;
-    }
   
     try {
       console.log("Removing item:", itemId);
@@ -168,11 +159,7 @@ function Cart() {
 
   const handleCardPayment = async (selectedItem) => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
-    if (!userData || !userData._id) {
-      alert("Please log in first");
-      return;
-    }
-
+    
     const payload = {
       cartItems: selectedItem
         ? [{
@@ -315,9 +302,18 @@ function Cart() {
         <div className="payment-modal-overlay">
           <div className="payment-modal">
             <h2>Select Payment Method</h2>
-            <button onClick={() => handlePaymentMethodSelect("card")}>Debit/Credit Card</button>
-            <button onClick={() => handlePaymentMethodSelect("upi")}>UPI Payment</button>
-            <button onClick={() => handlePaymentMethodSelect("cod")}>Cash on Delivery</button>
+            <button onClick={() => handlePaymentMethodSelect("card")}>
+              <FontAwesomeIcon icon={faCreditCard} className="credit-icon" />
+              Debit/Credit Card
+            </button>
+            <button onClick={() => handlePaymentMethodSelect("upi")}>
+              <FontAwesomeIcon icon={faMobileAlt} className="upi-icon" />
+              UPI Payment
+            </button>
+            <button onClick={() => handlePaymentMethodSelect("cod")}>
+              <FontAwesomeIcon icon={faMoneyBillAlt} className="cash-icon" />
+              Cash on Delivery
+            </button>
             <button onClick={() => setShowPaymentModal(false)}>Close</button>
           </div>
         </div>
