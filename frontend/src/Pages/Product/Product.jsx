@@ -38,8 +38,10 @@ function Product() {
     "Cleaning Supplies",
   ]);
   const [typeOptions, setTypeOptions] = useState(["All"]);
-  const [priceRangeOptions] = useState(["All", "0 - 100", "101 - 500", "501 - 1000", "1000+"]);
+  const [filteredTypeOptions, setFilteredTypeOptions] = useState(["All"]);
   const [brandOptions, setBrandOptions] = useState(["All"]);
+  const [filteredBrandOptions, setFilteredBrandOptions] = useState(["All"]);
+  const [priceRangeOptions] = useState(["All", "0 - 100", "101 - 500", "501 - 1000", "1000+"]);
 
   useEffect(() => {
     localStorage.setItem("selectedCategory", selectedCategory);
@@ -61,6 +63,7 @@ function Product() {
         setTypeOptions(["All", ...uniqueTypes]);
         setBrandOptions(["All", ...uniqueBrands]);
 
+        updateFilteredTypesAndBrands(data.products);
         filterProducts(data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -70,7 +73,21 @@ function Product() {
     };
 
     fetchProducts();
-  }, []); 
+  }, [selectedCategory, selectedType]);
+
+  const updateFilteredTypesAndBrands = (products) => {
+    const typesForSelectedCategory = selectedCategory === "All"
+      ? [...new Set(products.map((p) => p.productType))]
+      : [...new Set(products.filter((p) => p.productCategory === selectedCategory).map((p) => p.productType))];
+    setFilteredTypeOptions(["All", ...typesForSelectedCategory]);
+
+    const brandsForSelectedCategoryAndType = selectedType === "All"
+      ? selectedCategory === "All"
+        ? [...new Set(products.map((p) => p.productBrand))]
+        : [...new Set(products.filter((p) => p.productCategory === selectedCategory).map((p) => p.productBrand))]
+      : [...new Set(products.filter((p) => p.productCategory === selectedCategory && p.productType === selectedType).map((p) => p.productBrand))];
+    setFilteredBrandOptions(["All", ...brandsForSelectedCategoryAndType]);
+  };
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -82,7 +99,7 @@ function Product() {
 
   const filterProducts = useCallback(
     (productsToFilter = products) => {
-      setSearchLoading(true); 
+      setSearchLoading(true);
       const filtered = productsToFilter.filter((product) => {
         const matchesSearchQuery =
           !searchQuery || product.productName.toLowerCase().includes(searchQuery.toLowerCase());
@@ -103,8 +120,8 @@ function Product() {
 
       setTimeout(() => {
         setFilteredProducts(shuffledProducts);
-        setSearchLoading(false); 
-      }, 200); 
+        setSearchLoading(false);
+      }, 200);
     },
     [searchQuery, selectedCategory, selectedType, selectedPriceRange, selectedBrand, products]
   );
@@ -119,8 +136,17 @@ function Product() {
     setSearchQuery(query);
   }, [location.search]);
 
-  const handleCategoryChange = (event) => setSelectedCategory(event.target.value);
-  const handleTypeChange = (event) => setSelectedType(event.target.value);
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+    setSelectedType("All");
+    setSelectedBrand("All");
+  };
+
+  const handleTypeChange = (event) => {
+    setSelectedType(event.target.value);
+    setSelectedBrand("All");
+  };
+
   const handlePriceRangeChange = (event) => setSelectedPriceRange(event.target.value);
   const handleBrandChange = (event) => setSelectedBrand(event.target.value);
 
@@ -208,7 +234,7 @@ function Product() {
             <div>
               <label className="filter-select-label" htmlFor="type-select">TYPE</label>
               <select id="type-select" value={selectedType} onChange={handleTypeChange} className="filter-select">
-                {typeOptions.map((option) => (
+                {filteredTypeOptions.map((option) => (
                   <option key={option} value={option}>{option}</option>
                 ))}
               </select>
@@ -224,7 +250,7 @@ function Product() {
             <div>
               <label className="filter-select-label" htmlFor="brand-select">BRAND</label>
               <select id="brand-select" value={selectedBrand} onChange={handleBrandChange} className="filter-select">
-                {brandOptions.map((option) => (
+                {filteredBrandOptions.map((option) => (
                   <option key={option} value={option}>{option}</option>
                 ))}
               </select>
@@ -240,13 +266,11 @@ function Product() {
                 const offerPercentage = product.productPreviousPrice && product.productPreviousPrice > product.productPrice
                   ? Math.round(((product.productPreviousPrice - product.productPrice) / product.productPreviousPrice) * 100)
                   : null;
-
                 return (
                   <div
                     className="product-card"
                     key={product._id}
-                    onClick={() => handleCardClick(product)} 
-                  >
+                    onClick={() => handleCardClick(product)} >
                     <img src={product.productImage} alt={product.productName} className="product-image" />
                     <div className="product-details">
                       <h3>{product.productName}</h3>
