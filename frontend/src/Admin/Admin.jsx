@@ -664,12 +664,13 @@ const handleSaveOrder = async (orderId) => {
             <table className="admin-order-table">
               <thead>
                 <tr>
-                  <th>Order ID</th>
-                  <th>User Email</th>
+                  {/* <th>Order ID</th> */}
+                  <th> Order Id & User Email</th>
                   <th>Products</th>
                   <th>Total Amount</th>
                   <th>Payment Method</th>
                   <th>Payment Status</th>
+                  <th>Delivery Address</th>
                   <th>Order Status</th>
                   <th>Order Date</th>
                   <th>Delivery Date</th>
@@ -679,8 +680,8 @@ const handleSaveOrder = async (orderId) => {
               <tbody>
                 {orders.map((order) => (
                   <tr key={order._id}>
-                    <td className='product-order'>{order._id}</td>
-                    <td className='product-order'>{order.email}</td>
+                    {/* <td className='product-order'></td> */}
+                    <td className='product-order'>{order._id}<br/>{order.email}</td>
                     <td className='product-names'>
                       <span style={{ textAlign: "left"}}>
                         {order.productDetails.map((product, index) => (
@@ -706,8 +707,12 @@ const handleSaveOrder = async (orderId) => {
                       </span>
                     </td>
                     <td>
+                      {order.address}
+                    </td>
+                    <td>
                       {editingOrder === order._id ? (
                         <select
+                          className='order-table-select'
                           value={editedOrderStatus}
                           onChange={(e) => setEditedOrderStatus(e.target.value)}
                         >

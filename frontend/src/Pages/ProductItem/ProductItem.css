@@ -84,8 +84,9 @@
   }
   
   .product-item-details .product-item-details-a .product-item-previous-price{
+    margin-top: 7px;
     margin-left: 10px;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     color: #838383;
   }
 
@@ -375,20 +376,155 @@
 }
 
 .payment-modal-overlay .payment-modal .credit-icon{
-  color: #FF6B6B;
+  color: #fb4848;
   margin: 0 10px;
 }
 
 .payment-modal-overlay .payment-modal .upi-icon{
   color: #4ECDC4;
   margin: 0 10px;
+  margin-left: -35px;
 }
 
 .payment-modal-overlay .payment-modal .cash-icon{
   color: #4bfe5d;
   margin: 0 10px;
+  margin-left: 0;
 }
   
+/* Address Modal Overlay */
+.address-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.address-modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  transform: scale(0.8);
+  animation: scaleUp 0.3s ease-in-out forwards; 
+}
+
+.address-modal h2 {
+  margin-bottom: 20px;
+  font-size: 1.7rem;
+  color: black;
+}
+
+.address-modal .button-close{
+    display: block;
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    color: white;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: ease 0.3s;
+    transition: ease color 0.1s;
+    position: relative;
+    overflow: hidden;
+}
+
+.address-modal .button-close:hover{
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+}
+
+.address-modal textarea {
+  width: 100%;
+  max-width: 350px;
+  height: 100px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid rgb(97, 96, 96);
+  border-radius: 6px;
+  font-size: 1rem;
+  resize: vertical;
+  transition: box-shadow 0.3s ease;
+}
+
+.address-modal textarea:focus {
+  box-shadow: 0 0 8px rgb(255, 119, 0);
+  border: rgb(255, 119, 0);
+  outline: none;
+}
+
+.address-modal p {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 40px 0;
+  word-wrap: break-word;
+}
+
+.address-modal-buttons {
+  display: flex;
+  margin: 0 100px;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.address-modal-buttons button {
+    flex: 1;
+    height: 35px;
+    padding: 12px;
+    border-radius: 5px;
+    position: relative;
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+    background-image: linear-gradient(45deg, transparent 50%, black 50%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    background-size: 280% 200%;
+    background-position: bottom right;
+}
+
+.address-modal-buttons button:hover {
+    background-color: rgb(255, 119, 0);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 1.15);
+    background-position: top left;
+}
+
+.address-modal-buttons .edit-icon {
+  padding: 0;
+  margin: 0 -5px 5px -10px;
+  scale: 45%;
+}
+
+.address-modal-buttons .edit-cancel {
+  padding: 0px;
+  min-height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #dc3545;
+  color: white;
+}
+
+.address-modal-buttons .edit-cancel p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: white;
+}
 
   @media (max-width: 768px) {
     .product-item-container {

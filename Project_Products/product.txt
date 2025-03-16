@@ -154,5 +154,57 @@
     "productPrice": 172,
     "productPreviousPrice": 249,
     "productStock": 200
+  },
+  {
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/nut-dry-fruit/3/f/m/500-mix-dry-fruit-panchmeva-500gm-jar-1-mason-jar-nature-aahar-original-imah5hmdsfgmumba.jpeg?q=70",
+    "productCategory": "Food Products",
+    "productType": "Assorted Fruits & Nuts",
+    "productBrand": "Nature Aahar",
+    "productName": "Nature Aahar Mix Dry Fruit",
+    "productUnit": "500 g",
+    "productContainerType": "Mason Jar",
+    "productExpirationPeriod": "12 Months",
+    "productPrice": 272,
+    "productPreviousPrice": 514,
+    "productStock": 70
+  },
+  {
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/nut-dry-fruit/x/m/t/800-black-dates-800g-400g-x-2-packs-select-premium-organic-original-imah5z79chgmtan6.jpeg?q=70",
+    "productCategory": "Food Products",
+    "productType": "Dates",
+    "productBrand": "Manna",
+    "productName": "Manna Black Dates - 800g",
+    "productUnit": "400g x 2 Packs",
+    "productContainerType": "Box",
+    "productExpirationPeriod": "12 Months",
+    "productPrice": 192,
+    "productPreviousPrice": 256,
+    "productStock": 120
+  },
+  {
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/toothpaste/l/o/h/-original-imagp8werxcvvbt3.jpeg?q=70",
+    "productCategory": "Cleaning Supplies",
+    "productType": "Tooth Paste",
+    "productBrand": "Closeup",
+    "productName": "Closeup Fresh Breath & White Teeth Toothpaste",
+    "productUnit": "300 g, Pack of 2",
+    "productContainerType": "Box",
+    "productExpirationPeriod": "24 Months",
+    "productPrice": 209,
+    "productPreviousPrice": 244,
+    "productStock": 70
+  },
+  {
+    "productImage": "https://rukminim2.flixcart.com/image/612/612/xif0q/toothpaste/z/u/b/800-red-ayurvedic-toothpaste-4-ayurvedic-dabur-original-imahfhxfhf4guthk.jpeg?q=70",
+    "productCategory": "Cleaning Supplies",
+    "productType": "Tooth Paste",
+    "productBrand": "Dabur",
+    "productName": "Dabur Red Ayurvedic Toothpaste",
+    "productUnit": "800 g, Pack of 4",
+    "productContainerType": "Box",
+    "productExpirationPeriod": "24 Months",
+    "productPrice": 356,
+    "productPreviousPrice": 548,
+    "productStock": 120
   }
 ]

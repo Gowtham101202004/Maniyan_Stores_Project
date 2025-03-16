@@ -124,9 +124,15 @@ const Order = () => {
                   </div>
                 </div>
               </div>
+              <div className="download-receipt">
+                <button>Download Receipt</button>
+              </div>
               <div className="order-footer">
+                <p className="order-address">
+                  <b>Delivery Address : </b>{order.address}
+                </p>
                 <p className="order-total-amount">
-                  Total Amount: ₹{calculateTotalAmount(order.productDetails)} (Incl. ₹40 Delivery Charge)
+                  <b>Total Amount : </b>₹{calculateTotalAmount(order.productDetails)} (Incl. ₹40 Delivery Charge)
                 </p>
               </div>
             </div>

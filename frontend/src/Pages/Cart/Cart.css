@@ -210,6 +210,10 @@
     padding: 10px;
 }
 
+.cart-summary-address{
+    line-height: 25px;
+}
+
 .total-row {
     text-align: right;
     padding: 10px;

@@ -142,10 +142,40 @@ const updateUserController = expressAsyncHandler(async (req, res) => {
     });
 });
 
+const updateUserAddress = expressAsyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    const { address } = req.body;
+  
+    try {
+      const user = await userModel.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      user.address = address || user.address;
+      const updatedUser = await user.save();
+  
+      res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        address: updatedUser.address,
+        phonenumber: updatedUser.phonenumber,
+        isAdmin: updatedUser.isAdmin,
+        token: generateToken(updatedUser._id),
+      });
+    } catch (error) {
+      console.error("Error updating address:", error);
+      res.status(500).json({ message: "Failed to update address" });
+    }
+  });
+
 module.exports = {
     loginController,
     registerController,
     googleLoginController,
     getUserDetailsController,
     updateUserController,
+    updateUserAddress
 };

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faCreditCard, faMobileAlt, faMoneyBillAlt  } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCreditCard, faMobileAlt, faMoneyBillAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import Loading_Animation from "../Animation/Loading_Animation";
 import Lottie from 'lottie-react';
 import "./Cart.css";
@@ -13,6 +13,9 @@ function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [address, setAddress] = useState("");
+  const [editAddress, setEditAddress] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
 
@@ -42,6 +45,13 @@ function Cart() {
 
   useEffect(() => {
     fetchCartItems();
+  }, []);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (userData && userData.address) {
+      setAddress(userData.address);
+    }
   }, []);
 
   const handleRemoveFromCart = async (itemId) => {
@@ -126,13 +136,51 @@ function Cart() {
   };
 
   const handleOrderAll = async () => {
-    setShowPaymentModal(true);
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (!userData || !userData._id) {
+      alert("Please log in first");
+      return;
+    }
+    setShowAddressModal(true);
     setSelectedItem(null);
   };
 
   const handleBuyNow = async (item) => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (!userData || !userData._id) {
+      alert("Please log in first");
+      return;
+    }
     setSelectedItem(item);
+    setShowAddressModal(true); 
+  };
+
+  const handleAddressConfirm = () => {
+    setShowAddressModal(false);
     setShowPaymentModal(true);
+  };
+
+  const handleAddressEdit = async () => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (!userData || !userData._id) {
+      alert("Please log in first");
+      return;
+    }
+
+    try {
+      const response = await axios.put(`http://localhost:8080/user/update-address/${userData._id}`, {
+        address: address,
+      });
+
+      if (response.data) {
+        localStorage.setItem("userdata", JSON.stringify({ ...userData, address: address }));
+        alert("Address updated successfully!");
+        setEditAddress(false); // Exit edit mode
+      }
+    } catch (error) {
+      console.error("Error updating address:", error);
+      alert("Failed to update address!");
+    }
   };
 
   const handlePaymentMethodSelect = (method) => {
@@ -293,8 +341,42 @@ function Cart() {
                   </tr>
                 </tbody>
               </table>
+              <table className="cart-summary-table">
+                <tr>
+                  <th className="cart-summary-heading">Delivery Address</th>
+                </tr>
+                <tr>
+                  <td colSpan="2" className="cart-summary-address">{address}</td>
+                </tr>
+              </table>
             </div>
           )}
+        </div>
+      )}
+
+      {showAddressModal && (
+        <div className="address-modal-overlay">
+          <div className="address-modal">
+            <h2>Verify Your Address</h2>
+            {editAddress ? (
+              <textarea
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Enter your address" />
+            ) : (
+              <p>{address}</p>
+            )}
+            <div className="address-modal-buttons">
+              <button onClick={() => setEditAddress(!editAddress)} className="edit-cancel">
+                {!editAddress && <FontAwesomeIcon icon={faEdit} className="edit-icon" />}
+                <p>{editAddress ? "Cancel" : "Edit"}</p>
+              </button>
+              <button onClick={editAddress ? handleAddressEdit : handleAddressConfirm} className="edit-cancel">
+                <p>{editAddress ? "Save" : "OK"}</p>
+              </button>
+            </div>
+            <button onClick={() => setShowAddressModal(false)} className="button-close">Close</button>
+          </div>
         </div>
       )}
 

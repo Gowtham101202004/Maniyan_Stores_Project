@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faCartShopping, faCartArrowDown, faCreditCard, faMobileAlt, faMoneyBillAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faCartShopping,
+  faCartArrowDown,
+  faCreditCard,
+  faMobileAlt,
+  faMoneyBillAlt,
+  faEdit,
+} from "@fortawesome/free-solid-svg-icons";
 import Loading_Animation from "../Animation/Loading_Animation";
 import "./ProductItem.css";
 import axios from "axios";
@@ -15,6 +23,9 @@ function ProductItem() {
   const [randomProducts, setRandomProducts] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showOutOfStockModal, setShowOutOfStockModal] = useState(false);
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [address, setAddress] = useState("");
+  const [editAddress, setEditAddress] = useState(false);
   const product = location.state;
 
   useEffect(() => {
@@ -25,7 +36,6 @@ function ProductItem() {
         const data = await response.json();
 
         const allProducts = data.products || data;
-
         setProducts(allProducts);
 
         const similar = allProducts
@@ -43,6 +53,13 @@ function ProductItem() {
 
     fetchProducts();
   }, [product]);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (userData && userData.address) {
+      setAddress(userData.address);
+    }
+  }, []);
 
   const calculateOffer = (previousPrice, currentPrice) => {
     if (previousPrice && previousPrice > currentPrice) {
@@ -62,9 +79,37 @@ function ProductItem() {
     }
 
     if (product.productStock === 0) {
-      setShowOutOfStockModal(true); 
+      setShowOutOfStockModal(true);
     } else {
-      setShowPaymentModal(true);
+      setShowAddressModal(true); // Show address modal first
+    }
+  };
+
+  const handleAddressConfirm = () => {
+    setShowAddressModal(false);
+    setShowPaymentModal(true); // Proceed to payment modal
+  };
+
+  const handleAddressEdit = async () => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (!userData || !userData._id) {
+      alert("Please log in first");
+      return;
+    }
+
+    try {
+      const response = await axios.put(`http://localhost:8080/user/update-address/${userData._id}`, {
+        address: address,
+      });
+
+      if (response.data) {
+        localStorage.setItem("userdata", JSON.stringify({ ...userData, address: address }));
+        alert("Address updated successfully!");
+        setEditAddress(false); // Exit edit mode
+      }
+    } catch (error) {
+      console.error("Error updating address:", error);
+      alert("Failed to update address!");
     }
   };
 
@@ -83,13 +128,15 @@ function ProductItem() {
     const userData = JSON.parse(localStorage.getItem("userdata"));
 
     const payload = {
-      cartItems: [{
-        product: product._id,
-        name: product.productName,
-        images: [product.productImage],
-        price: product.productPrice,
-        quantity: 1,
-      }],
+      cartItems: [
+        {
+          product: product._id,
+          name: product.productName,
+          images: [product.productImage],
+          price: product.productPrice,
+          quantity: 1,
+        },
+      ],
       email: userData.email,
     };
 
@@ -110,32 +157,32 @@ function ProductItem() {
   };
 
   const handleCardClick = (product) => navigate(`/product/${product._id}`, { state: product });
-  
+
   const handleAddToCart = async () => {
     if (product.productStock === 0) {
-      setShowOutOfStockModal(true); 
+      setShowOutOfStockModal(true);
       return;
     }
-  
+
     const userData = JSON.parse(localStorage.getItem("userdata"));
     if (!userData || !userData._id) {
       alert("Please log in first");
       return;
     }
-  
+
     try {
       const { data: existingCart } = await axios.get(`http://localhost:8080/cart?userId=${userData._id}`);
       const cartProducts = existingCart.products || [];
-  
+
       const productExists = cartProducts.some(
         (cartItem) => cartItem.product.toString() === product._id.toString()
       );
-  
+
       if (productExists) {
         alert("Product already added to the cart!");
         return;
       }
-  
+
       const newCartItem = {
         product: product._id,
         productName: product.productName,
@@ -144,12 +191,12 @@ function ProductItem() {
         productUnit: product.productUnit,
         quantity: 1,
       };
-  
+
       await axios.post("http://localhost:8080/cart/add", {
         userId: userData._id,
         products: [newCartItem],
       });
-  
+
       alert("Product added to cart successfully!");
     } catch (error) {
       alert("Failed to add product to cart!");
@@ -282,6 +329,32 @@ function ProductItem() {
             ) : (
               <p>No similar products found.</p>
             )}
+          </div>
+        </div>
+      )}
+
+      {showAddressModal && (
+        <div className="address-modal-overlay">
+          <div className="address-modal">
+            <h2>Verify Your Address</h2>
+            {editAddress ? (
+              <textarea
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Enter your address" />
+            ) : (
+              <p>{address}</p>
+            )}
+            <div className="address-modal-buttons">
+              <button onClick={() => setEditAddress(!editAddress)} className="edit-cancel">
+                {!editAddress && <FontAwesomeIcon icon={faEdit} className="edit-icon" />}
+                <p>{editAddress ? "Cancel" : "Edit"}</p>
+              </button>
+              <button onClick={editAddress ? handleAddressEdit : handleAddressConfirm} className="edit-cancel">
+                <p>{editAddress ? "Save" : "OK"}</p>
+              </button>
+            </div>
+            <button onClick={() => setShowAddressModal(false)} className="button-close">Close</button>
           </div>
         </div>
       )}

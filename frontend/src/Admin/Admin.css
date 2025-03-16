@@ -511,7 +511,14 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 1.15);
 } 
 
-.admin-order-table input,select{
+.admin-order-table input{
+    padding: 5px;
+    width: 90px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.admin-order-table .order-table-select{
     padding: 5px;
     width: 90px;
     border-radius: 5px;
@@ -577,7 +584,8 @@
 }
 
 .admin-order-table .product-order{
-    font-size: 12px;
+    font-size: 13px;
+    cursor: pointer;
 }
 
 .admin-order-table .product-names{
