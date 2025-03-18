@@ -81,13 +81,12 @@ function ProductItem() {
     if (product.productStock === 0) {
       setShowOutOfStockModal(true);
     } else {
-      setShowAddressModal(true); // Show address modal first
-    }
+      setShowAddressModal(true);    }
   };
 
   const handleAddressConfirm = () => {
     setShowAddressModal(false);
-    setShowPaymentModal(true); // Proceed to payment modal
+    setShowPaymentModal(true);
   };
 
   const handleAddressEdit = async () => {
@@ -105,7 +104,7 @@ function ProductItem() {
       if (response.data) {
         localStorage.setItem("userdata", JSON.stringify({ ...userData, address: address }));
         alert("Address updated successfully!");
-        setEditAddress(false); // Exit edit mode
+        setEditAddress(false);
       }
     } catch (error) {
       console.error("Error updating address:", error);
@@ -172,6 +171,7 @@ function ProductItem() {
 
     try {
       const { data: existingCart } = await axios.get(`http://localhost:8080/cart?userId=${userData._id}`);
+      console.log(existingCart);
       const cartProducts = existingCart.products || [];
 
       const productExists = cartProducts.some(

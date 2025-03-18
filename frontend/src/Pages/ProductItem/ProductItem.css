@@ -477,6 +477,7 @@
 .address-modal-buttons {
   display: flex;
   margin: 0 100px;
+  margin-bottom: 25px;
   justify-content: space-between;
   gap: 20px;
 }

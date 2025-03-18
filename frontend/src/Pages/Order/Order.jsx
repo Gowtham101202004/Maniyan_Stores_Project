@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import axios from "axios";
 import "./Order.css";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const Order = () => {
   const [orders, setOrders] = useState([]);
@@ -63,6 +65,72 @@ const Order = () => {
     return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
       .toString().padStart(2, '0')}/${date.getFullYear()}`;
   };
+
+  const generateReceiptPDF = async (order) => {
+    const receiptElement = document.createElement("div");
+    receiptElement.style.position = "absolute";
+    receiptElement.style.left = "-9999px";
+    receiptElement.innerHTML = `
+      <div class="receipt-container">
+        <div class="receipt-header-container">
+          <div class="receipt-header">
+            <h1>MANIYAN STORES</h1>
+            <p>3/57, Kangayam Road, Uthukkuli R.S,</p>
+            <p>Uthukkuli Taluk, Tiruppur - 638752.</p>
+            <p>Mail: <span>maniyanstores11@gmail.com</span></p>
+          </div>
+          <div class="receipt-header-owner">
+            <p>C SUBRAMANIAM</p>
+            <p>94430 30068</p>
+            <p>93456 81193</p>
+            <p>GSTIN NO : 33AUJPS6763M1ZV</p>
+          </div>
+        </div>
+        <hr/>
+        <div class="receipt-details">
+          <p><strong>Order Date:</strong> ${formatDate(order.createdAt)}</p>
+          <p><strong>Customer Name:</strong> ${user.name}</p>
+          <p><strong>Receipt Id:</strong> ${order._id}</p>
+          <p><strong>Payment Status:</strong> ${order.paymentDetails?.payment_status || "N/A"}</p>
+          <p><strong>Delivery Address:</strong> ${order.address}</p>
+        </div>
+        <table class="receipt-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${order.productDetails?.map((product) => `
+              <tr>
+                <td>${product.name || "N/A"}</td>
+                <td>${product.quantity || 0}</td>
+                <td>₹${product.price * product.quantity || 0}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+        <p class="receipt-total">
+          <strong>Total Amount:</strong> ₹${calculateTotalAmount(order.productDetails)} <span>(Incl. ₹40 Delivery Charge)</span>
+        </p>
+      </div>
+    `;
+
+    document.body.appendChild(receiptElement);
+
+    const canvas = await html2canvas(receiptElement);
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+    const imgWidth = 210;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    pdf.save(`${order._id}.pdf`);
+    document.body.removeChild(receiptElement);
+  };
+
   return (
     <>
       <Navbar />
@@ -125,7 +193,7 @@ const Order = () => {
                 </div>
               </div>
               <div className="download-receipt">
-                <button>Download Receipt</button>
+                <button onClick={() => generateReceiptPDF(order)}>Download Receipt</button>
               </div>
               <div className="order-footer">
                 <p className="order-address">
