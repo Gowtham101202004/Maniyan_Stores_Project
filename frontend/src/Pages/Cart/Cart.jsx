@@ -156,6 +156,11 @@ function Cart() {
   };
 
   const handleAddressConfirm = () => {
+    if (!address || address.trim() === "") {
+      alert("Please add your address before proceeding");
+      setEditAddress(true); // Switch to edit mode so user can add address
+      return;
+    }
     setShowAddressModal(false);
     setShowPaymentModal(true);
   };
@@ -346,7 +351,7 @@ function Cart() {
                   <th className="cart-summary-heading">Delivery Address</th>
                 </tr>
                 <tr>
-                  <td colSpan="2" className="cart-summary-address">{address}</td>
+                  <td colSpan="2" className="cart-summary-address">{address || <span>Address yet to be added !</span>}</td>
                 </tr>
               </table>
             </div>
@@ -364,7 +369,7 @@ function Cart() {
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Enter your address" />
             ) : (
-              <p>{address}</p>
+              <p>{address || <span>Address yet to be added !</span>}</p>
             )}
             <div className="address-modal-buttons">
               <button onClick={() => setEditAddress(!editAddress)} className="edit-cancel">

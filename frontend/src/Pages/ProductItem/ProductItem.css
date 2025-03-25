@@ -474,6 +474,10 @@
   word-wrap: break-word;
 }
 
+.address-modal p span{
+  color: red;
+}
+
 .address-modal-buttons {
   display: flex;
   margin: 0 100px;

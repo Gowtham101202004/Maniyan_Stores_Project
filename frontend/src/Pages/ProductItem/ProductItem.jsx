@@ -81,10 +81,16 @@ function ProductItem() {
     if (product.productStock === 0) {
       setShowOutOfStockModal(true);
     } else {
-      setShowAddressModal(true);    }
+      setShowAddressModal(true);
+    }
   };
 
   const handleAddressConfirm = () => {
+    if (!address || address.trim() === "") {
+      alert("Please add your delivery address before proceeding to payment");
+      setEditAddress(true);
+      return;
+    }
     setShowAddressModal(false);
     setShowPaymentModal(true);
   };
@@ -171,7 +177,6 @@ function ProductItem() {
 
     try {
       const { data: existingCart } = await axios.get(`http://localhost:8080/cart?userId=${userData._id}`);
-      console.log(existingCart);
       const cartProducts = existingCart.products || [];
 
       const productExists = cartProducts.some(
@@ -341,9 +346,10 @@ function ProductItem() {
               <textarea
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                placeholder="Enter your address" />
+                placeholder="Enter your delivery address"
+              />
             ) : (
-              <p>{address}</p>
+              <p>{address || <span>Please add your delivery address</span>}</p>
             )}
             <div className="address-modal-buttons">
               <button onClick={() => setEditAddress(!editAddress)} className="edit-cancel">

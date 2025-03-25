@@ -123,9 +123,9 @@ const updateUserController = expressAsyncHandler(async (req, res) => {
     }
 
     user.name = name || user.name;
-    user.image = image === "" ? "" : image; 
-    user.address = address || user.address;
-    user.phonenumber = phonenumber || user.phonenumber;
+    user.image = image === "" ? "" : image;
+    user.address = address !== undefined ? address : user.address;
+    user.phonenumber = phonenumber !== undefined ? phonenumber : user.phonenumber;
     user.isAdmin = isAdmin !== undefined ? isAdmin : user.isAdmin;
 
     const updatedUser = await user.save();

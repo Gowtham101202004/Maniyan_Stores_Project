@@ -58,11 +58,33 @@ const EditProfile = () => {
   const handleProfileUpdate = async () => {
     setIsSubmitting(true);
     try {
-        const updatedData = { ...userData, image: preview || "" };
+        const updatedData = { 
+          ...userData, 
+          image: preview || "" 
+        };
 
-        await axios.put(`http://localhost:8080/user/update-user/${id}`, updatedData, {
+        const response = await axios.put(
+          `http://localhost:8080/user/update-user/${id}`, 
+          updatedData, 
+          {
             headers: { "Content-Type": "application/json" },
-        });
+          }
+        );
+
+        setUserData(response.data);
+        
+        const storedData = localStorage.getItem('userdata');
+        if (storedData) {
+          const parsedData = JSON.parse(storedData);
+          localStorage.setItem('userdata', JSON.stringify({
+            ...parsedData,
+            name: response.data.name,
+            email: response.data.email,
+            address: response.data.address,
+            phonenumber: response.data.phonenumber,
+            image: response.data.image
+          }));
+        }
 
         setIsEditable(false);
     } catch (error) {
@@ -70,8 +92,7 @@ const EditProfile = () => {
     } finally {
         setIsSubmitting(false);
     }
-};
-
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -103,6 +124,7 @@ const EditProfile = () => {
 
   const confirmImageEdit = () => {
     setIsImageEditorVisible(false);
+    setUserData(prev => ({ ...prev, image: preview || "" }));
   };
 
   const removeProfileImage = () => {
