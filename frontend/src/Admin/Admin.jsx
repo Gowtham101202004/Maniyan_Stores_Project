@@ -701,7 +701,7 @@ const handleSaveOrder = async (orderId) => {
                     </td>
                     <td>
                       <span
-                        className={`payment-status ${order.paymentDetails.payment_status === "paid" ? "paid" : "pending"}`}
+                        className={`payment-status ${order.paymentDetails.payment_status === "paid" ? "paid" : order.paymentDetails.payment_status === "cash" ? "cash" : "pending"}`}
                         style={{ display: "flex", justifyContent: "center", textAlign: "center", margin: "10px" }}> 
                         {order.paymentDetails.payment_status}
                       </span>

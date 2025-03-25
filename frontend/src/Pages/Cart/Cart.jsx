@@ -158,7 +158,7 @@ function Cart() {
   const handleAddressConfirm = () => {
     if (!address || address.trim() === "") {
       alert("Please add your address before proceeding");
-      setEditAddress(true); // Switch to edit mode so user can add address
+      setEditAddress(true);
       return;
     }
     setShowAddressModal(false);
@@ -180,7 +180,7 @@ function Cart() {
       if (response.data) {
         localStorage.setItem("userdata", JSON.stringify({ ...userData, address: address }));
         alert("Address updated successfully!");
-        setEditAddress(false); // Exit edit mode
+        setEditAddress(false);
       }
     } catch (error) {
       console.error("Error updating address:", error);
@@ -243,9 +243,104 @@ function Cart() {
     }
   };
 
-  const handleCashOnDelivery = (selectedItem) => {
-    alert("Cash on Delivery selected. Your order will be confirmed shortly!");
-    // Add logic to handle COD order confirmation
+  const handleCashOnDelivery = async (selectedItem) => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    
+    if (!userData || !userData._id) {
+      alert("Please log in first");
+      return;
+    }
+
+    try {
+      const totalAmount = selectedItem
+        ? selectedItem.product.productPrice * selectedItem.quantity + 40
+        : calculateTotalAmount();
+
+      const orderPayload = {
+        productDetails: selectedItem
+          ? [
+              {
+                name: selectedItem.product.productName,
+                price: selectedItem.product.productPrice,
+                quantity: selectedItem.quantity,
+                image: [selectedItem.product.productImage],
+              },
+            ]
+          : cartItems.map((item) => ({
+              name: item.product.productName,
+              price: item.product.productPrice,
+              quantity: item.quantity,
+              image: [item.product.productImage],
+            })),
+        email: userData.email,
+        userId: userData._id,
+        address: userData.address,
+        paymentDetails: {
+          paymentId: `COD-${Date.now()}`,
+          payment_method_type: ["COD"],
+          payment_status: "cash",
+        },
+        shippingOptions: [
+          {
+            shipping_amount: 4000, 
+            shipping_rate: "shr_1QxTpj4UOuOwfYxghjdIwZcb",
+          },
+        ],
+        totalAmount: totalAmount,
+      };
+
+      const response = await axios.post(
+        "http://localhost:8080/order/create-order",
+        orderPayload
+      );
+
+      if (response.data.message === "Order created successfully") {
+        if (selectedItem) {
+          try {
+            const stockResponse = await axios.put(
+              `http://localhost:8080/products/update-stock/${selectedItem.product._id}`,
+              { quantity: selectedItem.quantity }
+            );
+            console.log("Stock update response:", stockResponse.data);
+          } catch (error) {
+            console.error("Error updating stock:", error);
+          }
+        } else {
+          for (const item of cartItems) {
+            try {
+              const stockResponse = await axios.put(
+                `http://localhost:8080/products/update-stock/${item.product._id}`,
+                { quantity: item.quantity }
+              );
+              console.log("Stock update response:", stockResponse.data);
+            } catch (error) {
+              console.error("Error updating stock:", error);
+            }
+          }
+        }
+
+        if (!selectedItem) {
+          try {
+            await axios.delete(`http://localhost:8080/cart/clear/${userData._id}`);
+            setCartItems([]);
+          } catch (error) {
+            console.error("Error clearing cart:", error);
+          }
+        }
+
+        navigate("/success", {
+          state: {
+            message: "Your Cash on Delivery order has been placed successfully!",
+            orderDetails: response.data.order,
+          },
+        });
+      } else {
+        throw new Error("Failed to create order");
+      }
+    } catch (error) {
+      console.error("Error during COD order:", error);
+      alert("Failed to place COD order. Please try again.");
+    }
   };
 
   return (

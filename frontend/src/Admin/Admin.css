@@ -163,7 +163,7 @@
     text-align: center;
     margin-top: 5px;
     margin-bottom: 25px;
-}
+}   
 
 .user-table {
     width: 100%;
@@ -567,7 +567,7 @@
     font-weight: bold;
 }
 
-.payment-status.paid {
+.payment-status.paid, .payment-status.cash{
     background-color: #28a745;
     color: white;
 }
@@ -646,6 +646,7 @@
 @media only screen and (max-width: 768px) {
     .admin-container {
         flex-direction: column;
+        overflow-x: auto; 
     }
 
     .admin-navbar {

@@ -62,7 +62,7 @@
     color: black;
 }
 
-.order-payment-status.paid {
+.order-payment-status.paid ,.order-payment-status.cash{
     color: #28a745;
 }
 

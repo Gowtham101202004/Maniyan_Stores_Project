@@ -91,6 +91,10 @@ function Navbar() {
       });
   };
 
+  const handlehelpClick = () => {
+    navigate("/help");
+  }
+
   const handleEditProfileClick = () => {
     navigate("/editprofile");
   };
@@ -178,7 +182,7 @@ function Navbar() {
                       <FontAwesomeIcon icon={faGauge} className="dd-icon" /> Admin Dashboard
                     </li>
                   )}
-                  <li>
+                  <li onClick={handlehelpClick}>
                     <FontAwesomeIcon icon={faCircleQuestion} className="dd-icon" /> Help & Support
                   </li>
                   <li onClick={handleSignoutClick} className="signout-item">

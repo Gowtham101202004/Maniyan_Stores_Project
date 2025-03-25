@@ -151,7 +151,7 @@ const Order = () => {
                   <p className="expected-date"><b>Expected Delivery Date : </b>{formatDate(order.deliveryDate)}</p>
                 </div>
                 <div className="order-status">
-                  <p className={`order-payment-status ${order.paymentDetails?.payment_status === "paid" ? "paid" : "pending"}`}>
+                  <p className={`order-payment-status ${order.paymentDetails?.payment_status === "paid" ? "paid" : order.paymentDetails?.payment_status === "cash" ? "cash" : "pending"}`}>
                     <span> Payment Status : </span>{order.paymentDetails?.payment_status || "N/A"}
                   </p>
                   <p className="order-product-status">Product Status : <span>{order.orderStatus || "Processing"}</span></p>

@@ -156,9 +156,72 @@ function ProductItem() {
     }
   };
 
-  const handleCashOnDelivery = () => {
-    alert("Cash on Delivery selected. Your order will be confirmed shortly!");
-    // Add logic to handle COD order confirmation
+  const handleCashOnDelivery = async () => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    
+    if (!userData || !userData._id) {
+      alert("Please log in first");
+      return;
+    }
+
+    try {
+      const totalAmount = product.productPrice + 40;
+
+      const orderPayload = {
+        productDetails: [
+          {
+            name: product.productName,
+            price: product.productPrice,
+            quantity: 1,
+            image: [product.productImage],
+          },
+        ],
+        email: userData.email,
+        userId: userData._id,
+        address: userData.address,
+        paymentDetails: {
+          paymentId: `COD-${Date.now()}`,
+          payment_method_type: ["COD"],
+          payment_status: "cash",
+        },
+        shippingOptions: [
+          {
+            shipping_amount: 4000,
+            shipping_rate: "shr_1QxTpj4UOuOwfYxghjdIwZcb",
+          },
+        ],
+        totalAmount: totalAmount,
+      };
+
+      const response = await axios.post(
+        "http://localhost:8080/order/create-order",
+        orderPayload
+      );
+
+      if (response.data.message === "Order created successfully") {
+        try {
+          const stockResponse = await axios.put(
+            `http://localhost:8080/products/update-stock/${product._id}`,
+            { quantity: 1 }
+          );
+          console.log("Stock update response:", stockResponse.data);
+        } catch (error) {
+          console.error("Error updating stock:", error);
+        }
+
+        navigate("/success", {
+          state: {
+            message: "Your Cash on Delivery order has been placed successfully!",
+            orderDetails: response.data.order,
+          },
+        });
+      } else {
+        throw new Error("Failed to create order");
+      }
+    } catch (error) {
+      console.error("Error during COD order:", error);
+      alert("Failed to place COD order. Please try again.");
+    }
   };
 
   const handleCardClick = (product) => navigate(`/product/${product._id}`, { state: product });
